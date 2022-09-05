@@ -15,6 +15,7 @@ img[alt$=">1"] {
 
 [1] **H. Gao\*, W. Fan\*, L. Qiu, X. Yang, Z. Li, X. Zuo, Y. Li, H. Ren, “SAVAnet: Surgical action-driven visual attention network for autonomous endoscope control”, IEEE Transactions on Automation Science & Engineering (T-ASE), 2022.**
 ![image alt >1](https://weichenfan.github.io/Weichen//images/SAVA.png)
+
 In this work, we learnt from the surgeons’ visual attention mechanism and propose a novel network called SAVAnet to predict visual attention with action guidance. Additionally, we implemented the SAVAnet on a da Vinci simulator to execute the autonomous endoscope control.
 
 <br>
