@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-<iframe src="http://https://weichenfan.github.io/Weichen/files/resume.pdf" style="width:800px; height:500px;" frameborder="0"></iframe>
+<iframe src="https://weichenfan.github.io/Weichen//files/resume.pdf" style="width:800px; height:500px;" frameborder="0"></iframe>
 
 <!-- {% include base_path %}
 
