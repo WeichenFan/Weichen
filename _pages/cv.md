@@ -7,7 +7,9 @@ redirect_from:
   - /resume
 ---
 
-{% include base_path %}
+<iframe src="http://https://weichenfan.github.io/Weichen/files/resume.pdf" style="width:800px; height:500px;" frameborder="0"></iframe>
+
+<!-- {% include base_path %}
 
 Education
 ======
@@ -56,4 +58,4 @@ Teaching
   
 Service and leadership
 ======
-* Currently signed in to 43 different slack teams
+* Currently signed in to 43 different slack teams -->
