@@ -10,6 +10,6 @@ citation: 'Comming soon.'
 ---
 In this work, we learnt from the surgeons’ visual attention mechanism and propose a novel network called SAVAnet to predict visual attention with action guidance. Additionally, we implemented the SAVAnet on a da Vinci simulator to execute the autonomous endoscope control.
 
-[Download paper here](Comming soon) -->
+[Download paper here](Comming soon)
 
 Recommended citation: Comming soon
