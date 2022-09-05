@@ -10,10 +10,12 @@ author_profile: false
 In this work, we learnt from the surgeons’ visual attention mechanism and propose a novel network called SAVAnet to predict visual attention with action guidance. Additionally, we implemented the SAVAnet on a da Vinci simulator to execute the autonomous endoscope control.
 
 [2] **Fan W, Chen J, Ma J, et al. StyleFlow For Content-Fixed Image to Image Translation[J]. arXiv preprint arXiv:2207.01909, 2022.**
-[paper](https://arxiv.org/pdf/2207.01909.pdf)\ [code](https://github.com/weepiess/StyleFlow-Content-Fixed-I2I)
+
+[[paper](https://arxiv.org/pdf/2207.01909.pdf)] [[code](https://github.com/weepiess/StyleFlow-Content-Fixed-I2I)]
 
 [3] **Fan W, Yang Y, Qiu K, et al. InvNorm: Domain Generalization for Object Detection in Gastrointestinal Endoscopy[J]. arXiv preprint arXiv:2205.02842, 2022.**
-[paper](https://arxiv.org/pdf/2205.02842.pdf)
+
+[[paper](https://arxiv.org/pdf/2205.02842.pdf)]
 
 {% if author.googlescholar %}
   You can also find my articles on <u><a href="{{author.googlescholar}}">my Google Scholar profile</a>.</u>
