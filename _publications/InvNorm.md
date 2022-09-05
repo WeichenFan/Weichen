@@ -6,10 +6,5 @@ excerpt: 'Domain Generalization is a challenging topic in computer vision, espec
 date: 2022-07-01
 venue: 'arXiv preprint'
 paperurl: 'https://arxiv.org/pdf/2205.02842.pdf'
-citation: 'Fan W, Yang Y, Qiu K, et al. InvNorm: Domain Generalization for Object Detection in Gastrointestinal Endoscopy[J]. arXiv preprint arXiv:2205.02842, 2022.'
 ---
 Domain Generalization is a challenging topic in computer vision, especially in Gastrointestinal Endoscopy image analysis. Due to several device limitations and ethical reasons, current open-source datasets are typically collected on a limited number of patients using the same brand of sensors. Different brands of devices and individual differences will significantly affect the model's generalizability. Therefore, to address the generalization problem in GI(Gastrointestinal) endoscopy, we propose a multi-domain GI dataset and a light, plug-in block called InvNorm(Invertible Normalization), which could achieve a better generalization performance in any structure. Previous DG(Domain Generalization) methods fail to achieve invertible transformation, which would lead to some misleading augmentation. Moreover, these models would be more likely to lead to medical ethics issues. Our method utilizes normalizing flow to achieve invertible and explainable style normalization to address the problem. The effectiveness of InvNorm is demonstrated on a wide range of tasks, including GI recognition, GI object detection, and natural image recognition.
-
-[Download paper here](https://arxiv.org/pdf/2205.02842.pdf)
-
-Recommended citation: Fan W, Yang Y, Qiu K, et al. InvNorm: Domain Generalization for Object Detection in Gastrointestinal Endoscopy[J]. arXiv preprint arXiv:2205.02842, 2022.
