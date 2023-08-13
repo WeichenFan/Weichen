@@ -16,10 +16,12 @@ img[alt$=">1"] {
 [1] **Weichen Fan\***, Jinghuan Chen\*, Ziwei Liu. (2023). Hierarchy Flow For High-Fidelity Image-to-Image Translation. Proceedings of the **TPAMI**. [[paper](https://weichenfan.github.io/Weichen//files/Hierarchy_Flow_For_High_Fidelity_Image_to_Image_Translation.pdf)][[code](https://github.com/WeichenFan/HierarchyFlow)]
 ![image alt >1](https://weichenfan.github.io/Weichen//images/HF.png)
 
-
+<br>
+<br>
+<br>
 <br>
 
-[2] H. Gao\*, **W. Fan**\*, L. Qiu, X. Yang, Z. Li, X. Zuo, Y. Li, H. Ren, “SAVAnet: Surgical action-driven visual attention network for autonomous endoscope control”, IEEE Transactions on Automation Science & Engineering (T-ASE), 2022. [[paper](https://ieeexplore.ieee.org/document/9895213)]
+[2] H. Gao\*, **W. Fan**\*, L. Qiu, X. Yang, Z. Li, X. Zuo, Y. Li, H. Ren, “SAVAnet: Surgical action-driven visual attention network for autonomous endoscope control”, **IEEE Transactions on Automation Science & Engineering (T-ASE)**, 2022. [[paper](https://ieeexplore.ieee.org/document/9895213)]
 ![image alt >1](https://weichenfan.github.io/Weichen//images/SAVA.png)
 
 In this work, we learnt from the surgeons’ visual attention mechanism and propose a novel network called SAVAnet to predict visual attention with action guidance. Additionally, we implemented the SAVAnet on a da Vinci simulator to execute the autonomous endoscope control.
