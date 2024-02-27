@@ -13,7 +13,7 @@ img[alt$=">1"] {
 
 [Google Scholar Profile](https://scholar.google.com/citations?view_op=list_works&hl=zh-CN&user=ORlELG8AAAAJ)
 
-[1] Yan Tai\*, **Weichen Fan\***, Zhao Zhang, Feng Zhu, Rui Zhao, Ziwei Liu. (2023). Link-Context Learning For Multimodal LLMs. Proceedings of the **AAAI 2024**. [[paper](https://weichenfan.github.io/Weichen//files/Link_Context_Learning_in_Multimodal_LLMs.pdf)][[code](https://github.com/isekai-portal/Link-Context-Learning)]
+[1] Yan Tai\*, **Weichen Fan\***, Zhao Zhang, Ziwei Liu. (2024). Link-Context Learning For Multimodal LLMs. **CVPR 2024**. [[paper](https://weichenfan.github.io/Weichen//files/Link_Context_Learning_in_Multimodal_LLMs.pdf)][[code](https://github.com/isekai-portal/Link-Context-Learning)]
 ![image alt >1](https://weichenfan.github.io/Weichen//images/LCL.png)
 
 <br>
