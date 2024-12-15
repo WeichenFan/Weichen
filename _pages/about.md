@@ -8,5 +8,5 @@ redirect_from:
   - /about.html
 ---
 
-Fan, Weichen received his bachelor's degree in Electronic Science and Engineering from University of Electronic Science and Technology of China (UESTC), China in 2021. And he received his master's degree in Electronic and Computer Engineering from National University of Singapore (NUS). Currently, he is working as a Research Scientist at HyperGAI.
+Weichen Fan received the bachelor's degree from University of Electronic Science and Technology of China (UESTC), and the master's degree from National University of Singapore (NUS). He is currently working toward the Ph.D. degree with MMLab@NTU, Nanyang Technological University, supervised by Prof. Ziwei Liu. His research interests include image/video generation, robotics, and robotic simulation. 
 
