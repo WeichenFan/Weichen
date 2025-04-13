@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weichen Fan | Academic Website</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+      color: #222;
+    }
+
+    header {
+      background-color: #1e1e1e;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+
+    nav {
+      background-color: #ffffff;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .pub {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 40px;
+      align-items: flex-start;
+    }
+
+    .pub img, .pub video {
+      max-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .pub-info {
+      flex: 1;
+    }
+
+    .pub-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .pub-links a {
+      margin-right: 10px;
+      font-size: 0.9rem;
+      color: #0077cc;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    img.profile {
+      border-radius: 50%;
+      width: 150px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Weichen Fan</h1>
+    <img src="assets/Image.jpeg" alt="Profile" class="profile" />
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#publications">Publications</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I'm a PhD student at Nanyang Technological University, affiliated with the S-Lab and CCDS. My research focuses on video generation, diffusion models, and the intersection of language and visual representations. I enjoy building scalable generative models and exploring how structure can emerge across modalities.</p>
+  </section>
+
+  <section id="publications">
+    <h2>Publications</h2>
+    <div class="pub">
+      <img src="assets/CFG.png" alt="CFG-Zero teaser" />
+      <div class="pub-info">
+        <div class="pub-title">CFG-Zero*: Classifier-Free Guidance with Zero Prediction</div>
+        <div>arXiv, 2025</div>
+        <div><i><b>Weichen Fan</b>, Amber Yijia Zheng, Raymond A. Yeh, Ziwei Liu</i></div>
+        <div class="pub-links">
+            <a href="https://weichenfan.github.io/webpage-cfg-zero-star/">Project Page</a>
+          <a href="https://arxiv.org/pdf/2503.18886">arXiv</a>
+          <a href="https://github.com/WeichenFan/CFG-Zero-star">Code</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pub">
+        <img src="assets/Vchitect.png" alt="CFG-Zero teaser" />
+        <div class="pub-info">
+          <div class="pub-title">Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models</div>
+          <div>arXiv, 2025</div>
+          <div><i><b>Weichen Fan*</b>, Chenyang Si*, Junhao Song, Zhenyu Yang, Yinan He, Long Zhuo, Ziqi Huang, Ziyue Dong, Jingwen He, Dongwei Pan, Yi Wang, Yuming Jiang, Yaohui Wang, Peng Gao, Xinyuan Chen, Hengjie Li, Dahua Lin, Yu Qiao, Ziwei Liu</i></div>
+          <div class="pub-links">
+            <a href="https://vchitect.intern-ai.org.cn/">Project Page</a>
+            <a href="https://arxiv.org/abs/2501.08453">arXiv</a>
+            <a href="https://huggingface.co/datasets/Vchitect/Vchitect_T2V_DataVerse">Dataset</a>
+            <a href="https://github.com/Vchitect/Vchitect-2.0">Code</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <img src="assets/Repvideo.png" alt="CFG-Zero teaser" />
+        <div class="pub-info">
+          <div class="pub-title">RepVideo: Rethinking Cross-Layer Representation
+            for Video Generation</div>
+          <div>arXiv, 2025</div>
+          <div><i>Chenyang Si*, <b>Weichen Fan*</b>, Zhengyao Lv, Ziqi Huang, Yu Qiao, and Ziwei Liu</i></div>
+          <div class="pub-links">
+            <a href="https://vchitect.github.io/RepVid-Webpage/">Project Page</a>
+            <a href="https://arxiv.org/pdf/2501.08994">arXiv</a>
+            <a href="https://github.com/Vchitect/RepVideo">Code</a>
+          </div>
+        </div>
+      </div>
+
+    <div class="pub">
+        <img src="assets/LCL.png" alt="CFG-Zero teaser" />
+        <div class="pub-info">
+          <div class="pub-title">Link-Context Learning For Multimodal LLMs</div>
+          <div>CVPR, 2024</div>
+          <div><i>Yan Tai*, <b>Weichen Fan*</b>, Zhao Zhang Ziwei Liu</i></div>
+          <div class="pub-links">
+            <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Tai_Link-Context_Learning_for_Multimodal_LLMs_CVPR_2024_paper.pdf">pdf</a>
+            <a href="https://github.com/isekai-portal/Link-Context-Learning">Code</a>
+          </div>
+        </div>
+      </div>
+    <!-- Add more publications here -->
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: weichenfan [at] u.nus.edu</p>
+    <p><a href="https://github.com/WeichenFan">GitHub</a> | <a href="https://scholar.google.com">Google Scholar</a></p>
+  </section>
+
+  <footer>
+    &copy; Weichen Fan · Hosted on GitHub Pages
+  </footer>
+</body>
+
+</html>
