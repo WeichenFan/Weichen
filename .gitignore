@@ -1,0 +1,34 @@
+# NOTE: '#' only starts a comment at the START of a line. A comment placed
+# after a pattern becomes part of the pattern, so every note here is on its
+# own line.
+
+# ── macOS ────────────────────────────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# ── Editor / tooling ─────────────────────────────────────────────────────
+# Local dev-server config for the preview pane.
+.claude/
+.vscode/
+.idea/
+*.swp
+
+# ── Working files that should not be served from GitHub Pages ────────────
+# Briefs written for generating the artwork — useful locally, not part of
+# the site.
+ASSET-PROMPTS.md
+Weichen-Fan-asset-brief.pdf
+Weichen-Fan-asset-brief-2.pdf
+
+# Lossless masters for the generated artwork. Each is several MB and only
+# exists so a painting can be re-cropped or re-graded later; the site loads
+# the WebP in assets/img/ instead.
+assets/*-master.png
+
+# ── Deliberately NOT ignored ─────────────────────────────────────────────
+# assets/*.png and *.jpeg — the original full-size source images the site
+#   was built from. Already in this repository's history, and the only
+#   copies of the paper teasers and the organisation logos.
+# scripts/ — install-portrait.sh is worth keeping.

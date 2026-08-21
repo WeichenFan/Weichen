@@ -1,346 +1,624 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js" data-voice="on">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weichen Fan | Academic Website</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f9f9f9;
-      color: #222;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weichen Fan</title>
+<meta name="description" content="Weichen Fan — PhD student at MMLab@NTU, Nanyang Technological University. Video generation, diffusion models, robotics.">
+<meta name="author" content="Weichen Fan">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F2EFE6">
 
-    header {
-      background-color: #1e1e1e;
-      color: white;
-      padding: 60px 20px;
-      text-align: center;
-    }
+<link rel="canonical" href="https://weichenfan.github.io/Weichen/">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Weichen Fan">
+<meta property="og:description" content="PhD student at MMLab@NTU. Video generation, diffusion models, robotics.">
+<meta property="og:url" content="https://weichenfan.github.io/Weichen/">
+<meta property="og:image" content="https://weichenfan.github.io/Weichen/assets/img/portrait.webp">
+<meta name="twitter:card" content="summary">
 
-    header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-    }
+<!-- Restore PLAIN VIEW before first paint so the voice layer never flashes. -->
+<script>
+(function(){
+  var d = document.documentElement;
+  d.className = d.className.replace('no-js','js');
+  try {
+    if (localStorage.getItem('wf-voice') === 'off') d.setAttribute('data-voice','off');
+    if (localStorage.getItem('wf-theme') === 'disco') d.setAttribute('data-theme','disco');
+    if (localStorage.getItem('wf-lamp')  === '1')    d.setAttribute('data-lamp','1');
+  } catch(e){}
+})();
+</script>
 
-    header p {
-      font-size: 1.2rem;
-      color: #ccc;
-    }
-
-    nav {
-      background-color: #ffffff;
-      padding: 10px 20px;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-    }
-
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #0077cc;
-      font-weight: 600;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    section {
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 5px;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    .pub {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 40px;
-      align-items: flex-start;
-    }
-
-    .pub img, .pub video {
-      max-width: 200px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .pub-info {
-      flex: 1;
-    }
-
-    .pub-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .pub-links a {
-      margin-right: 10px;
-      font-size: 0.9rem;
-      color: #0077cc;
-    }
-
-    footer {
-      text-align: center;
-      padding: 40px 20px;
-      color: #aaa;
-      font-size: 0.9rem;
-    }
-
-    img.profile {
-      border-radius: 50%;
-      width: 150px;
-      margin-top: 20px;
-    }
-
-    .map-section {
-      padding: 40px 20px;
-      text-align: center;
-    }
-  </style>
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fonts/IBM-Plex-Mono--F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fonts/Newsreader-cY9CfjOCX1hbuyalUrK439vCjohCBJWxZA.woff2">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 
 <body>
-  <header>
-    <h1>Weichen Fan</h1>
-    <img src="assets/new_id_link.png" alt="Profile" class="profile" />
-  </header>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#Experience">Experience</a>
-    <a href="#publications">Publications</a>
-    <!-- <a href="#contact">Contact</a> -->
-  </nav>
+<!-- Scumbled card edge. Four seeds so no two cards break identically. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="wobble0"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble1"><feTurbulence type="fractalNoise" baseFrequency="0.024" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble2"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="23" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble3"><feTurbulence type="fractalNoise" baseFrequency="0.026" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.7" xChannelSelector="R" yChannelSelector="G"/></filter>
+</svg>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I am a Second-year PhD student at <a href="https://www.mmlab-ntu.com/">MMLab@NTU</a>, Nanyang Technological University, under the supervision of Prof. <a href="https://liuziwei7.github.io/">Ziwei Liu</a>. I earned my Bachelor's degree from the University of Electronic Science and Technology of China (UESTC) and my Master's degree from the National University of Singapore (NUS). My research centers on video generation, diffusion models, and robotics.</p>
+<a class="skip" href="#overture">Skip to content</a>
 
-    <p>Email: weichen002 [at] e.ntu.edu.sg</p>
-    <p><a href="https://github.com/WeichenFan">GitHub</a> | <a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&hl">Google Scholar</a></p>
+<div class="grain" aria-hidden="true"></div>
+<div class="mottle" aria-hidden="true"></div>
+<div class="fold fold--a" aria-hidden="true"></div>
+<div class="fold fold--b" aria-hidden="true"></div>
 
-  </section>
+<header class="masthead">
+  <div class="wrap masthead__band">
+    <h1 class="wordmark">Weichen Fan</h1>
+    <nav class="masthead__nav" aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#record">Record</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="crossexam" id="crossexam" type="button" aria-pressed="false">Cross-examine</button>
+    <!-- Revealed only once the way through has been found. -->
+    <button class="lamplight" id="lamplight" type="button" aria-pressed="false" hidden>Lamplight</button>
+    <button class="plainview" id="plainview" type="button" aria-pressed="false">
+      <span class="plainview__box" aria-hidden="true"></span>Plain view
+    </button>
+    <p class="sr-only" role="status" id="crossexam-status"></p>
+  </div>
+</header>
 
-  <!-- <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: weichen.fan [at] u.nus.edu</p>
-    <p><a href="https://github.com/WeichenFan">GitHub</a> | <a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&hl">Google Scholar</a></p>
-  </section> -->
+<main class="wrap" id="main">
 
-  <section id="Experience">
-    <h2>Experience</h2>
-
-    <div class="pub">
-      <img src="assets/NTU.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Nanyang Technological University</div>
-        <div>Research Manager | Singapore</div>
-        <div>Time: May 2024 - Nov 2024</div>
-      </div>
+<!-- ══ OVERTURE ══════════════════════════════════════════════════════════ -->
+<!-- The previous version of this site published #about, #Experience and
+     #publications. Keep them resolving so old inbound links still land. -->
+<span class="anchor-alias" id="about" aria-hidden="true"></span>
+<section class="section section--overture" id="overture" tabindex="-1" aria-labelledby="overture-h">
+  <h2 class="sr-only" id="overture-h">About</h2>
+  <div class="transcript">
+    <div class="rail">
+      <!-- Two sitters, one frame. The photograph hangs by day; solving the
+           maze turns the lamp down and the painted portrait takes its place.
+           Both live in the DOM so the swap is a CSS state, not a network
+           round-trip — swap the file at assets/img/portrait-disco.webp to
+           change the painting without touching any other line. -->
+      <figure class="portrait">
+        <img class="portrait__day" src="assets/img/portrait.webp" width="1000" height="1250"
+             alt="Weichen Fan" fetchpriority="high" decoding="async">
+        <img class="portrait__night" src="assets/img/portrait-disco.webp" width="900" height="1125"
+             alt="Weichen Fan, painted" decoding="async" fetchpriority="low">
+      </figure>
     </div>
 
-    <div class="pub">
-      <img src="assets/HyperGAI.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">HyperGAI</div>
-        <div>Research Scientist | Singapore</div>
-        <div>Time: Oct 2023 - May 2024</div>
+    <div class="record">
+      <p class="bio">I am a Second-year PhD student at <a href="https://www.mmlab-ntu.com/">MMLab@NTU</a>, Nanyang Technological University, under the supervision of Prof. <a href="https://liuziwei7.github.io/">Ziwei Liu</a>. I earned my Bachelor&rsquo;s degree from the University of Electronic Science and Technology of China (UESTC) and my Master&rsquo;s degree from the National University of Singapore (NUS). My research centers on video generation, diffusion models, and robotics.</p>
+
+      <p class="edu">Bachelor&rsquo;s &mdash; UESTC<span class="sep" aria-hidden="true">·</span>Master&rsquo;s &mdash; NUS<span class="sep" aria-hidden="true">·</span>PhD &mdash; NTU (in progress)</p>
+
+      <p class="linkrow linkrow--primary">
+        <a href="#contact">weichen002 [at] e.ntu.edu.sg</a><span class="sep" aria-hidden="true">·</span>
+        <a href="https://github.com/WeichenFan" rel="me noopener">GitHub</a><span class="sep" aria-hidden="true">·</span>
+        <a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&amp;hl" rel="me noopener">Google Scholar</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORK ═════════════════════════════════════════════════════════════ -->
+<span class="anchor-alias" id="publications" aria-hidden="true"></span>
+<section class="section" id="work" aria-labelledby="work-h">
+  <div class="transcript">
+    <div class="rail">
+      <button class="rail__speaker" type="button" data-faculty="visual-calculus" data-speaker="visual-calculus" aria-pressed="false">Visual Calculus</button>
+    </div>
+    <div class="record">
+      <h2 class="section__label" id="work-h">Work</h2>
+
+      <p class="voice voice--lead" data-speaker="visual-calculus">
+        <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Ordered newest first. Every title below resolves to a source.</i>
+      </p>
+
+      <fieldset class="refile" id="refile">
+        <legend class="sr-only">Order publications</legend>
+        <span class="refile__label">Order</span>
+        <input class="sr-only" type="radio" id="o-chron" name="order" value="chron" checked><label for="o-chron">Chronological</label>
+        <input class="sr-only" type="radio" id="o-area" name="order" value="area"><label for="o-area">By area</label>
+        <input class="sr-only" type="radio" id="o-venue" name="order" value="venue"><label for="o-venue">By venue</label>
+        <input class="sr-only" type="radio" id="o-first" name="order" value="first"><label for="o-first">First author</label>
+        <button class="btn refile__all" type="button" id="examine-all" aria-pressed="false">[ examine all ]</button>
+      </fieldset>
+      <p class="stamp-legend">
+        <span class="stamp-venue stamp-venue--refereed">Refereed</span> peer-reviewed venue
+        <span class="sep" aria-hidden="true">·</span>
+        <span class="stamp-venue stamp-venue--preprint">Dashed</span> preprint or technical report
+      </p>
+      <p class="sr-only" role="status" id="refile-status"></p>
+
+      <ol class="entries" id="entries">
+
+        <li><article class="entry" id="ex-11"
+          data-year="2026" data-area="diffusion-guidance" data-venue-class="preprint" data-authorship="first" data-rank="11"
+          data-btype="article" data-bkey="fan2026spectral"
+          data-btitle="Show the Signal, Hide the Noise: Spectral Forcing for Pixel-Space Diffusion"
+          data-bauthors="Weichen Fan and Haiwen Diao and Penghao Wu and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2606.15236"
+          data-burl="https://arxiv.org/pdf/2606.15236">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Show the Signal, Hide the Noise: Spectral Forcing for Pixel-Space Diffusion</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2026</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan</b>, Haiwen Diao, Penghao Wu, Ziwei Liu</p>
+          <figure class="plate" id="plate-11">
+            <img class="plate__img" src="assets/img/spectral-forcing.webp" width="1548" height="632" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Spectral Forcing.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2606.15236" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/Spectral_Forcing" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-11">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Pixel space, with nowhere for the noise to hide.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-10"
+          data-year="2026" data-area="multimodal-unified" data-venue-class="report" data-authorship="contributor" data-rank="10"
+          data-btype="article" data-bkey="fan2026sensenova"
+          data-btitle="SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture"
+          data-bauthors="Weichen Fan and {SenseNova Team}"
+          data-bvenue="arXiv preprint arXiv:2605.12500" data-bnote="Weichen Fan: core contributor."
+          data-burl="https://arxiv.org/pdf/2605.12500">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture</h3>
+            <span class="stamp-venue stamp-venue--preprint">Tech report 2026</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan (Core Contributor)</b>, SenseNova Team</p>
+          <figure class="plate" id="plate-10">
+            <img class="plate__img" src="assets/img/sensenova-u1.webp" width="1600" height="722" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for SenseNova-U1.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2605.12500" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/OpenSenseNova/SenseNova-U1" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-10">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Understanding and generation under one architecture, which is the hard version.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Technical report. Core contributor credit, not first author.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-09"
+          data-year="2026" data-area="multimodal-unified" data-venue-class="refereed" data-authorship="first" data-rank="9"
+          data-btype="inproceedings" data-bkey="fan2026prism"
+          data-btitle="The Prism Hypothesis: Harmonizing Semantic and Pixel Representations via Unified Autoencoding"
+          data-bauthors="Weichen Fan and Haiwen Diao and Quan Wang and Dahua Lin and Ziwei Liu"
+          data-bvenue="European Conference on Computer Vision (ECCV)"
+          data-burl="https://arxiv.org/abs/2512.19693">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">The Prism Hypothesis: Harmonizing Semantic and Pixel Representations via Unified Autoencoding</h3>
+            <span class="stamp-venue stamp-venue--refereed">ECCV 2026</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan</b>, Haiwen Diao, Quan Wang, Dahua Lin, Ziwei Liu</p>
+          <figure class="plate" id="plate-09">
+            <img class="plate__img" src="assets/img/prism-uae.webp" width="1600" height="469" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for The Prism Hypothesis.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/abs/2512.19693" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/UAE" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-09">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Semantics and pixels held in one autoencoder, stated as a hypothesis rather than a trick.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-08"
+          data-year="2025" data-area="diffusion-guidance" data-venue-class="preprint" data-authorship="first" data-rank="8"
+          data-btype="article" data-bkey="fan2025cfgzero"
+          data-btitle="CFG-Zero*: Classifier-Free Guidance with Zero Prediction"
+          data-bauthors="Weichen Fan and Amber Yijia Zheng and Raymond A. Yeh and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2503.18886"
+          data-burl="https://arxiv.org/pdf/2503.18886">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">CFG-Zero*: Classifier-Free Guidance with Zero Prediction</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2025</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan</b>, Amber Yijia Zheng, Raymond A. Yeh, Ziwei Liu</p>
+          <figure class="plate" id="plate-08">
+            <img class="plate__img" src="assets/img/cfg-zero.webp" width="1362" height="548" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for CFG-Zero*.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://weichenfan.github.io/webpage-cfg-zero-star/" rel="noopener">Project Page</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://arxiv.org/pdf/2503.18886" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/CFG-Zero-star" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-08">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Guidance reconsidered at the zeroth step. The asterisk is load-bearing.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-07"
+          data-year="2025" data-area="video-generation" data-venue-class="preprint" data-authorship="co-first" data-rank="7"
+          data-btype="article" data-bkey="fan2025vchitect"
+          data-btitle="Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models"
+          data-bauthors="Weichen Fan and Chenyang Si and Junhao Song and Zhenyu Yang and Yinan He and Long Zhuo and Ziqi Huang and Ziyue Dong and Jingwen He and Dongwei Pan and Yi Wang and Yuming Jiang and Yaohui Wang and Peng Gao and Xinyuan Chen and Hengjie Li and Dahua Lin and Yu Qiao and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2501.08453"
+          data-burl="https://arxiv.org/abs/2501.08453">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2025</span>
+          </div>
+          <p class="entry__authors entry__authors--long"><b>Weichen Fan*</b>, Chenyang Si*, Junhao Song, Zhenyu Yang, Yinan He, Long Zhuo, Ziqi Huang, Ziyue Dong, Jingwen He, Dongwei Pan, Yi Wang, Yuming Jiang, Yaohui Wang, Peng Gao, Xinyuan Chen, Hengjie Li, Dahua Lin, Yu Qiao, Ziwei Liu</p>
+          <figure class="plate" id="plate-07">
+            <img class="plate__img" src="assets/img/vchitect2.webp" width="1348" height="672" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Vchitect-2.0.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://vchitect.intern-ai.org.cn/" rel="noopener">Project Page</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://arxiv.org/abs/2501.08453" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://huggingface.co/datasets/Vchitect/Vchitect_T2V_DataVerse" rel="noopener">Dataset</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/Vchitect/Vchitect-2.0" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-07">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">A parallel transformer, scaled up, and the dataset shipped with it.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Preprint. Nineteen authors; co-first among them.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-06"
+          data-year="2025" data-area="video-generation" data-venue-class="preprint" data-authorship="co-first" data-rank="6"
+          data-btype="article" data-bkey="si2025repvideo"
+          data-btitle="RepVideo: Rethinking Cross-Layer Representation for Video Generation"
+          data-bauthors="Chenyang Si and Weichen Fan and Zhengyao Lv and Ziqi Huang and Yu Qiao and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2501.08994"
+          data-burl="https://arxiv.org/pdf/2501.08994">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">RepVideo: Rethinking Cross-Layer Representation for Video Generation</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2025</span>
+          </div>
+          <p class="entry__authors">Chenyang Si*, <b>Weichen Fan*</b>, Zhengyao Lv, Ziqi Huang, Yu Qiao, and Ziwei Liu</p>
+          <figure class="plate" id="plate-06">
+            <img class="plate__img" src="assets/img/repvideo.webp" width="1348" height="552" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for RepVideo.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://vchitect.github.io/RepVid-Webpage/" rel="noopener">Project Page</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://arxiv.org/pdf/2501.08994" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/Vchitect/RepVideo" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-06">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">What happens between the layers turned out to be the thing worth rethinking.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-05"
+          data-year="2024" data-area="video-generation" data-venue-class="report" data-authorship="contributor" data-rank="5"
+          data-btype="article" data-bkey="lumina2024t2x"
+          data-btitle="Lumina-t2x: Transforming text into any modality, resolution, and duration via flow-based large diffusion transformers"
+          data-bauthors="Weichen Fan and {Sphinx Team}"
+          data-bvenue="arXiv preprint arXiv:2405.05945" data-bnote="Weichen Fan (Chen Lin): contributor."
+          data-burl="https://arxiv.org/pdf/2405.05945">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Lumina-t2x: Transforming text into any modality, resolution, and duration via flow-based large diffusion transformers</h3>
+            <span class="stamp-venue stamp-venue--preprint">Tech report 2024</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan(Chen Lin) (Contributor)</b>, Sphinx Team</p>
+          <figure class="plate" id="plate-05">
+            <img class="plate__img" src="assets/img/lumina-t2x.webp" width="1600" height="952" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Lumina-T2X.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2405.05945" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/alpha-vllm/lumina-t2x" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-05">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Any modality, any resolution, any duration — an ambitious sentence to defend.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Technical report, not peer reviewed. Contributor credit.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-04"
+          data-year="2024" data-area="multimodal-unified" data-venue-class="refereed" data-authorship="co-first" data-rank="4"
+          data-btype="inproceedings" data-bkey="tai2024linkcontext"
+          data-btitle="Link-Context Learning For Multimodal LLMs"
+          data-bauthors="Yan Tai and Weichen Fan and Zhao Zhang and Ziwei Liu"
+          data-bvenue="IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)"
+          data-burl="https://openaccess.thecvf.com/content/CVPR2024/papers/Tai_Link-Context_Learning_for_Multimodal_LLMs_CVPR_2024_paper.pdf">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Link-Context Learning For Multimodal LLMs</h3>
+            <span class="stamp-venue stamp-venue--refereed">CVPR 2024</span>
+          </div>
+          <p class="entry__authors">Yan Tai*, <b>Weichen Fan*</b>, Zhao Zhang, Ziwei Liu</p>
+          <figure class="plate" id="plate-04">
+            <img class="plate__img" src="assets/img/link-context.webp" width="1324" height="744" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Link-Context Learning.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Tai_Link-Context_Learning_for_Multimodal_LLMs_CVPR_2024_paper.pdf" rel="noopener">Paper Link</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/isekai-portal/Link-Context-Learning" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-04">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">The model is given the link between examples, not only the examples.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-03"
+          data-year="2023" data-area="multimodal-unified" data-venue-class="report" data-authorship="contributor" data-rank="3"
+          data-btype="article" data-bkey="sphinx2023"
+          data-btitle="Sphinx: The joint mixing of weights, tasks, and visual embeddings for multi-modal large language models"
+          data-bauthors="Weichen Fan and {Sphinx Team}"
+          data-bvenue="arXiv preprint arXiv:2311.07575" data-bnote="Weichen Fan (Chen Lin): contributor."
+          data-burl="https://arxiv.org/pdf/2311.07575">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Sphinx: The joint mixing of weights, tasks, and visual embeddings for multi-modal large language models</h3>
+            <span class="stamp-venue stamp-venue--preprint">Tech report 2023</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan(Chen Lin) (Contributor)</b>, Sphinx Team</p>
+          <figure class="plate" id="plate-03">
+            <img class="plate__img" src="assets/img/sphinx.webp" width="1435" height="830" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Sphinx.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2311.07575" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/Alpha-VLLM/LLaMA2-Accessory/tree/main" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-03">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Weights, tasks and visual embeddings, mixed jointly rather than stacked.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Technical report, not peer reviewed. Contributor credit.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-02"
+          data-year="2022" data-area="diffusion-guidance" data-venue-class="preprint" data-authorship="co-first" data-rank="2"
+          data-btype="article" data-bkey="fan2022hierarchyflow"
+          data-btitle="Hierarchy Flow For High-Fidelity Image-to-Image Translation"
+          data-bauthors="Weichen Fan and Jinghuan Chen and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2308.06909"
+          data-burl="https://arxiv.org/pdf/2308.06909">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Hierarchy Flow For High-Fidelity Image-to-Image Translation</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2022</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan*</b>, Jinghuan Chen*, Ziwei Liu</p>
+          <figure class="plate" id="plate-02">
+            <img class="plate__img" src="assets/img/hierarchy-flow.webp" width="1360" height="808" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Hierarchy Flow.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2308.06909" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/HierarchyFlow" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-02">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Translation that keeps its fidelity by keeping its hierarchy.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-01"
+          data-year="2022" data-area="robotics-control" data-venue-class="refereed" data-authorship="co-first" data-rank="1"
+          data-btype="article" data-bkey="gao2022savanet"
+          data-btitle="SAVAnet: Surgical Action-Driven Visual Attention Network for Autonomous Endoscope Control"
+          data-bauthors="Huxin Gao and Weichen Fan and Liang Qiu and Xiaoxiao Yang and Zhen Li and Xiuli Zuo and Yanqing Li and Max Q.-H. Meng and Hongliang Ren"
+          data-bvenue="IEEE Transactions on Automation Science and Engineering"
+          data-burl="https://ieeexplore.ieee.org/abstract/document/9895213">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">SAVAnet: Surgical Action-Driven Visual Attention Network for Autonomous Endoscope Control</h3>
+            <span class="stamp-venue stamp-venue--refereed">IEEE T-ASE 2022</span>
+          </div>
+          <p class="entry__authors">Huxin Gao* <b>Weichen Fan*</b>, Liang Qiu, Xiaoxiao Yang, Zhen Li, Xiuli Zuo, Yanqing Li, Max Q.-H. Meng, Hongliang Ren</p>
+          <figure class="plate" id="plate-01">
+            <img class="plate__img" src="assets/img/savanet.webp" width="1540" height="638" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for SAVAnet.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://ieeexplore.ieee.org/abstract/document/9895213" rel="noopener">Paper Link</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-01">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">An endoscope that looks where the surgery is going. The robotics start here.</i>
+          </p>
+        </article></li>
+
+      </ol>
+
+      <p class="footnote">* denotes equal contribution.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RECORD ═══════════════════════════════════════════════════════════ -->
+<span class="anchor-alias" id="Experience" aria-hidden="true"></span>
+<section class="section" id="record" aria-labelledby="record-h">
+  <div class="transcript">
+    <div class="rail"></div>
+    <div class="record">
+      <h2 class="section__label" id="record-h">Record</h2>
+
+      <ol class="positions">
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-ntu.webp" width="374" height="160" loading="lazy" decoding="async" alt="Nanyang Technological University">
+          <div class="entry__head">
+            <h3 class="position__org">Nanyang Technological University</h3>
+            <span class="position__dates">May 2024 — Nov 2024</span>
+          </div>
+          <p class="position__role">Research Manager</p>
+          <p class="position__place">Singapore</p>
+        </article></li>
+
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-hypergai.webp" width="334" height="116" loading="lazy" decoding="async" alt="HyperGAI">
+          <div class="entry__head">
+            <h3 class="position__org">HyperGAI</h3>
+            <span class="position__dates">Oct 2023 — May 2024</span>
+          </div>
+          <p class="position__role">Research Scientist</p>
+          <p class="position__place">Singapore</p>
+        </article></li>
+
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-sensetime.webp" width="374" height="160" loading="lazy" decoding="async" alt="SenseTime">
+          <div class="entry__head">
+            <h3 class="position__org">SenseTime</h3>
+            <span class="position__dates">Jun 2022 — Oct 2023</span>
+          </div>
+          <p class="position__role">Computer Vision Researcher</p>
+          <p class="position__place">ShangHai</p>
+        </article></li>
+
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-sensetime.webp" width="374" height="160" loading="lazy" decoding="async" alt="SenseTime">
+          <div class="entry__head">
+            <h3 class="position__org">SenseTime</h3>
+            <span class="position__dates">May 2021 — Jun 2022</span>
+          </div>
+          <p class="position__role">Research Intern</p>
+          <p class="position__place">Singapore</p>
+        </article></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══════════════════════════════════════════════════════════ -->
+<section class="section" id="contact" aria-labelledby="contact-h">
+  <div class="transcript">
+    <div class="rail"></div>
+    <div class="record">
+      <h2 class="section__label" id="contact-h">Contact</h2>
+
+      <dl class="contact">
+        <dt>Email</dt>
+        <dd><a id="email-link" href="#contact" data-user="weichen002" data-host="e.ntu.edu.sg">weichen002 [at] e.ntu.edu.sg</a>
+          <button class="btn" type="button" id="copy-email">[ copy ]</button></dd>
+
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/WeichenFan" rel="me noopener">github.com/WeichenFan</a></dd>
+
+        <dt>Scholar</dt>
+        <dd><a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&amp;hl" rel="me noopener">Google Scholar</a></dd>
+      </dl>
+      <p class="sr-only" role="status" id="copy-status"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="colophon">
+  <div class="wrap colophon__band">
+    <div class="colophon__text">
+      <!-- A printer's device at the foot of the page. Decorative and
+           lamplight-only, so it is aria-hidden and carries no alt text. -->
+      <img class="seal" src="assets/img/seal.webp" width="220" height="220"
+           alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <p class="colophon__rights">&copy; Weichen Fan</p>
+    </div>
+    <div class="colophon__widget">
+      <span class="colophon__plate">Visitors</span>
+      <!-- inert, not just aria-hidden: the script injects a focusable <a> whose
+           focus ring would be clipped by the 112px box, so keyboard users would
+           hit an invisible, unannounced tab stop. defer is safe here — map.js
+           finds itself by #mapmyvisitors and never calls document.write. -->
+      <div class="widget" aria-hidden="true" inert>
+        <script type="text/javascript" id="mapmyvisitors" defer src="//mapmyvisitors.com/map.js?d=RrNt3DhksT-UGr3LcQpblowVrFoxwPoyCcCxzemBhYc&amp;cl=ffffff&amp;w=a"></script>
       </div>
     </div>
+  </div>
+</footer>
 
-    <div class="pub">
-      <img src="assets/Sensetime.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">SenseTime</div>
-        <div>Computer Vision Researcher | ShangHai</div>
-        <div>Time: Jun 2022 - Oct 2023</div>
-      </div>
-    </div>
+<!-- ══ THE WAY THROUGH ═══════════════════════════════════════════════════
+     A small maze, drawn in the same hairline as the transcript rule and
+     walked by the same ink square as the publication bullets. Finding the
+     exit turns the lamp down. Decorative and entirely optional: the
+     section is only shown when JS runs, and a screen-reader bypass sits
+     inside it so the alternate scheme is never gated behind a picture. -->
+<section class="lock" id="lock" aria-labelledby="lock-h">
+  <div class="wrap lock__band">
+    <h2 class="lock__label" id="lock-h">There is a way through</h2>
+    <div class="maze" id="maze" tabindex="0" role="group"
+         aria-labelledby="lock-h" aria-describedby="lock-help"></div>
+    <p class="lock__help" id="lock-help">Arrow keys, or drag.</p>
+    <button class="sr-only" type="button" id="lock-bypass">Skip the maze and turn the lamp down</button>
+    <p class="voice lock__won" id="lock-won" data-speaker="encyclopedia" hidden>
+      <b class="voice__who voice__who--static">Encyclopedia</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Solved. Lamplight is in the masthead from now on.</i>
+    </p>
+    <p class="sr-only" role="status" id="lock-status"></p>
+  </div>
+</section>
 
-    <div class="pub">
-      <img src="assets/Sensetime.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">SenseTime</div>
-        <div>Research Intern | Singapore</div>
-        <div>Time: May 2021 - Jun 2022</div>
-      </div>
-    </div>
-
-  </section>
-
-  <section id="publications">
-    <h2>Publications</h2>
-    <div class="pub">
-      <img src="assets/spectral_forcing.png" alt="spectral teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Show the Signal, Hide the Noise: Spectral Forcing for Pixel-Space Diffusion</div>
-        <div>arXiv, 2026</div>
-        <div><i><b>Weichen Fan</b>, Haiwen Diao, Penghao Wu, Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://arxiv.org/pdf/2606.15236">arXiv</a>
-          <a href="https://github.com/WeichenFan/Spectral_Forcing">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/sensenova.png" alt="UAE teaser" />
-      <div class="pub-info">
-        <div class="pub-title">SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture</div>
-        <div>Tech Report, 2026</div>
-        <div><i><b>Weichen Fan (Core Contributor)</b>, SenseNova Team</i></div>
-        <div class="pub-links">
-          <a href="https://arxiv.org/pdf/2605.12500">arXiv</a>
-          <a href="https://github.com/OpenSenseNova/SenseNova-U1">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/UAE.png" alt="UAE teaser" />
-      <div class="pub-info">
-        <div class="pub-title">The Prism Hypothesis: Harmonizing Semantic and Pixel Representations via Unified Autoencoding</div>
-        <div>ECCV, 2026</div>
-        <div><i><b>Weichen Fan</b>, Haiwen Diao, Quan Wang, Dahua Lin, Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://arxiv.org/abs/2512.19693">arXiv</a>
-          <a href="https://github.com/WeichenFan/UAE">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/CFG.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">CFG-Zero*: Classifier-Free Guidance with Zero Prediction</div>
-        <div>arXiv, 2025</div>
-        <div><i><b>Weichen Fan</b>, Amber Yijia Zheng, Raymond A. Yeh, Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://weichenfan.github.io/webpage-cfg-zero-star/">Project Page</a>
-          <a href="https://arxiv.org/pdf/2503.18886">arXiv</a>
-          <a href="https://github.com/WeichenFan/CFG-Zero-star">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/Vchitect.png" alt="Vchitect teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models</div>
-        <div>arXiv, 2025</div>
-        <div><i><b>Weichen Fan*</b>, Chenyang Si*, Junhao Song, Zhenyu Yang, Yinan He, Long Zhuo, Ziqi Huang, Ziyue Dong, Jingwen He, Dongwei Pan, Yi Wang, Yuming Jiang, Yaohui Wang, Peng Gao, Xinyuan Chen, Hengjie Li, Dahua Lin, Yu Qiao, Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://vchitect.intern-ai.org.cn/">Project Page</a>
-          <a href="https://arxiv.org/abs/2501.08453">arXiv</a>
-          <a href="https://huggingface.co/datasets/Vchitect/Vchitect_T2V_DataVerse">Dataset</a>
-          <a href="https://github.com/Vchitect/Vchitect-2.0">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/Repvideo.png" alt="RepVideo teaser" />
-      <div class="pub-info">
-        <div class="pub-title">RepVideo: Rethinking Cross-Layer Representation for Video Generation</div>
-        <div>arXiv, 2025</div>
-        <div><i>Chenyang Si*, <b>Weichen Fan*</b>, Zhengyao Lv, Ziqi Huang, Yu Qiao, and Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://vchitect.github.io/RepVid-Webpage/">Project Page</a>
-          <a href="https://arxiv.org/pdf/2501.08994">arXiv</a>
-          <a href="https://github.com/Vchitect/RepVideo">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/lumina.png" alt="UAE teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Lumina-t2x: Transforming text into any modality, resolution, and duration via flow-based large diffusion transformers</div>
-        <div>Tech Report, 2024</div>
-        <div><i><b>Weichen Fan(Chen Lin) (Contributor)</b>, Sphinx Team</i></div>
-        <div class="pub-links">
-          <a href="https://arxiv.org/pdf/2405.05945">arXiv</a>
-          <a href="https://github.com/alpha-vllm/lumina-t2x">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/LCL.png" alt="LCL teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Link-Context Learning For Multimodal LLMs</div>
-        <div>CVPR, 2024</div>
-        <div><i>Yan Tai*, <b>Weichen Fan*</b>, Zhao Zhang, Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Tai_Link-Context_Learning_for_Multimodal_LLMs_CVPR_2024_paper.pdf">Paper Link</a>
-          <a href="https://github.com/isekai-portal/Link-Context-Learning">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/sphinix.png" alt="UAE teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Sphinx: The joint mixing of weights, tasks, and visual embeddings for multi-modal large language models</div>
-        <div>Tech Report, 2023</div>
-        <div><i><b>Weichen Fan(Chen Lin) (Contributor)</b>, Sphinx Team</i></div>
-        <div class="pub-links">
-          <a href="https://arxiv.org/pdf/2311.07575">arXiv</a>
-          <a href="https://github.com/Alpha-VLLM/LLaMA2-Accessory/tree/main">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/hf.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">Hierarchy Flow For High-Fidelity Image-to-Image Translation</div>
-        <div>arXiv, 2022</div>
-        <div><i><b>Weichen Fan*</b>, Jinghuan Chen*, Ziwei Liu</i></div>
-        <div class="pub-links">
-          <a href="https://arxiv.org/pdf/2308.06909">arXiv</a>
-          <a href="https://github.com/WeichenFan/HierarchyFlow">Code</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub">
-      <img src="assets/savanet.png" alt="CFG-Zero teaser" />
-      <div class="pub-info">
-        <div class="pub-title">SAVAnet: Surgical Action-Driven Visual Attention Network for Autonomous Endoscope Control</div>
-        <div>IEEE Transactions on Automation Science and Engineering, 2022</div>
-        <div><i>Huxin Gao* <b>Weichen Fan*</b>, Liang Qiu, Xiaoxiao Yang, Zhen Li, Xiuli Zuo, Yanqing Li, Max Q.-H. Meng, Hongliang Ren</i></div>
-        <div class="pub-links">
-          <a href="https://ieeexplore.ieee.org/abstract/document/9895213">Paper Link</a>
-        </div>
-      </div>
-    </div>
-
-
-  <section class="map-section">
-<script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=RrNt3DhksT-UGr3LcQpblowVrFoxwPoyCcCxzemBhYc&cl=ffffff&w=a"></script>
-  </section>
-
-
-  <footer>
-    &copy; Weichen Fan · Hosted on GitHub Pages
-  </footer>
+<script src="js/site.js" defer></script>
 </body>
-
 </html>
