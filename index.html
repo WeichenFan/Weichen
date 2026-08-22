@@ -61,9 +61,16 @@
 <header class="masthead">
   <div class="wrap masthead__band">
     <h1 class="wordmark">Weichen Fan</h1>
+    <!-- Two navigations, one bar. Lamplight is not a colour scheme applied to
+         the CV — it is a different ledger, so the sections it names are
+         different too. Classes sit on the anchors themselves rather than on a
+         wrapper: as flex items they keep the 24px gap, and the hidden pair
+         leaves the accessibility tree with its section. -->
     <nav class="masthead__nav" aria-label="Sections">
-      <a href="#work">Work</a>
-      <a href="#record">Record</a>
+      <a class="nav-day" href="#work">Work</a>
+      <a class="nav-day" href="#record">Record</a>
+      <a class="nav-night" href="#arcade">Games</a>
+      <a class="nav-night" href="#rotation">Music</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="crossexam" id="crossexam" type="button" aria-pressed="false">Cross-examine</button>
@@ -108,6 +115,18 @@
         <a href="#contact">weichen002 [at] e.ntu.edu.sg</a><span class="sep" aria-hidden="true">·</span>
         <a href="https://github.com/WeichenFan" rel="me noopener">GitHub</a><span class="sep" aria-hidden="true">·</span>
         <a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&amp;hl" rel="me noopener">Google Scholar</a>
+      </p>
+
+      <!-- A door, not a link row. It sits under the three professional
+           addresses and is deliberately in a different register from them:
+           the brackets are the same literal characters the [ examine ] and
+           [ cite ] controls use, so it reads as something you DO rather than
+           somewhere you are sent. -->
+      <p class="doorway">
+        <a class="doorway__link" href="phd.html">
+          <span class="doorway__brackets" aria-hidden="true">[</span>What Kind of PhD Are You?<span class="doorway__brackets" aria-hidden="true">]</span>
+        </a>
+        <span class="doorway__aside">Ten questions. Four attributes. Twenty-four answers.</span>
       </p>
     </div>
   </div>
@@ -548,6 +567,345 @@
           <p class="position__place">Singapore</p>
         </article></li>
       </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GAMES ════════════════════════════════════════════════════════════
+     LAMPLIGHT ONLY. Hidden in the day theme, and it replaces WORK and RECORD
+     rather than joining them — see css/site.css §13.
+
+     Figures are transcribed from the Steam library, sorted by playtime as
+     Steam sorts it. Steam prints no year on a date inside the current year,
+     so the five bare dates there are 2026; the two it printed with a year
+     keep it. Nothing here is estimated.
+
+     The two meters under each row are DECORATION — aria-hidden, drawn by JS
+     from data-hours / data-got / data-of. Every number they encode is also
+     printed as text on the line above, so the row is complete without them
+     and no width in this file is ever typed by hand. -->
+<section class="section" id="arcade" aria-labelledby="arcade-h">
+  <div class="transcript">
+    <div class="rail">
+      <button class="rail__speaker" type="button" data-faculty="electrochemistry" data-speaker="electrochemistry" aria-pressed="false">Electrochemistry</button>
+    </div>
+    <div class="record">
+      <h2 class="section__label" id="arcade-h">Games</h2>
+
+      <p class="voice voice--lead" data-speaker="electrochemistry">
+        <button class="voice__who" type="button" data-faculty="electrochemistry" aria-pressed="false">Electrochemistry</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">The other ledger. It is longer than the first one and it was more fun to write.</i>
+      </p>
+
+      <!-- Both numbers are recounted from the DOM at load and overwritten in
+           place; they are printed here so the line survives a JS failure. -->
+      <p class="tally" id="arcade-tally">3,288.1 hours across 8 titles. 343 of 917 achievements, counted across 7 of the 8.</p>
+
+      <ol class="entries entries--games" id="games">
+
+        <li><article class="entry game" data-hours="1558.4" data-got="48" data-of="48" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Tom Clancy&rsquo;s Rainbow Six Siege</h3>
+            <span class="stamp-venue stamp-perfect">All 48</span>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-rainbow-six-siege.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>1,558.4 hours</b><span class="sep" aria-hidden="true">·</span><span>48 of 48 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/359550/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="half-light">
+            <button class="voice__who" type="button" data-faculty="half-light" aria-pressed="false">Half Light</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Fifteen hundred hours of listening for a footstep through a ceiling. You do not hear the room any more. You hear what is about to come through it.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Sixty-five days. Not of playing across the years — sixty-five entire days, end to end, in one room.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry game" data-hours="489.5" data-got="76" data-of="175" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Age of Empires IV: Anniversary Edition</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-age-of-empires-iv.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>489.5 hours</b><span class="sep" aria-hidden="true">·</span><span>76 of 175 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/1466860/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="encyclopedia">
+            <button class="voice__who" type="button" data-faculty="encyclopedia" aria-pressed="false">Encyclopedia</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Dark, Feudal, Castle, Imperial. Four ages and a thousand years, compressed into something you can lose an evening to, and you keep going back to lose another one.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="437.5" data-got="130" data-of="303" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Dead by Daylight</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-dead-by-daylight.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>437.5 hours</b><span class="sep" aria-hidden="true">·</span><span>130 of 303 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/381210/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Something is walking toward you and the sound is getting louder. You have heard it four hundred hours&rsquo; worth of times. It still works.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="274" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Disco Elysium: The Final Cut</h3>
+            <span class="stamp-venue stamp-source">The source</span>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-disco-elysium.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <!-- Hours only. Steam reports 45 achievements for this title, so
+                   "not tracked" would have been false; the count simply is not
+                   to hand. An absent clause claims nothing either way. -->
+              <p class="facts"><b>274.0 hours</b></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/632470/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Two hundred and seventy-four hours in a city you could not fix, losing an argument to yourself in twenty-four voices. You are reading one of them now. This entire room is borrowed from that game, and you knew that before you got here.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="250.4" data-got="37" data-of="99" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Total War: THREE KINGDOMS</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-total-war-three-kingdoms.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>250.4 hours</b><span class="sep" aria-hidden="true">·</span><span>37 of 99 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/779340/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="encyclopedia">
+            <button class="voice__who" type="button" data-faculty="encyclopedia" aria-pressed="false">Encyclopedia</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">You knew how this one ended before you installed it. Everyone does. Two hundred and fifty hours spent checking whether it would end differently for you.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="103.4" data-got="8" data-of="50" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Mount &amp; Blade II: Bannerlord</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-mount-and-blade-ii.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>103.4 hours</b><span class="sep" aria-hidden="true">·</span><span>8 of 50 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/261550/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="half-light">
+            <button class="voice__who" type="button" data-faculty="half-light" aria-pressed="false">Half Light</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Eight achievements out of fifty. You were not collecting anything. You were on a horse, going somewhere, and you did not stop to be measured.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">You did not finish going somewhere. You stopped, and then a PhD happened to you.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry game" data-hours="91" data-got="29" data-of="54" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Baldur&rsquo;s Gate 3</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-baldurs-gate-3.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>91.0 hours</b><span class="sep" aria-hidden="true">·</span><span>29 of 54 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/1086940/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Ninety-one hours, and better than half the achievements. Not a fast reader. A thorough one — you stopped and talked to everybody.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="83.9" data-got="15" data-of="188" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Crusader Kings III</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-crusader-kings-iii.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>83.9 hours</b><span class="sep" aria-hidden="true">·</span><span>15 of 188 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/1158310/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="encyclopedia">
+            <button class="voice__who" type="button" data-faculty="encyclopedia" aria-pressed="false">Encyclopedia</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Fifteen of a hundred and eighty-eight. This game keeps score of things nobody sets out to do. The dynasty was the point; the ledger was never going to be filled.</i>
+          </p>
+        </article></li>
+
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MUSIC ════════════════════════════════════════════════════════════
+     LAMPLIGHT ONLY, like GAMES above.
+
+     Each row plays where it sits. The player is NOT in the markup: the
+     button carries the embed URL and JS builds the iframe on the click, so
+     the page makes no third-party request until somebody asks it to, and a
+     visitor who never presses play is never sent to Spotify at all.
+
+     Closing REMOVES the iframe rather than hiding it — a hidden iframe keeps
+     playing — which is also why only one deck can be open at a time. Every
+     track ID below was resolved against Spotify's own oEmbed and embed
+     payload and checked for artist, not taken from a search result. -->
+<section class="section" id="rotation" aria-labelledby="rotation-h">
+  <div class="transcript">
+    <div class="rail">
+      <button class="rail__speaker" type="button" data-faculty="shivers" data-speaker="shivers" aria-pressed="false">Shivers</button>
+    </div>
+    <div class="record">
+      <h2 class="section__label" id="rotation-h">Music</h2>
+
+      <p class="voice voice--lead" data-speaker="shivers">
+        <button class="voice__who" type="button" data-faculty="shivers" aria-pressed="false">Shivers</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Three records. They will play right here, and they do not load until you ask them to.</i>
+      </p>
+
+      <ol class="entries entries--tracks" id="tracks">
+
+        <li><article class="entry track">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Pure</h3>
+            <span class="stamp-venue stamp-venue--preprint">1990</span>
+          </div>
+          <div class="track__body">
+            <img class="track__art" src="assets/img/art-pure.webp" width="240" height="240"
+                 loading="lazy" decoding="async" alt="">
+            <div class="track__data">
+              <p class="facts"><b>The Lightning Seeds</b><span class="sep" aria-hidden="true">·</span><span>Cloudcuckooland</span></p>
+              <p class="linkrow">
+                <button class="btn" type="button" data-play aria-expanded="false" aria-controls="deck-pure"
+                        data-embed="https://open.spotify.com/embed/track/0a82sKc2ZEDcvvl8aekakp?utm_source=generator"
+                        data-track="Pure, by The Lightning Seeds">[ play ]</button><span class="sep" aria-hidden="true">·</span>
+                <a href="https://open.spotify.com/track/0a82sKc2ZEDcvvl8aekakp" rel="noopener">Open in Spotify</a>
+              </p>
+            </div>
+          </div>
+          <div class="deck" id="deck-pure" hidden></div>
+          <p class="voice" data-speaker="electrochemistry">
+            <button class="voice__who" type="button" data-faculty="electrochemistry" aria-pressed="false">Electrochemistry</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Nineteen ninety, and it still sounds like the first warm afternoon of a year. Nothing in it is trying to hurt you. Do you know how rare that is.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry track">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Nightingale</h3>
+            <span class="stamp-venue stamp-venue--preprint">1997</span>
+          </div>
+          <div class="track__body">
+            <img class="track__art" src="assets/img/art-nightingale.webp" width="240" height="240"
+                 loading="lazy" decoding="async" alt="">
+            <div class="track__data">
+              <p class="facts"><b>Yanni</b><span class="sep" aria-hidden="true">·</span><span>Tribute</span></p>
+              <p class="linkrow">
+                <button class="btn" type="button" data-play aria-expanded="false" aria-controls="deck-nightingale"
+                        data-embed="https://open.spotify.com/embed/track/4PQDu176RmCXkQaxmHOpeb?utm_source=generator"
+                        data-track="Nightingale, by Yanni">[ play ]</button><span class="sep" aria-hidden="true">·</span>
+                <a href="https://open.spotify.com/track/4PQDu176RmCXkQaxmHOpeb" rel="noopener">Open in Spotify</a>
+              </p>
+            </div>
+          </div>
+          <div class="deck" id="deck-nightingale" hidden></div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Not one word in the whole of it, and it still gets the entire story out. Somewhere in there an instrument is pretending to be a bird, and you are letting it.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry track">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">About You</h3>
+            <span class="stamp-venue stamp-venue--preprint">2022</span>
+          </div>
+          <div class="track__body">
+            <img class="track__art" src="assets/img/art-about-you.webp" width="240" height="240"
+                 loading="lazy" decoding="async" alt="">
+            <div class="track__data">
+              <p class="facts"><b>The 1975</b><span class="sep" aria-hidden="true">·</span><span>Being Funny In A Foreign Language</span></p>
+              <p class="linkrow">
+                <button class="btn" type="button" data-play aria-expanded="false" aria-controls="deck-about-you"
+                        data-embed="https://open.spotify.com/embed/track/1fDFHXcykq4iw8Gg7s5hG9?utm_source=generator"
+                        data-track="About You, by The 1975">[ play ]</button><span class="sep" aria-hidden="true">·</span>
+                <a href="https://open.spotify.com/track/1fDFHXcykq4iw8Gg7s5hG9" rel="noopener">Open in Spotify</a>
+              </p>
+            </div>
+          </div>
+          <div class="deck" id="deck-about-you" hidden></div>
+          <p class="voice" data-speaker="shivers">
+            <button class="voice__who" type="button" data-faculty="shivers" aria-pressed="false">Shivers</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">It wants to be enormous and it is not embarrassed about wanting that. The temperature in the room drops a degree. Play it loud or do not play it.</i>
+          </p>
+        </article></li>
+
+      </ol>
+      <p class="sr-only" role="status" id="deck-status"></p>
     </div>
   </div>
 </section>

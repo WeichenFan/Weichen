@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!-- The lamp is always down in here. This page IS the other room, so it does
+     not read wf-theme and offers no way back to the paper theme — the light
+     scheme has nothing to say about a character sheet. -->
+<html lang="en" class="no-js" data-voice="on" data-theme="disco">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IPPM — What Kind of PhD Are You?</title>
+<meta name="description" content="An examination in four attributes. Ten questions about the parts of a doctorate nobody puts in the handbook, and twenty-four possible answers.">
+<meta name="author" content="Weichen Fan">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#141B19">
+
+<link rel="canonical" href="https://weichenfan.github.io/Weichen/phd.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="What Kind of PhD Are You?">
+<meta property="og:description" content="An examination in four attributes. Ten questions, twenty-four possible answers.">
+<meta property="og:url" content="https://weichenfan.github.io/Weichen/phd.html">
+<meta name="twitter:card" content="summary">
+<meta name="robots" content="index, follow">
+
+<script>
+(function(){
+  var d = document.documentElement;
+  d.className = d.className.replace('no-js','js');
+  /* Only PLAIN VIEW is honoured here. The theme is fixed. */
+  try { if (localStorage.getItem('wf-voice') === 'off') d.setAttribute('data-voice','off'); } catch(e){}
+})();
+</script>
+
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fonts/IBM-Plex-Mono--F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fonts/Newsreader-cY9CfjOCX1hbuyalUrK439vCjohCBJWxZA.woff2">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/quiz.css">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+
+<body>
+
+<a class="skip" href="#stage">Skip to the examination</a>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="mottle" aria-hidden="true"></div>
+<div class="fold fold--a" aria-hidden="true"></div>
+<div class="fold fold--b" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="wrap masthead__band">
+    <!-- IPPM, not the name on the CV. This page is its own institution, and
+         the acronym is the four attributes in order. Plain heading rather than
+         a link home: "Back to the record" beside it already says where the way
+         out is, and a masthead reading IPPM that silently navigated to
+         somebody's publication list would be a trapdoor, not a wordmark. -->
+    <!-- The whitespace before the gloss is load-bearing: flex makes the two
+         look like separate lines, but the accessibility tree reads the h1's
+         text, and with no space between them it announced "IPPMIntellect". -->
+    <h1 class="wordmark">IPPM
+      <span class="wordmark__gloss">Intellect &middot; Psyche &middot; Physique &middot; Motorics</span></h1>
+    <nav class="masthead__nav" aria-label="Sections">
+      <a href="index.html">&larr; Back to the record</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="section section--overture quiz" aria-labelledby="quiz-h">
+    <div class="transcript">
+      <div class="rail">
+        <p class="rail__title" aria-hidden="true">The<br>Examination</p>
+      </div>
+      <div class="record">
+        <h2 class="quiz__title" id="quiz-h">What Kind of PhD Are You?</h2>
+
+        <!-- Everything below is built by js/quiz.js. With no JS the section
+             says so rather than presenting a dead page. -->
+        <div id="stage" tabindex="-1">
+          <noscript>
+            <p class="quiz__lede">This one needs JavaScript — it is a small
+              game, and there is no version of it that works without one.
+              Everything else on this site does.</p>
+          </noscript>
+        </div>
+
+        <p class="sr-only" role="status" id="quiz-status"></p>
+
+        <p class="quiz__note">
+          Four attributes, twenty-four skills, borrowed in shape from a game
+          about a detective who has forgotten his own name. The skills are
+          written for this page. Any resemblance to your own supervision
+          meetings is not a coincidence.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="colophon">
+  <div class="wrap colophon__band">
+    <div class="colophon__text">
+      <p class="colophon__rights">&copy; Weichen Fan</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/quiz.js" defer></script>
+</body>
+</html>

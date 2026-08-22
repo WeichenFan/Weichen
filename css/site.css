@@ -52,6 +52,14 @@ details summary::-webkit-details-marker{display:none}
   --voice-vis:#2E5A55;      /*  6.74:1 VISUAL CALCULUS (pixels)       */
   --voice-int:#7A5C18;      /*  5.42:1 INTERFACING (systems, robots)  */
   --voice-rhe:#7A2B25;      /*  8.30:1 RHETORIC    (the objector)     */
+  /* The two LAMPLIGHT-only faculties. They never render in this theme —
+     GAMES and MUSIC are display:none here — but a --speaker resolving to an
+     undefined custom property is an invalid value, so both are carried at
+     full strength rather than left to fall back. Adding them keeps the
+     palette's mutual-dE floor at the shipped 0.0548 exactly: every new pair
+     separates further than the binding enc–vis pair already did. */
+  --voice-hlf:#264057;      /*  9.35:1 HALF LIGHT    (the shooters)   */
+  --voice-inl:#4C2F6B;      /*  9.48:1 INLAND EMPIRE (the dreaming)   */
   --speaker:var(--voice-enc);
 
   /* ── TYPE ────────────────────────────────────────────── */
@@ -138,6 +146,25 @@ details summary::-webkit-details-marker{display:none}
 [data-speaker="visual-calculus"]{--speaker:var(--voice-vis)}
 [data-speaker="interfacing"]{--speaker:var(--voice-int)}
 [data-speaker="rhetoric"]{--speaker:var(--voice-rhe)}
+
+/* The LAMPLIGHT bench. Encyclopedia and Rhetoric sit on both benches and keep
+   their hue in both; the other four are one-theme faculties.
+
+   ELECTROCHEMISTRY reuses Interfacing's brass and SHIVERS reuses Visual
+   Calculus's verdigris ON PURPOSE, and it does not break "colour identifies
+   the speaker": the two pairs can never appear in the same view. Interfacing
+   and Visual Calculus speak only inside WORK, which is display:none under
+   Lamplight; Electrochemistry and Shivers speak only inside GAMES and MUSIC,
+   which are display:none outside it. Four hues serve six faculties without a
+   single ambiguous line on screen.
+
+   HALF LIGHT and INLAND EMPIRE do get their own, because Rhetoric IS on
+   screen beside them — it objects to two of the games — and a fifth voice in
+   oxblood would have been the one real collision. */
+[data-speaker="half-light"]{--speaker:var(--voice-hlf)}
+[data-speaker="inland-empire"]{--speaker:var(--voice-inl)}
+[data-speaker="electrochemistry"]{--speaker:var(--voice-int)}
+[data-speaker="shivers"]{--speaker:var(--voice-vis)}
 
 
 /* ═══ 3 · BASE TYPE ══════════════════════════════════════════════════════ */
@@ -402,19 +429,35 @@ main[data-focus] .voice,
 main[data-focus] .rail__speaker{color:var(--ink-muted);transition:color var(--d-state) var(--ease-out)}
 main[data-focus] .voice .voice__prose{color:var(--ink-muted);transition:color var(--d-state) var(--ease-out)}
 
-main[data-focus="encyclopedia"]   .voice[data-speaker="encyclopedia"],
-main[data-focus="visual-calculus"] .voice[data-speaker="visual-calculus"],
-main[data-focus="interfacing"]    .voice[data-speaker="interfacing"],
-main[data-focus="rhetoric"]       .voice[data-speaker="rhetoric"],
-main[data-focus="encyclopedia"]   .rail__speaker[data-speaker="encyclopedia"],
-main[data-focus="visual-calculus"] .rail__speaker[data-speaker="visual-calculus"],
-main[data-focus="interfacing"]    .rail__speaker[data-speaker="interfacing"],
-main[data-focus="rhetoric"]       .rail__speaker[data-speaker="rhetoric"]{color:var(--speaker)}
+/* THE RESTORE LIST · ONE LINE PER FACULTY, and every faculty must appear.
+   CSS cannot say "the speaker that equals [data-focus]" — there is no way to
+   compare two attribute values — so this list has to be written out, and a
+   faculty missing from it is not styled wrong, it is INERT: the dim rule
+   above still greys the whole page while the voice that was raised stays
+   grey with it, and the status region announces a raise that did not happen.
+   Adding a faculty means adding a line to this block, to the .voice__prose
+   block under it, and to the forced-colors copy in §11.
+     encyclopedia · visual-calculus · interfacing · rhetoric   — the CV bench
+     half-light · inland-empire · electrochemistry · shivers   — the Lamplight bench
+   :is() collapses the .voice/.rail__speaker pair without changing specificity
+   (both arms are 0,1,0), so each faculty costs one line instead of two. */
+main[data-focus="encyclopedia"]    :is(.voice,.rail__speaker)[data-speaker="encyclopedia"],
+main[data-focus="visual-calculus"] :is(.voice,.rail__speaker)[data-speaker="visual-calculus"],
+main[data-focus="interfacing"]     :is(.voice,.rail__speaker)[data-speaker="interfacing"],
+main[data-focus="rhetoric"]        :is(.voice,.rail__speaker)[data-speaker="rhetoric"],
+main[data-focus="half-light"]      :is(.voice,.rail__speaker)[data-speaker="half-light"],
+main[data-focus="inland-empire"]   :is(.voice,.rail__speaker)[data-speaker="inland-empire"],
+main[data-focus="electrochemistry"] :is(.voice,.rail__speaker)[data-speaker="electrochemistry"],
+main[data-focus="shivers"]         :is(.voice,.rail__speaker)[data-speaker="shivers"]{color:var(--speaker)}
 
-main[data-focus="encyclopedia"]   .voice[data-speaker="encyclopedia"]   .voice__prose,
+main[data-focus="encyclopedia"]    .voice[data-speaker="encyclopedia"]    .voice__prose,
 main[data-focus="visual-calculus"] .voice[data-speaker="visual-calculus"] .voice__prose,
-main[data-focus="interfacing"]    .voice[data-speaker="interfacing"]    .voice__prose,
-main[data-focus="rhetoric"]       .voice[data-speaker="rhetoric"]       .voice__prose{
+main[data-focus="interfacing"]     .voice[data-speaker="interfacing"]     .voice__prose,
+main[data-focus="rhetoric"]        .voice[data-speaker="rhetoric"]        .voice__prose,
+main[data-focus="half-light"]      .voice[data-speaker="half-light"]      .voice__prose,
+main[data-focus="inland-empire"]   .voice[data-speaker="inland-empire"]   .voice__prose,
+main[data-focus="electrochemistry"] .voice[data-speaker="electrochemistry"] .voice__prose,
+main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice__prose{
   color:color-mix(in oklab,var(--speaker) 82%,var(--ink));
 }
 
@@ -1276,11 +1319,17 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
   .entry:hover,.entry:focus-within,.entry:focus-visible{border-color:CanvasText;box-shadow:none}
   .entry::before{display:none}
   .entry__bullet{background:CanvasText;outline-color:CanvasText}
-  /* FACULTY FOCUS degrades to an underline, since hue no longer exists. */
-  main[data-focus="encyclopedia"]   .voice[data-speaker="encyclopedia"]   .voice__prose,
+  /* FACULTY FOCUS degrades to an underline, since hue no longer exists.
+     All eight faculties, for the reason given at the restore list in §5: a
+     faculty left out here is not merely unstyled, its control does nothing. */
+  main[data-focus="encyclopedia"]    .voice[data-speaker="encyclopedia"]    .voice__prose,
   main[data-focus="visual-calculus"] .voice[data-speaker="visual-calculus"] .voice__prose,
-  main[data-focus="interfacing"]    .voice[data-speaker="interfacing"]    .voice__prose,
-  main[data-focus="rhetoric"]       .voice[data-speaker="rhetoric"]       .voice__prose{
+  main[data-focus="interfacing"]     .voice[data-speaker="interfacing"]     .voice__prose,
+  main[data-focus="rhetoric"]        .voice[data-speaker="rhetoric"]        .voice__prose,
+  main[data-focus="half-light"]      .voice[data-speaker="half-light"]      .voice__prose,
+  main[data-focus="inland-empire"]   .voice[data-speaker="inland-empire"]   .voice__prose,
+  main[data-focus="electrochemistry"] .voice[data-speaker="electrochemistry"] .voice__prose,
+  main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice__prose{
     text-decoration:underline;text-underline-offset:3px;
   }
   .portrait img,.position>.stamp{filter:none;mix-blend-mode:normal;opacity:1}
@@ -1399,6 +1448,24 @@ html[data-theme="disco"]{
                                 .objection__toggle, 10px tracked caps — so it
                                 is held at 5.09:1 worst-surface rather than
                                 the 4.83:1 a darker red would allow.         */
+
+  /* The two Lamplight-only faculties, and the only place on the site where
+     they are ever painted. Solved against all three dark surfaces at once
+     (ground #141B19, card #1A2220, inset #0D1413) and against the four voices
+     above: the resulting SIX-way mutual-dE floor is 0.0745 — identical to the
+     four-way floor this theme already shipped, and still the enc–vis pair
+     that set it. Two more voices, no loss of separation. */
+  --voice-hlf:#8CB2D2;      /*  7.84:1 ground · 7.28:1 card · HALF LIGHT.
+                                Cold steel at okh 244.2°, the one clear gap
+                                left between verdigris and the near-hueless
+                                registrar. It has to be its OWN hue and not a
+                                second red: Half Light is the loudest voice in
+                                GAMES and Rhetoric objects directly under it. */
+  --voice-inl:#C0A8DF;      /*  8.25:1 ground · 7.66:1 card · INLAND EMPIRE.
+                                Dusty violet, okh 304.5°, furthest of the six
+                                from every other (dE floor 0.0777, against the
+                                palette's own 0.0745). The dreaming voice, and
+                                the only cool-magenta on the page.            */
 }
 
 /* The selection band must read AS a band; --rule-hair would be a 1.76:1
@@ -1826,6 +1893,7 @@ html[data-theme="disco"] .masthead__band::before{
     --shadow:transparent;
     --trail-rgb:18,18,14;
     --voice-enc:#000;--voice-vis:#000;--voice-int:#000;--voice-rhe:#000;
+    --voice-hlf:#000;--voice-inl:#000;
   }
   html[data-theme="disco"] .portrait{background:#fff}
   html[data-theme="disco"] .portrait img{
@@ -1838,3 +1906,314 @@ html[data-theme="disco"] .masthead__band::before{
     transform:none;outline:none;
   }
 }
+
+
+/* ═══ 13 · THE OTHER LEDGER — GAMES AND MUSIC ════════════════════════════
+   Lamplight is not a colour scheme applied to the CV. Turning the lamp down
+   changes WHAT IS ON THE PAGE: WORK and RECORD leave, GAMES and MUSIC
+   arrive, and the masthead renames itself to match. The overture, the
+   contact block, the grid, the rail and every control stay exactly where
+   they were, so it reads as the same sheet photographed later — one person,
+   two ledgers — rather than as a second website.
+
+   The swap is display, not visibility: a hidden section takes its links out
+   of the tab order and out of the accessibility tree with it, so neither
+   ledger is ever a set of invisible tab stops inside the other.            */
+
+#arcade,#rotation,.nav-night{display:none}
+
+html[data-theme="disco"] #arcade,
+html[data-theme="disco"] #rotation{display:block}
+html[data-theme="disco"] .nav-night{display:revert}
+html[data-theme="disco"] #work,
+html[data-theme="disco"] #record,
+html[data-theme="disco"] .nav-day{display:none}
+
+/* GAMES is then the first section under the overture and must open on the
+   same hairline WORK did. It already does — the rule is written against
+   .section:not(.section--overture) — this only restates the margin so the
+   two ledgers start at an identical height and the swap does not jump. */
+html[data-theme="disco"] #arcade{margin-top:var(--s9)}
+
+/* ── THE TALLY · one counted sentence, the section's own header ────────── */
+.tally{
+  font:500 var(--t-cap)/var(--lh-cap) var(--mono);
+  letter-spacing:var(--tr-cap);word-spacing:.08em;text-transform:uppercase;
+  font-variant-numeric:tabular-nums slashed-zero;
+  color:var(--ink-muted);
+  margin:var(--s5) 0 var(--s7);
+  padding-top:var(--s3);
+  margin-left:calc(var(--record-pad) * -1);padding-left:var(--record-pad);
+  border-top:var(--hair);
+}
+
+/* ── THE ART · a shelf, not a gallery ────────────────────────────────────
+   Every image here is SELF-HOSTED, converted to WebP and stored beside the
+   paper teasers. Hotlinking Steam's CDN and Spotify's would have been two
+   fewer downloads and eleven third-party requests fired at page load — which
+   is exactly the bargain the deck below refuses to make. Eleven files, 184KB
+   the lot, and the page still calls nobody until somebody presses play.
+
+   Two shapes because the sources have two shapes: Steam's header art is a
+   460x215 banner and a sleeve is square. Both are laid out as an image
+   column beside a data column, so the row reads left-to-right as picture,
+   then figures, then link — and the voice stays full width underneath,
+   because the voice is talking about the whole row and not about the art.
+
+   Every one of them carries alt="". Not an oversight: the game's title is the
+   <h3> immediately above its banner and the album's title is in the .facts
+   line immediately beside its sleeve, so any alt text would be the second
+   reading of a name a screen reader has just spoken. Both shapes are treated
+   the same way for the same reason. */
+.game__body,.track__body{
+  display:flex;align-items:flex-start;
+  gap:var(--s4);
+  margin-top:var(--s3);
+}
+.game__data,.track__data{flex:1 1 auto;min-width:0}
+.game__body .facts,.track__body .facts{margin-top:0}
+
+.game__art,.track__art{
+  flex:none;display:block;height:auto;
+  border:1px solid var(--rule-hair);
+  background:var(--paper-inset);
+}
+.game__art{width:180px}
+.track__art{width:96px}
+
+/* Under the lamp the art is the only saturated thing in the room, and a lit
+   rectangle on near-black is the glare cliff §12 opens with. It gets the
+   same treatment the eleven teasers get: a --mat board to sit on, so the
+   step is room→mat→picture instead of room→picture, plus the brass edge the
+   cards carry. No filter — the pictures stay full colour, as the portrait
+   does; they are seated, not dimmed. */
+html[data-theme="disco"] .game__art,
+html[data-theme="disco"] .track__art{
+  border-color:var(--mat);
+  background:var(--mat);
+  box-shadow:3px 3px 0 var(--shadow);
+}
+
+/* ── THE FACT LINE · hours, dates, counts. Same register as .entry__authors,
+      which is exactly what it is: the row's metadata, under its title. ─── */
+.facts{
+  font:400 var(--t-meta)/var(--lh-meta) var(--mono);
+  font-variant-numeric:tabular-nums slashed-zero;
+  color:var(--ink-muted);
+  margin-top:var(--s2);
+}
+.facts b{font-weight:600;color:var(--ink)}
+
+/* ── THE METERS · DECORATION, and declared so ────────────────────────────
+   aria-hidden in the markup and empty of text. Every quantity they encode
+   is printed as words on the .facts line directly above, so a reader who
+   never sees them loses nothing and a JS failure costs nothing but a bar.
+   Widths arrive as --w from js/site.js, computed from data-hours against
+   the largest data-hours in the list: not one percentage is typed by hand.
+
+   Two tracks, two different questions. The thick one is TIME, and it is
+   scaled to the longest row, so Siege is the ruler and everything else is
+   read against it. The thin one is COMPLETION, scaled to its own total —
+   a different axis, so it gets a different weight and a quieter ink and
+   can never be mistaken for more of the same bar.                         */
+.meter{margin-top:var(--s3);display:flex;flex-direction:column;gap:var(--s1)}
+.meter__track{
+  display:block;height:7px;
+  background:var(--paper-inset);
+  border:1px solid var(--rule-hair);
+}
+.meter__track--thin{height:3px;border:0;background:transparent;box-shadow:inset 0 0 0 1px var(--rule-hair)}
+.meter__fill{
+  display:block;height:100%;
+  width:var(--w,0%);
+  background:var(--ink);
+  transform-origin:left center;
+}
+.meter__fill--got{background:var(--rule-strong)}
+
+/* Under the lamp the hours bar is the one lit thing in the row — the same
+   tarnished brass the offset shadow became, so "light falls here" is one
+   material used twice rather than a new colour. */
+html[data-theme="disco"] .meter__fill{background:var(--shadow)}
+html[data-theme="disco"] .meter__fill--got{background:var(--rule-strong)}
+html[data-theme="disco"] .meter__track{background:var(--paper-inset)}
+
+/* Bars draw themselves as the row arrives, from a scroll timeline — no
+   observer, no rAF, no listener, and it degrades to a drawn bar where the
+   timeline is not supported. scaleX and not width: the box is already
+   --w wide, so this animates on the compositor and never reflows a row. */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes meter-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+    .meter__fill{
+      animation:meter-draw linear both;
+      animation-timeline:view();
+      animation-range:entry 15% cover 30%;
+    }
+  }
+}
+
+/* ── THE SEAL · 48 of 48. The only stamp on the site that is an ACHIEVEMENT
+      rather than a classification, so it is the only one drawn twice: a
+      double rule, which no venue stamp uses. The words carry it alone —
+      "All 48" is the whole claim — and the border is confirmation. ─────── */
+.stamp-perfect{
+  border:1px double var(--ink);
+  outline:1px solid var(--ink);outline-offset:2px;
+  color:var(--ink);
+}
+html[data-theme="disco"] .stamp-perfect{
+  border-color:var(--shadow);outline-color:var(--shadow);color:var(--voice-int);
+}
+
+/* One row in GAMES is the room the whole page is dressed as, and saying so
+   out loud is better than leaving it as a joke only some visitors get. It
+   carries Inland Empire's violet because that is the voice that speaks for
+   it directly underneath — the stamp and the annotation are the same
+   faculty, which is the rule everywhere else on this page. */
+.stamp-source{border:1px solid var(--voice-inl);color:var(--voice-inl)}
+
+/* ── THE DECK · built by JS on the click, removed on close ───────────────
+   Nothing here exists until somebody presses play, which is the point: the
+   page issues no third-party request, sets no third-party cookie and tells
+   Spotify nothing about a visitor who only reads. The iframe is 152px —
+   Spotify's compact player — and the panel is sized to it so the row does
+   not jump when it appears. */
+.deck{margin-top:var(--s3)}
+.deck[hidden]{display:none}
+/* --ink-muted, NOT --speaker. The caption is the machine reporting on
+   itself, and every voice colour on this page belongs to a faculty: left on
+   the inherited --speaker it resolves to the Encyclopedia grey and reads as
+   the registrar having said it. Muted ink is the register the rest of the
+   row's metadata is already in, which is exactly what this is. */
+.deck__head{
+  display:flex;align-items:center;gap:var(--s2);
+  font:500 var(--t-cap-xs)/var(--lh-cap-xs) var(--mono);
+  letter-spacing:var(--tr-cap-xs);word-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-muted);
+  margin-bottom:var(--s2);
+}
+/* A lit filament, not a status icon: it says the panel is open, which is the
+   only thing this page can honestly know. Playback happens inside a
+   cross-origin frame and is not observable from here, so nothing on this
+   side is ever allowed to claim it. Struck in --shadow, the same tarnished
+   brass the meters fill with — one lamp, lighting two things. */
+.deck__lamp{
+  flex:none;width:7px;height:7px;
+  background:var(--shadow);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--shadow) 22%,transparent);
+}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes filament{50%{opacity:.45}}
+  .deck__lamp{animation:filament 2.6s var(--ease-out) infinite}
+}
+/* 80px, measured against the rendered player rather than taken from the
+   documentation: Spotify's compact embed lays out at its own natural height
+   and pads the remainder with its own black, so the documented 152 left
+   ~70px of dead frame under the card at every width. */
+.deck iframe{
+  display:block;width:100%;height:80px;
+  border:var(--card-border);
+  background:var(--paper-inset);
+  color-scheme:normal;   /* the frame carries its own dark UI in both themes */
+}
+html[data-theme="disco"] .deck iframe{box-shadow:var(--card-shadow)}
+
+/* A playing row keeps its card lifted while the deck is open, so the one
+   track that is loaded is obvious without looking for the panel. */
+.entry.is-playing{
+  background:var(--bone-card);
+  border-color:var(--ink);
+  box-shadow:var(--card-shadow);
+  transform:translate(-2px,-2px);
+}
+
+/* ── NARROW ──────────────────────────────────────────────────────────────
+   The band collapses to one column below 900px (see §8); the deck and the
+   meters are fluid already, so only the fact line needs help — three facts
+   separated by middots wrap into a hanging mess at 340px. */
+@media (max-width:559px){
+  .facts .sep{display:none}
+  .facts{display:flex;flex-direction:column}
+  /* A 180px banner beside a 150px text column serves neither. The game art
+     is a 2.15:1 landscape, so it stacks and takes the full measure — the
+     one width at which it is actually legible here. */
+  .game__body{display:block}
+  .game__art{width:100%;margin-bottom:var(--s3)}
+  /* A sleeve is square and survives being small, so the track keeps its
+     side-by-side reading at a size that leaves the album title room. */
+  .track__art{width:72px}
+}
+
+/* ── PLAIN VIEW · the facts were never inside the voices here either ───── */
+html[data-voice="off"] .deck__head,
+html.no-js .deck__head,
+html[data-voice="off"] .meter,
+html.no-js .meter{display:none}
+
+/* ── PRINT · neither ledger prints its meters, and the lamp never prints
+      at all: GAMES and MUSIC are already display:none in the light theme,
+      and print forces the light tokens. This covers printing WHILE the
+      lamp is down, which otherwise puts a dead player on the page. ────── */
+@media print{
+  #arcade,#rotation,.nav-night,.meter,.deck{display:none!important}
+  html[data-theme="disco"] #work,
+  html[data-theme="disco"] #record,
+  html[data-theme="disco"] .nav-day{display:revert!important}
+  html[data-theme="disco"] #arcade,
+  html[data-theme="disco"] #rotation{display:none!important}
+}
+
+@media (forced-colors:active){
+  :root{--voice-hlf:CanvasText;--voice-inl:CanvasText}
+  .meter__track{border-color:CanvasText}
+  .meter__fill{background:CanvasText}
+  .meter__fill--got{background:GrayText}   /* decoration: GrayText is fine here */
+  .stamp-perfect{border-color:CanvasText;outline-color:CanvasText}
+  .deck__lamp{background:CanvasText;box-shadow:none}
+  .deck iframe{border-color:CanvasText}
+}
+
+
+/* ═══ 14 · THE DOORWAY ═══════════════════════════════════════════════════
+   The one link on the CV that does not go to a paper, an address or an
+   institution. It leads to phd.html, which is a game, and it has to read as
+   an aside rather than as a fourth credential — so it sits on its own line
+   below the link row, in the utility-control register (bracketed, monospace)
+   rather than the link register.
+
+   The brackets are literal characters, exactly as they are on [ examine ] and
+   [ cite ]: on this site a bracket means "this does something". */
+.doorway{
+  margin-top:var(--s5);
+  display:flex;flex-wrap:wrap;align-items:baseline;
+  column-gap:var(--s3);row-gap:var(--s1);
+}
+.doorway__link{
+  font:500 var(--t-cap)/var(--lh-cap) var(--mono);
+  letter-spacing:var(--tr-cap);word-spacing:.08em;text-transform:uppercase;
+  color:var(--ink);
+  text-decoration:none;white-space:nowrap;
+}
+.doorway__brackets{color:var(--ink-muted);margin-inline:.35em}
+.doorway__link:hover,.doorway__link:focus-visible{
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;
+}
+.doorway__link:hover .doorway__brackets,
+.doorway__link:focus-visible .doorway__brackets{color:var(--ink)}
+.doorway__aside{
+  font:400 var(--t-cap)/var(--lh-cap) var(--mono);
+  letter-spacing:0;word-spacing:normal;text-transform:none;
+  color:var(--ink-muted);
+}
+
+/* Under the lamp it is no longer an aside — the room it opens onto is this
+   room. The violet is Inland Empire's, the same voice that speaks for
+   Disco Elysium in the games ledger, so the two references agree. */
+html[data-theme="disco"] .doorway__link{color:var(--voice-inl)}
+html[data-theme="disco"] .doorway__brackets{color:var(--shadow)}
+
+@media (max-width:559px){ .doorway{flex-direction:column} }
+
+/* It is a game and a link to one; on paper it is a dead URL. */
+@media print{ .doorway{display:none!important} }

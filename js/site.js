@@ -176,7 +176,17 @@ if (strip && list) {
 
 /* ═══ FACULTY FOCUS ══════════════════════════════════════════════════════ */
 var facultyBtns = $$('[data-faculty]');
-function annotations() { return $$('.voice', main || document).filter(function (v) { return !v.closest('.objection'); }); }
+/* Same visibility test, and for the same reason, as objections() below: the
+   count in the status line is the ONLY output faculty focus has for a screen
+   reader — the sighted signal is the dimming — so counting the ledger that is
+   display:none states a total nobody can see. 25 in the DOM, 12 on the page
+   in the day theme, 13 under the lamp. */
+function onPage(el) { return el.getClientRects().length > 0; }
+function annotations() {
+  return $$('.voice', main || document).filter(function (v) {
+    return !v.closest('.objection') && onPage(v);
+  });
+}
 function syncFaculty(f) { facultyBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.faculty === f ? 'true' : 'false'); }); }
 function facultyName(f) {
   var b = facultyBtns.filter(function (x) { return x.dataset.faculty === f; })[0];
@@ -208,37 +218,54 @@ function raise(f) {
    preference: never persisted, never the default. */
 var crossBtn    = document.getElementById('crossexam');
 var crossStatus = document.getElementById('crossexam-status');
-function objections() { return $$('.objection'); }
+/* Only the objections that are ON THE PAGE. Both ledgers carry them — WORK
+   has four, GAMES has one — and exactly one ledger is ever displayed, so an
+   unfiltered list would open invisible <details> in the hidden half and then
+   report a count nobody can see. getClientRects() is empty for anything in a
+   display:none subtree, which is precisely the question being asked. */
+function objections() {
+  return $$('.objection').filter(onPage);
+}
+/* Derive the control's label and pressed state from whatever is CURRENTLY on
+   the page. Extracted because three callers need it and one of them is the
+   theme toggle: swapping ledgers changes the visible set underneath the
+   button without firing a single `toggle` event, since hiding an ancestor
+   does not change details.open. Guards on length — [].every() is true, which
+   would label a ledger with no objections at all "Stand down". */
+function syncCross() {
+  if (!crossBtn) return;
+  var objs = objections();
+  var all = objs.length > 0 && objs.every(function (d) { return d.open; });
+  crossBtn.setAttribute('aria-pressed', all ? 'true' : 'false');
+  crossBtn.textContent = all ? 'Stand down' : 'Cross-examine';
+}
 function crossExamine(force) {
   var objs = objections();
   if (!objs.length) return;
   var open = (typeof force === 'boolean') ? force
            : !objs.every(function (d) { return d.open; });
   objs.forEach(function (d) { d.open = open; });
-  if (crossBtn) {
-    crossBtn.setAttribute('aria-pressed', open ? 'true' : 'false');
-    crossBtn.textContent = open ? 'Stand down' : 'Cross-examine';
-  }
+  syncCross();
   if (!open) { say(crossStatus, 'Objections closed.'); return; }
   var counts = Object.create(null);
   objs.forEach(function (d) {                          /* counted, never typed */
     var e = d.closest('.entry'), k = e && e.dataset.venueClass;
     if (k) counts[k] = (counts[k] || 0) + 1;
   });
-  say(crossStatus, objs.length + ' objections open. ' +
+  /* WORK always had four, so the hardcoded plural was never wrong until
+     GAMES arrived with a ledger that can hold exactly one. */
+  say(crossStatus, objs.length + (objs.length === 1 ? ' objection open. ' : ' objections open. ') +
       Object.keys(counts).map(function (k) {
         var name = (VENUE_LABEL[k] || words(k)).toLowerCase();
         return counts[k] + ' ' + name + (counts[k] === 1 ? '' : 's');
       }).join(', ') + '.');
 }
-/* Opening or closing one objection by hand puts the control back in step. */
-objections().forEach(function (d) {
-  d.addEventListener('toggle', function () {
-    if (!crossBtn) return;
-    var all = objections().every(function (x) { return x.open; });
-    crossBtn.setAttribute('aria-pressed', all ? 'true' : 'false');
-    crossBtn.textContent = all ? 'Stand down' : 'Cross-examine';
-  });
+/* Opening or closing one objection by hand puts the control back in step.
+   Bound over ALL of them, not the visible ones: at boot the hidden ledger's
+   objections have no boxes yet, and they must already be wired for the
+   moment the lamp changes which half is on screen. */
+$$('.objection').forEach(function (d) {
+  d.addEventListener('toggle', syncCross);
 });
 
 /* ═══ PLATES ═════════════════════════════════════════════════════════════ */
@@ -412,6 +439,116 @@ function copyEmail(btn) {
   copy(address).then(function () { say(copyStatus, 'Email address copied.'); }, function () { handOver(btn, address); });
 }
 
+/* ═══ THE ARCADE · meters and the tally ══════════════════════════════════
+   Two bars per row and one sentence for the section, all of it read off the
+   rows themselves. The bars are aria-hidden decoration whose every quantity
+   is printed in words beside them; the sentence is the only thing here that
+   informs, and it is recounted rather than trusted — the markup ships the
+   same sentence so the line survives with JS off, and this overwrites it in
+   place. If the two ever disagree, the page is the one that is wrong. */
+function group(n) {                                   /* 3014.1 → 3,014.1 */
+  var p = String(n).split('.');
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return p.join('.');
+}
+(function arcade() {
+  var games = $$('.game');
+  if (!games.length) return;
+  function num(el, k) { return parseFloat(el.getAttribute('data-' + k)) || 0; }
+  function sum(k) { return games.reduce(function (t, g) { return t + num(g, k); }, 0); }
+
+  /* TIME is scaled to the longest row, so the bars compare with each other;
+     COMPLETION is scaled to each row's own total, because 130 of 303 and 48
+     of 48 are not two lengths of the same thing. Different question,
+     different denominator, which is why they are drawn at different weights. */
+  var peak = games.reduce(function (m, g) { return Math.max(m, num(g, 'hours')); }, 0);
+  games.forEach(function (g) {
+    var hours = $('.meter__fill--hours', g), got = $('.meter__fill--got', g);
+    var of = num(g, 'of');
+    if (hours && peak > 0) hours.style.setProperty('--w', (num(g, 'hours') / peak * 100).toFixed(2) + '%');
+    if (got && of > 0)     got.style.setProperty('--w', (num(g, 'got') / of * 100).toFixed(2) + '%');
+  });
+
+  /* Not every row carries achievement figures, and folding a 0/0 into the
+     totals would quietly understate the denominator. They are therefore summed
+     over the ROWS THAT HAVE THEM, and the sentence says how many that was.
+     It reports the page's own coverage — "counted across 7 of the 8" — and
+     never that the eighth game lacks achievements, which is not true of it. */
+  var scored = games.filter(function (g) { return num(g, 'of') > 0; });
+  function sumOf(rows, k) { return rows.reduce(function (t, g) { return t + num(g, k); }, 0); }
+  var tally = document.getElementById('arcade-tally');
+  if (tally) {
+    tally.textContent = group(sum('hours').toFixed(1)) + ' hours across ' + games.length + ' titles. ' +
+      group(sumOf(scored, 'got')) + ' of ' + group(sumOf(scored, 'of')) + ' achievements' +
+      (scored.length === games.length ? '.'
+        : ', counted across ' + scored.length + ' of the ' + games.length + '.');
+  }
+})();
+
+/* ═══ THE DECK · one player, built on the click ══════════════════════════
+   The <iframe> is not in the markup. Pressing play builds it; pressing close
+   REMOVES it. That ordering is not tidiness — a hidden iframe goes on
+   playing, so removal is the only thing that actually stops the sound, and
+   it is also why opening one deck closes the other two. The side effect is
+   the privacy story: a visitor who never presses play never reaches Spotify,
+   and the page holds no third-party frame, script or cookie until asked.
+
+   Nothing here claims the track is SOUNDING. Playback lives inside a
+   cross-origin frame and cannot be observed from this side, so the caption
+   says the player is loaded, which is the only thing this page knows. */
+var shutDecks = null, toggleDeck = null;
+(function decks() {
+  var btns = $$('[data-play]');
+  if (!btns.length) return;
+  var status = document.getElementById('deck-status');
+  function deckOf(btn) { var id = btn.getAttribute('aria-controls'); return id ? document.getElementById(id) : null; }
+
+  function shut(btn, quiet) {
+    var d = deckOf(btn), e = btn.closest('.entry');
+    if (d) { while (d.firstChild) d.removeChild(d.firstChild); d.hidden = true; }
+    btn.setAttribute('aria-expanded', 'false');
+    btn.textContent = '[ play ]';
+    if (e) e.classList.remove('is-playing');
+    if (!quiet) say(status, 'Closed. The player for ' + (btn.dataset.track || 'the track') + ' has been removed from the page.');
+  }
+  function start(btn) {
+    var d = deckOf(btn), src = btn.dataset.embed, name = btn.dataset.track || 'this track';
+    if (!d || !src) return;
+    btns.forEach(function (b) { if (b !== btn && b.getAttribute('aria-expanded') === 'true') shut(b, true); });
+
+    var head = make('div', { className: 'deck__head' });
+    var lamp = make('span', { className: 'deck__lamp' });
+    lamp.setAttribute('aria-hidden', 'true');
+    head.appendChild(lamp);
+    head.appendChild(document.createTextNode('Loaded — ' + name));
+
+    var frame = make('iframe', { src: src, title: 'Spotify player: ' + name, loading: 'lazy' });
+    frame.setAttribute('allow', 'clipboard-write; encrypted-media; fullscreen; picture-in-picture');
+    frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+
+    d.appendChild(head);
+    d.appendChild(frame);
+    d.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    btn.textContent = '[ close ]';
+    var e = btn.closest('.entry');
+    if (e) e.classList.add('is-playing');
+    say(status, name + ' is loaded in a Spotify player below the row. Press play inside it to start.');
+  }
+  /* Handed to the page's ONE delegated click listener at the foot of this file
+     rather than binding a second one here. The budget in the header is not
+     decorative: every control on this page is dispatched from that single
+     listener, and a module that quietly adds its own breaks the one place you
+     can read to find out what a click does. */
+  toggleDeck = function (btn) {
+    if (btn.getAttribute('aria-expanded') === 'true') shut(btn, false); else start(btn);
+  };
+  /* Turning the lamp back up hides MUSIC — display:none, which does not stop
+     a frame that is already sounding. Nothing would be on screen to stop it
+     with, so the theme has to. */
+  shutDecks = function () { btns.forEach(function (b) { if (b.getAttribute('aria-expanded') === 'true') shut(b, true); }); };
+})();
+
 /* ═══ THE INK TRAIL ══════════════════════════════════════════════════════
    The pointer leaves a nib stroke on the paper: thinner where it moved fast,
    drawn twice — a wide faint bleed and a crisp core — so it reads as ink
@@ -508,6 +645,22 @@ function setTheme(on, persist) {
   if (lampBtn) lampBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
   if (persist) { try { localStorage.setItem(THEME_KEY, on ? 'disco' : 'day'); } catch (e) {} }
   if (window.__trailInk) window.__trailInk();
+  /* Raising the lamp takes MUSIC off the page with display:none, which does
+     not silence a player that is already sounding — and once the section is
+     gone there is no control left to silence it with. */
+  if (!on && shutDecks) shutDecks();
+
+  /* The lamp does not tint the page, it EXCHANGES it, and three pieces of
+     reading state describe the half that just left.
+       · A raised faculty may not exist in the arriving ledger at all —
+         Interfacing has no control under the lamp — leaving every voice
+         greyed with nothing on screen that could lower it again.
+       · CROSS-EXAMINE keeps the label and aria-pressed it earned over the
+         departing objections, so a button reading "Stand down" would arrive
+         above two closed ones and OPEN them on the next press.
+     Both are re-derived here rather than carried across. */
+  release();
+  syncCross();
 }
 function unlockLamp(persist) {
   de.setAttribute('data-lamp', '1');
@@ -649,6 +802,7 @@ document.addEventListener('click', function (ev) {
   if ((b = t.closest('[data-examine]'))) { togglePlate(b); return; }
   if ((b = t.closest('#examine-all')))   { examineAll(b);  return; }
   if ((b = t.closest('[data-cite]')))    { cite(b);        return; }
+  if ((b = t.closest('[data-play]')))    { if (toggleDeck) toggleDeck(b); return; }
   if ((b = t.closest('#copy-email')))    { copyEmail(b);   return; }
   if (t.closest('#crossexam'))           { crossExamine();  return; }
   if (t.closest('#lamplight'))           { setTheme(de.getAttribute('data-theme') !== 'disco', true); return; }
