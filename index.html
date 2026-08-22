@@ -18,15 +18,21 @@
 <meta property="og:image" content="https://weichenfan.github.io/Weichen/assets/img/portrait.webp">
 <meta name="twitter:card" content="summary">
 
-<!-- Restore PLAIN VIEW before first paint so the voice layer never flashes. -->
+<!-- Restore PLAIN VIEW before first paint so the voice layer never flashes.
+     THE THEME IS DELIBERATELY NOT RESTORED. Every visit opens on the paper —
+     Lamplight is somewhere you go, not somewhere you are left. What DOES
+     persist is wf-lamp, the fact that the way through was found: solve the
+     maze once and the button stays in the masthead for good. Old visitors may
+     still carry a wf-theme key from when it was remembered; it is cleared
+     here so it cannot sit in storage meaning nothing. -->
 <script>
 (function(){
   var d = document.documentElement;
   d.className = d.className.replace('no-js','js');
   try {
     if (localStorage.getItem('wf-voice') === 'off') d.setAttribute('data-voice','off');
-    if (localStorage.getItem('wf-theme') === 'disco') d.setAttribute('data-theme','disco');
     if (localStorage.getItem('wf-lamp')  === '1')    d.setAttribute('data-lamp','1');
+    localStorage.removeItem('wf-theme');
   } catch(e){}
 })();
 </script>
@@ -93,16 +99,15 @@
   <h2 class="sr-only" id="overture-h">About</h2>
   <div class="transcript">
     <div class="rail">
-      <!-- Two sitters, one frame. The photograph hangs by day; solving the
-           maze turns the lamp down and the painted portrait takes its place.
-           Both live in the DOM so the swap is a CSS state, not a network
-           round-trip — swap the file at assets/img/portrait-disco.webp to
-           change the painting without touching any other line. -->
+      <!-- One sitter, both themes. A painted version used to hang here under
+           Lamplight and was swapped in by CSS; it is gone from the markup
+           rather than merely hidden, because an <img> that never displays is
+           still 243KB fetched on every load. The file is still in the repo at
+           assets/img/portrait-disco.webp if it is ever wanted back — restoring
+           it means this element and the swap in css/site.css §12.1. -->
       <figure class="portrait">
-        <img class="portrait__day" src="assets/img/portrait.webp" width="1000" height="1250"
+        <img src="assets/img/portrait.webp" width="1000" height="1250"
              alt="Weichen Fan" fetchpriority="high" decoding="async">
-        <img class="portrait__night" src="assets/img/portrait-disco.webp" width="900" height="1125"
-             alt="Weichen Fan, painted" decoding="async" fetchpriority="low">
       </figure>
     </div>
 

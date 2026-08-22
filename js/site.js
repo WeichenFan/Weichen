@@ -652,13 +652,17 @@ var shutDecks = null, toggleDeck = null;
    A perfect maze from a SEEDED generator, so every visitor gets the same
    puzzle and it is always solvable. Walked by the same 6px ink square the
    publication bullets use. Finding the exit turns the lamp down. */
-var LAMP_KEY = 'wf-lamp', THEME_KEY = 'wf-theme';
+var LAMP_KEY = 'wf-lamp';
 var lampBtn = document.getElementById('lamplight');
 
+/* THE THEME IS SESSION-ONLY, and the missing localStorage write here is the
+   whole of that decision. The UNLOCK persists — solve the maze once and the
+   button stays — but the lamp itself is always up again on the next visit.
+   The `persist` argument is kept so every call site still reads as an
+   intention, and so restoring the old behaviour is one line. */
 function setTheme(on, persist) {
   if (on) de.setAttribute('data-theme', 'disco'); else de.removeAttribute('data-theme');
   if (lampBtn) lampBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  if (persist) { try { localStorage.setItem(THEME_KEY, on ? 'disco' : 'day'); } catch (e) {} }
   if (window.__trailInk) window.__trailInk();
   /* Raising the lamp takes MUSIC off the page with display:none, which does
      not silence a player that is already sounding — and once the section is

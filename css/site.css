@@ -657,8 +657,6 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
   object-fit:cover;object-position:50% 30%;
   mix-blend-mode:multiply;
 }
-/* The painted sitter only hangs at night. */
-.portrait__night{display:none}
 
 /* ── AFFIXED STAMPS · the four logos, in the record column ────────────── */
 /* They are wide lockups on white, not square marks: a 96px column to the
@@ -1487,24 +1485,25 @@ html[data-theme="disco"] ::selection{background:#5C5340;color:var(--ink)}
    saturate(1.08) returns the chroma that dimming costs perceptually (Hunt
    effect); it is the same 1.08 the light theme already uses on hover. No
    grayscale, no sepia, no hue rotation: the colour is the sitter's own. (The
-   base rule already ships full colour — nothing to undo there.) */
-/* THE SWAP. The painting already carries its own room, its own light and its
-   own grade, so it takes none of the photograph's treatment — no blend, no
-   dim, no mat showing through. It is simply the picture that is hanging now.
-   The frame gains a second inner rule: a painting is framed, a photograph is
-   mounted, and the extra hairline is what says which one this is. */
-html[data-theme="disco"] .portrait{
-  background:var(--mat);
-  outline:1px solid var(--shadow);outline-offset:-6px;
-}
-html[data-theme="disco"] .portrait__day{display:none}
-html[data-theme="disco"] .portrait__night{
-  display:block;
-  object-position:50% 42%;
+   base rule already ships full colour — nothing to undo there.)
+
+   ONE SITTER, BOTH THEMES. An earlier version hung a painted portrait here
+   instead and swapped the two by CSS. The photograph is the picture now, in
+   both, so there is nothing to swap — and the two rules below are the whole
+   of what the dark room asks of it.
+
+   multiply has to GO, not merely change value: the light theme uses it to
+   dissolve the white studio ground into parchment, and against #141B19 the
+   same blend would drive the face to black. So the white ground stays white
+   and the portrait stops pretending to be part of the sheet — it becomes
+   what it honestly is at night, a photograph mounted on board, lit. --mat is
+   that board, and it is why the frame is not simply a hole cut in the room. */
+html[data-theme="disco"] .portrait{background:var(--mat)}
+html[data-theme="disco"] .portrait img{
   mix-blend-mode:normal;
-  filter:none;
+  filter:brightness(.86) saturate(1.08);
 }
-/* The painting keeps its own varnish; the page's fibre must not double it. */
+/* The fibre falls on a photograph the same as on everything else. */
 html[data-theme="disco"] .portrait::after{opacity:calc(.05 * var(--texture))}
 
 
