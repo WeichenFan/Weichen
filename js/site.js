@@ -490,8 +490,19 @@ function group(n) {                                   /* 3014.1 → 3,014.1 */
    REMOVES it. That ordering is not tidiness — a hidden iframe goes on
    playing, so removal is the only thing that actually stops the sound, and
    it is also why opening one deck closes the other two. The side effect is
-   the privacy story: a visitor who never presses play never reaches Spotify,
-   and the page holds no third-party frame, script or cookie until asked.
+   the privacy story: a visitor who never presses play reaches no third party
+   at all, and the page holds no external frame, script or cookie until asked.
+
+   WHY YOUTUBE AND NOT SPOTIFY. The deck shipped with a Spotify embed and it
+   did not work in the wild. Nothing was blocking it — the frame loads, and
+   Spotify sends no X-Frame-Options or frame-ancestors — but a Spotify embed
+   gives a logged-out visitor a 30-second preview at best, and under
+   third-party storage blocking (Safari's default, and increasingly Chrome's)
+   it commonly refuses to play at all. A player whose behaviour depends on
+   whether the reader happens to hold an account is not a player. The
+   youtube-nocookie host plays the whole track for everybody, signed in or
+   not, and sets nothing until playback starts. The Spotify link stays in the
+   row for anyone who would rather listen there.
 
    Nothing here claims the track is SOUNDING. Playback lives inside a
    cross-origin frame and cannot be observed from this side, so the caption
@@ -522,8 +533,12 @@ var shutDecks = null, toggleDeck = null;
     head.appendChild(lamp);
     head.appendChild(document.createTextNode('Loaded — ' + name));
 
-    var frame = make('iframe', { src: src, title: 'Spotify player: ' + name, loading: 'lazy' });
-    frame.setAttribute('allow', 'clipboard-write; encrypted-media; fullscreen; picture-in-picture');
+    var frame = make('iframe', { src: src, title: 'Player: ' + name, loading: 'lazy' });
+    /* autoplay is in the list because the frame is BUILT BY THE CLICK — the
+       user gesture that opens the deck is the same gesture that authorises
+       playback, so one press plays instead of two. encrypted-media and
+       fullscreen are what the embed itself needs. */
+    frame.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');
     frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
 
     d.appendChild(head);

@@ -36,6 +36,72 @@
   color:var(--ink-muted);
 }
 
+/* ── THE LANGUAGE BAR ──────────────────────────────────────────────────── */
+.langbar{
+  display:flex;align-items:baseline;gap:var(--s3);
+  margin-left:auto;
+  margin-right:max(0px,calc(100% - var(--band)));  /* land on the band edge */
+}
+.lang{
+  font:500 var(--t-cap-xs)/var(--lh-cap-xs) var(--mono);
+  letter-spacing:var(--tr-cap-xs);word-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-muted);
+  padding:6px 0;cursor:pointer;white-space:nowrap;
+}
+.lang:hover,.lang:focus-visible{color:var(--ink);text-decoration:underline;
+  text-decoration-style:dotted;text-underline-offset:4px}
+/* The chosen one is marked by INK plus a solid rule, never by hue — this page
+   spends all four of its colours on the attributes, and a fifth meaning for
+   colour would make the result card's hue ambiguous. */
+.lang[aria-pressed="true"]{
+  color:var(--ink);
+  text-decoration:underline;text-decoration-style:solid;text-underline-offset:4px;
+}
+
+/* ── CJK ────────────────────────────────────────────────────────────────
+   Newsreader and IBM Plex Mono carry no Han glyphs, so with no stack of its
+   own every Chinese character falls to whatever the browser picks and lands
+   next to Latin text at a different weight and size. The Latin faces stay in
+   FRONT of the CJK ones: mixed strings are the normal case here — "跑
+   baseline", "第 3 题" — and the numerals and English terms should keep the
+   page's own type, with the system CJK face picking up only the Han. */
+html[lang^="zh"]{
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,
+         'PingFang SC','PingFang TC','Hiragino Sans GB','Microsoft YaHei',
+         'Noto Sans CJK SC','Source Han Sans SC',sans-serif;
+  --serif:'Newsreader','Iowan Old Style',Georgia,
+          'Songti SC','Songti TC','SimSun','Noto Serif CJK SC',
+          'Source Han Serif SC',serif;
+}
+/* Traditional first when the page is in traditional, so 骨/角/戶 and friends
+   take their Taiwan shapes rather than the mainland ones. */
+html[lang="zh-Hant"]{
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,
+         'PingFang TC','Heiti TC','Microsoft JhengHei',
+         'Noto Sans CJK TC','Source Han Sans TC',sans-serif;
+  --serif:'Newsreader','Iowan Old Style',Georgia,
+          'Songti TC','PMingLiU','Noto Serif CJK TC',
+          'Source Han Serif TC',serif;
+}
+/* Han has no spaces and no descender rhythm to lean on; the Latin leading
+   reads cramped under it. */
+html[lang^="zh"] .quiz__lede,
+html[lang^="zh"] .result__prose,
+html[lang^="zh"] .answer{line-height:1.75}
+html[lang^="zh"] .quiz__q{line-height:1.5}
+
+/* NO ITALIC ON HAN. There is no italic Chinese; a browser asked for one
+   shears the glyphs by an angle, which is not a style, it is damage — and it
+   damages only the Han, so a line like "离 camera-ready 还有九十分钟" comes out
+   with the English upright and the Chinese leaning. The tagline still reads
+   as the skill's own voice: it keeps the attribute hue and the serif face,
+   which is the same distinction the rest of the page draws. Emphasis is
+   restored as letterspacing, the way Chinese typography actually marks it. */
+html[lang^="zh"] .result__tag{
+  font-style:normal;
+  letter-spacing:.04em;
+}
+
 .quiz__title{
   font:400 var(--t-word)/1.12 var(--serif);
   font-variation-settings:'opsz' 32;

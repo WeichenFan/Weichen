@@ -2107,12 +2107,13 @@ html[data-theme="disco"] .stamp-perfect{
   @keyframes filament{50%{opacity:.45}}
   .deck__lamp{animation:filament 2.6s var(--ease-out) infinite}
 }
-/* 80px, measured against the rendered player rather than taken from the
-   documentation: Spotify's compact embed lays out at its own natural height
-   and pads the remainder with its own black, so the documented 152 left
-   ~70px of dead frame under the card at every width. */
+/* A video frame now, not the 80px audio strip the Spotify embed wanted.
+   16:9 because anything else letterboxes inside YouTube's own player, and
+   capped at 480 so a music row stays a row — at the full 720 measure it
+   stops being an aside and becomes the centre of the section. */
 .deck iframe{
-  display:block;width:100%;height:80px;
+  display:block;width:100%;max-width:480px;
+  aspect-ratio:16/9;height:auto;
   border:var(--card-border);
   background:var(--paper-inset);
   color-scheme:normal;   /* the frame carries its own dark UI in both themes */

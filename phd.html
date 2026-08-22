@@ -61,10 +61,13 @@
          look like separate lines, but the accessibility tree reads the h1's
          text, and with no space between them it announced "IPPMIntellect". -->
     <h1 class="wordmark">IPPM
-      <span class="wordmark__gloss">Intellect &middot; Psyche &middot; Physique &middot; Motorics</span></h1>
+      <span class="wordmark__gloss" id="wordmark-gloss">Intellect &middot; Psyche &middot; Physique &middot; Motorics</span></h1>
     <nav class="masthead__nav" aria-label="Sections">
-      <a href="index.html">&larr; Back to the record</a>
+      <a id="back-link" href="index.html">&larr; Back to the record</a>
     </nav>
+    <!-- Built by js/quiz.js so the three buttons cannot exist without the
+         script that makes them do something. -->
+    <nav class="langbar" id="langbar" aria-label="Language"></nav>
   </div>
 </header>
 
@@ -72,7 +75,7 @@
   <section class="section section--overture quiz" aria-labelledby="quiz-h">
     <div class="transcript">
       <div class="rail">
-        <p class="rail__title" aria-hidden="true">The<br>Examination</p>
+        <p class="rail__title" id="rail-title" aria-hidden="true">The Examination</p>
       </div>
       <div class="record">
         <h2 class="quiz__title" id="quiz-h">What Kind of PhD Are You?</h2>
@@ -89,11 +92,10 @@
 
         <p class="sr-only" role="status" id="quiz-status"></p>
 
-        <p class="quiz__note">
-          Four attributes, twenty-four skills, borrowed in shape from a game
-          about a detective who has forgotten his own name. The skills are
-          written for this page. Any resemblance to your own supervision
-          meetings is not a coincidence.
+        <!-- Overwritten per language by js/quiz.js; this is the no-JS text. -->
+        <p class="quiz__note" id="quiz-note">
+          Inspired by Disco Elysium. Any resemblance to your group meeting
+          last week is not a coincidence.
         </p>
       </div>
     </div>
@@ -108,6 +110,7 @@
   </div>
 </footer>
 
+<script src="js/quiz-copy.js" defer></script>
 <script src="js/quiz.js" defer></script>
 </body>
 </html>
