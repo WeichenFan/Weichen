@@ -1,6 +1,6 @@
 /* THE TRANSCRIPT — Weichen Fan · js/site.js · ES2020, no dependencies, defer.
    boot · plainView · refile · facultyFocus · plates · loupe · clipboard.
-   Every number printed here is counted from the DOM at the moment it prints.
+   Every printed count is read off the DOM at print time, never hardcoded.
    Whole-page listener budget: one click, one keydown, one change, two pointer
    listeners per plate, one rAF loop (the loupe). No scroll/timer/observer. */
 (function () {
@@ -12,10 +12,9 @@ var list = document.getElementById('entries');
 var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
 function $(s, r)  { return (r || document).querySelector(s); }
 function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
-/* A trailing hair space is toggled so an identical message is announced
-   again — AT ignore a live-region write whose text has not changed. The
-   toggle is PER ELEMENT: one shared flag would let two regions alternate
-   each other back to a byte-identical string and go silent again. */
+/* Toggling a trailing hair space re-announces identical text: screen readers
+   skip an unchanged live-region write. PER ELEMENT — a shared flag lets two
+   regions alternate back to identical text. */
 function say(el, text) {
   if (!el) return;
   el.textContent = text + (el.textContent.slice(-1) === '\u200a' ? '' : '\u200a');
@@ -27,8 +26,8 @@ function onMedia(mq, fn) { if (mq.addEventListener) mq.addEventListener('change'
 /* ═══ BOOT ═══════════════════════════════════════════════════════════════ */
 if (de.classList.contains('no-js')) de.classList.replace('no-js', 'js');
 
-/* Deterministic ±0.5deg tilt hashed from the mark's own alt text: written once,
-   identical on every load — static, so reduced motion does not apply to it. */
+/* Deterministic ±0.5deg tilt hashed from the mark's alt text: same every load,
+   and static, so reduced motion does not apply. */
 function hash(str) {
   var h = 2166136261;
   for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
@@ -45,7 +44,7 @@ function hash(str) {
   });
 })();
 
-var address = '';                                     /* never in the source; assembled from two halves */
+var address = '';                                     /* assembled at runtime; never a literal in the HTML */
 (function mail() {
   var a = document.getElementById('email-link');
   if (!a || !a.dataset.user || !a.dataset.host) return;
@@ -53,8 +52,8 @@ var address = '';                                     /* never in the source; as
   a.setAttribute('href', 'mailto:' + address);
 })();
 
-/* FACULTY FOCUS has no status region in the markup; mint one rather than borrow
-   another module's. Injected, so PLAIN VIEW and print never see it. */
+/* No status region in the markup, so mint one. Injected, so PLAIN VIEW and
+   print never see it. */
 var focusStatus = document.getElementById('focus-status');
 if (!focusStatus && main) {
   focusStatus = make('p', { id: 'focus-status', className: 'sr-only' });
@@ -62,8 +61,8 @@ if (!focusStatus && main) {
   main.appendChild(focusStatus);
 }
 
-/* Talked-over dim is CSS :has(); older engines get the class instead — gated,
-   so on a modern engine not one listener is attached. */
+/* Talked-over dim is CSS :has(); older engines get the class fallback. Gated,
+   so modern engines attach no listener. */
 if (!(window.CSS && CSS.supports && CSS.supports('selector(:has(*))'))) {
   $$('.objection').forEach(function (d) {
     d.addEventListener('toggle', function () {
@@ -82,9 +81,8 @@ function setVoice(state, persist) {
 }
 function toggleVoice() {
   setVoice(de.getAttribute('data-voice') === 'off' ? 'on' : 'off', true);
-  /* PLAIN VIEW hides whatever was focused if it was a voice control, which
-     would drop focus to <body> and restart the tab sequence. The toggle is
-     always visible in both states, so park focus there. */
+  /* If PLAIN VIEW hides the focused element, focus drops to <body> and the
+     tab sequence restarts. Park it on the toggle, visible in both states. */
   var a = document.activeElement;
   if (plainBtn && a && a !== plainBtn && a.offsetParent === null) plainBtn.focus();
 }
@@ -109,8 +107,8 @@ function keyOf(li, mode) {
   return '';
 }
 
-/* Group keys, counts and group order all read off the chronological listing, so
-   paper twelve files itself and no count in this file is ever typed by hand. */
+/* Keys, counts and order all derive from the chronological listing, so a new
+   entry files itself and no count here is hand-typed. */
 function groups(mode) {
   var chron = rows().sort(function (a, b) { return rankOf(b) - rankOf(a); });
   var count = Object.create(null), index = Object.create(null), appear = [];
@@ -134,8 +132,8 @@ function sentence(mode) {
   return 'Refiled chronologically. ' + g.total + ' publications, newest first.';
 }
 
-/* Real DOM nodes move. CSS `order` is forbidden: it desynchronises tab order
-   from visual order and turns the control into a trap. */
+/* Move real DOM nodes. CSS `order` is forbidden here: it desynchronises tab
+   order from visual order. */
 function refile(mode, quiet) {
   if (!list) return;
   var items = rows();
@@ -176,11 +174,9 @@ if (strip && list) {
 
 /* ═══ FACULTY FOCUS ══════════════════════════════════════════════════════ */
 var facultyBtns = $$('[data-faculty]');
-/* Same visibility test, and for the same reason, as objections() below: the
-   count in the status line is the ONLY output faculty focus has for a screen
-   reader — the sighted signal is the dimming — so counting the ledger that is
-   display:none states a total nobody can see. 25 in the DOM, 12 on the page
-   in the day theme, 13 under the lamp. */
+/* Same visibility test as objections(): the status count is the only screen-
+   reader output here, so hidden ledgers must not be counted. 25 in the DOM,
+   12 visible in the day theme, 13 under the lamp. */
 function onPage(el) { return el.getClientRects().length > 0; }
 function annotations() {
   return $$('.voice', main || document).filter(function (v) {
@@ -210,28 +206,19 @@ function raise(f) {
 }
 
 /* ═══ CROSS-EXAMINE ══════════════════════════════════════════════════════
-   The counter-voice, promoted from four collapsed toggles below the fold to
-   one gesture in the masthead. It is the exact opposite of PLAIN VIEW —
-   that removes every voice, this turns the harshest one up — and because
-   only some entries carry an objection, opening them all is itself the
-   answer to "which of these come with a caveat?". Reading state, not a
-   preference: never persisted, never the default. */
+   Opens every objection at once. Reading state, not a preference: never
+   persisted, never the default. */
 var crossBtn    = document.getElementById('crossexam');
 var crossStatus = document.getElementById('crossexam-status');
-/* Only the objections that are ON THE PAGE. Both ledgers carry them — WORK
-   has four, GAMES has one — and exactly one ledger is ever displayed, so an
-   unfiltered list would open invisible <details> in the hidden half and then
-   report a count nobody can see. getClientRects() is empty for anything in a
-   display:none subtree, which is precisely the question being asked. */
+/* Visible objections only. Both ledgers carry them (WORK four, GAMES one) and
+   only one is displayed, so an unfiltered list opens hidden <details> and
+   reports an invisible count. getClientRects() is empty under display:none. */
 function objections() {
   return $$('.objection').filter(onPage);
 }
-/* Derive the control's label and pressed state from whatever is CURRENTLY on
-   the page. Extracted because three callers need it and one of them is the
-   theme toggle: swapping ledgers changes the visible set underneath the
-   button without firing a single `toggle` event, since hiding an ancestor
-   does not change details.open. Guards on length — [].every() is true, which
-   would label a ledger with no objections at all "Stand down". */
+/* Re-derive from what is visible: the theme toggle swaps ledgers without
+   firing `toggle` — hiding an ancestor does not change details.open. Length
+   guard: [].every() is true, labelling an empty ledger "Stand down". */
 function syncCross() {
   if (!crossBtn) return;
   var objs = objections();
@@ -252,18 +239,15 @@ function crossExamine(force) {
     var e = d.closest('.entry'), k = e && e.dataset.venueClass;
     if (k) counts[k] = (counts[k] || 0) + 1;
   });
-  /* WORK always had four, so the hardcoded plural was never wrong until
-     GAMES arrived with a ledger that can hold exactly one. */
+  /* Plural stays computed: the GAMES ledger can hold exactly one objection. */
   say(crossStatus, objs.length + (objs.length === 1 ? ' objection open. ' : ' objections open. ') +
       Object.keys(counts).map(function (k) {
         var name = (VENUE_LABEL[k] || words(k)).toLowerCase();
         return counts[k] + ' ' + name + (counts[k] === 1 ? '' : 's');
       }).join(', ') + '.');
 }
-/* Opening or closing one objection by hand puts the control back in step.
-   Bound over ALL of them, not the visible ones: at boot the hidden ledger's
-   objections have no boxes yet, and they must already be wired for the
-   moment the lamp changes which half is on screen. */
+/* Bound over ALL objections, not just visible ones: the hidden ledger's must
+   already be wired for when the lamp swaps halves. */
 $$('.objection').forEach(function (d) {
   d.addEventListener('toggle', syncCross);
 });
@@ -312,12 +296,10 @@ onMedia(coarse, coarseSync);
   el.setAttribute('aria-hidden', 'true');
   var R = 74, host = null, frame = 0, tx = 0, ty = 0, cx = 0, cy = 0;
 
-  /* The magnification has to be PLATE-relative, and a background-size
-     percentage on the disc resolves against the disc — so the drawn image
-     rect is measured here and handed to CSS. object-fit:contain letterboxes
-     inside the img's content box, so the padding, the border and the bars all
-     have to come off before the origin is right. Measured once per enter:
-     the plate cannot resize while the pointer is inside it. */
+  /* background-size percentages resolve against the disc, not the plate, so the
+     drawn image rect is measured here and passed to CSS. object-fit:contain
+     letterboxes inside the content box: border, padding and bars come off
+     first. Safe to cache per enter — the plate cannot resize mid-hover. */
   function geometry(fig, img) {
     var fr = fig.getBoundingClientRect(), ir = img.getBoundingClientRect();
     var cs = window.getComputedStyle(img);
@@ -385,8 +367,7 @@ onMedia(coarse, coarseSync);
 /* ═══ CLIPBOARD ══════════════════════════════════════════════════════════ */
 var copyStatus = document.getElementById('copy-status');
 
-/* Built from the same data attributes the visible row is built from, so the
-   citation can never drift from what is printed beside it. */
+/* Same data attributes as the visible row, so the citation cannot drift. */
 function bibtex(entry) {
   var d = entry.dataset, type = d.btype || 'misc';
   var fields = [['title', d.btitle], ['author', d.bauthors],
@@ -412,11 +393,11 @@ function copy(text) {
     ? navigator.clipboard.writeText(text) : Promise.reject(new Error('no clipboard api'));
   return attempt.catch(function () { return legacyCopy(text) ? undefined : Promise.reject(new Error('copy refused')); });
 }
-function handOver(btn, text) {                        /* never a dead end: put the text on the page */
+function handOver(btn, text) {                        /* copy failed: show the text for manual selection */
   var row = btn.closest('.linkrow') || btn.closest('dd') || btn.parentNode;
   if (row && row.parentNode) {
-    /* Inside a <dd> the <pre> has to stay INSIDE it — a <pre> as a direct
-       child of <dl> is invalid and lands in the label column of the grid. */
+    /* Keep the <pre> INSIDE the <dd>: a <pre> as a direct child of <dl> is
+       invalid and lands in the label column of the grid. */
     var inDD = row.tagName === 'DD';
     var pre  = inDD ? $('.cite-out', row) : row.nextElementSibling;
     if (!pre || !pre.classList.contains('cite-out')) {
@@ -440,12 +421,9 @@ function copyEmail(btn) {
 }
 
 /* ═══ THE ARCADE · meters and the tally ══════════════════════════════════
-   Two bars per row and one sentence for the section, all of it read off the
-   rows themselves. The bars are aria-hidden decoration whose every quantity
-   is printed in words beside them; the sentence is the only thing here that
-   informs, and it is recounted rather than trusted — the markup ships the
-   same sentence so the line survives with JS off, and this overwrites it in
-   place. If the two ever disagree, the page is the one that is wrong. */
+   Bars and tally counted off the rows. Bars are aria-hidden; every quantity
+   also appears in words. Markup ships the tally for the JS-off case; this
+   recounts and overwrites it. */
 function group(n) {                                   /* 3014.1 → 3,014.1 */
   var p = String(n).split('.');
   p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -457,10 +435,9 @@ function group(n) {                                   /* 3014.1 → 3,014.1 */
   function num(el, k) { return parseFloat(el.getAttribute('data-' + k)) || 0; }
   function sum(k) { return games.reduce(function (t, g) { return t + num(g, k); }, 0); }
 
-  /* TIME is scaled to the longest row, so the bars compare with each other;
-     COMPLETION is scaled to each row's own total, because 130 of 303 and 48
-     of 48 are not two lengths of the same thing. Different question,
-     different denominator, which is why they are drawn at different weights. */
+  /* Two denominators: TIME scales to the longest row so bars compare across
+     rows; COMPLETION to each row's own total, since 130 of 303 and 48 of 48
+     are not the same measure. Hence the different weights. */
   var peak = games.reduce(function (m, g) { return Math.max(m, num(g, 'hours')); }, 0);
   games.forEach(function (g) {
     var hours = $('.meter__fill--hours', g), got = $('.meter__fill--got', g);
@@ -469,11 +446,9 @@ function group(n) {                                   /* 3014.1 → 3,014.1 */
     if (got && of > 0)     got.style.setProperty('--w', (num(g, 'got') / of * 100).toFixed(2) + '%');
   });
 
-  /* Not every row carries achievement figures, and folding a 0/0 into the
-     totals would quietly understate the denominator. They are therefore summed
-     over the ROWS THAT HAVE THEM, and the sentence says how many that was.
-     It reports the page's own coverage — "counted across 7 of the 8" — and
-     never that the eighth game lacks achievements, which is not true of it. */
+  /* Summed only over rows that HAVE achievements: a 0/0 understates the
+     denominator. The sentence reports coverage ("counted across 7 of the 8"),
+     not that the eighth game lacks them. */
   var scored = games.filter(function (g) { return num(g, 'of') > 0; });
   function sumOf(rows, k) { return rows.reduce(function (t, g) { return t + num(g, k); }, 0); }
   var tally = document.getElementById('arcade-tally');
@@ -486,27 +461,12 @@ function group(n) {                                   /* 3014.1 → 3,014.1 */
 })();
 
 /* ═══ THE DECK · one player, built on the click ══════════════════════════
-   The <iframe> is not in the markup. Pressing play builds it; pressing close
-   REMOVES it. That ordering is not tidiness — a hidden iframe goes on
-   playing, so removal is the only thing that actually stops the sound, and
-   it is also why opening one deck closes the other two. The side effect is
-   the privacy story: a visitor who never presses play reaches no third party
-   at all, and the page holds no external frame, script or cookie until asked.
-
-   WHY YOUTUBE AND NOT SPOTIFY. The deck shipped with a Spotify embed and it
-   did not work in the wild. Nothing was blocking it — the frame loads, and
-   Spotify sends no X-Frame-Options or frame-ancestors — but a Spotify embed
-   gives a logged-out visitor a 30-second preview at best, and under
-   third-party storage blocking (Safari's default, and increasingly Chrome's)
-   it commonly refuses to play at all. A player whose behaviour depends on
-   whether the reader happens to hold an account is not a player. The
-   youtube-nocookie host plays the whole track for everybody, signed in or
-   not, and sets nothing until playback starts. The Spotify link stays in the
-   row for anyone who would rather listen there.
-
-   Nothing here claims the track is SOUNDING. Playback lives inside a
-   cross-origin frame and cannot be observed from this side, so the caption
-   says the player is loaded, which is the only thing this page knows. */
+   Play builds the <iframe>, close REMOVES it: a hidden iframe keeps playing,
+   so removal is what stops the sound, and why one deck closes the others.
+   Nothing third-party loads until play is pressed. Not Spotify: its embed
+   gives logged-out visitors a 30-second preview at best, and often nothing
+   under third-party storage blocking (Safari default). The caption says
+   "loaded", never "playing" — playback is cross-origin. */
 var shutDecks = null, toggleDeck = null;
 (function decks() {
   var btns = $$('[data-play]');
@@ -534,10 +494,8 @@ var shutDecks = null, toggleDeck = null;
     head.appendChild(document.createTextNode('Loaded — ' + name));
 
     var frame = make('iframe', { src: src, title: 'Player: ' + name, loading: 'lazy' });
-    /* autoplay is in the list because the frame is BUILT BY THE CLICK — the
-       user gesture that opens the deck is the same gesture that authorises
-       playback, so one press plays instead of two. encrypted-media and
-       fullscreen are what the embed itself needs. */
+    /* autoplay is honoured because the frame is BUILT BY THE CLICK, so that
+       gesture authorises playback: one press plays instead of two. */
     frame.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');
     frame.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
 
@@ -550,28 +508,19 @@ var shutDecks = null, toggleDeck = null;
     if (e) e.classList.add('is-playing');
     say(status, name + ' is loaded in a Spotify player below the row. Press play inside it to start.');
   }
-  /* Handed to the page's ONE delegated click listener at the foot of this file
-     rather than binding a second one here. The budget in the header is not
-     decorative: every control on this page is dispatched from that single
-     listener, and a module that quietly adds its own breaks the one place you
-     can read to find out what a click does. */
+  /* Dispatched from the one delegated click listener at the foot of this file,
+     never a second binding here. See the listener budget in the header. */
   toggleDeck = function (btn) {
     if (btn.getAttribute('aria-expanded') === 'true') shut(btn, false); else start(btn);
   };
-  /* Turning the lamp back up hides MUSIC — display:none, which does not stop
-     a frame that is already sounding. Nothing would be on screen to stop it
-     with, so the theme has to. */
+  /* display:none on MUSIC does not stop a sounding frame, so the theme must. */
   shutDecks = function () { btns.forEach(function (b) { if (b.getAttribute('aria-expanded') === 'true') shut(b, true); }); };
 })();
 
 /* ═══ THE INK TRAIL ══════════════════════════════════════════════════════
-   The pointer leaves a nib stroke on the paper: thinner where it moved fast,
-   drawn twice — a wide faint bleed and a crisp core — so it reads as ink
-   soaking into a sheet rather than a glow. Points drift a little as they
-   fade, which is what wet ink does. The canvas sits UNDER the fibre layer,
-   so the grain falls on the stroke exactly as it falls on every other mark.
-   Never mounted without a fine pointer, never under reduced motion; the loop
-   stops itself the moment the last point has dried. */
+   Each segment stroked twice: faint wide bleed under a crisp core, thinner
+   where the pointer moved fast. Canvas sits UNDER the fibre layer. Fine
+   pointers only, never under reduced motion; the rAF loop self-terminates. */
 (function trail() {
   var fine = window.matchMedia('(hover:hover) and (pointer:fine)');
   if (!fine.matches || calm.matches) return;
@@ -587,11 +536,9 @@ var shutDecks = null, toggleDeck = null;
     var v = getComputedStyle(de).getPropertyValue('--trail-rgb').trim();
     ink = v || '18,18,14';
   }
-  /* Measure the canvas ITSELF, not innerWidth: innerWidth includes the
-     classic scrollbar, so the bitmap would be wider than the box it is
-     painted into and every stroke would land a few pixels left of the
-     pointer. Pointer coordinates are viewport-relative and the canvas is
-     fixed at inset:0, so its own rect is the right coordinate space. */
+  /* Measure the canvas, not innerWidth: innerWidth includes the classic
+     scrollbar, so the bitmap comes out wider than its box and every stroke
+     lands a few px left of the pointer. */
   function size() {
     var r = cv.getBoundingClientRect();
     W = r.width || document.documentElement.clientWidth;
@@ -649,35 +596,25 @@ var shutDecks = null, toggleDeck = null;
 })();
 
 /* ═══ THE WAY THROUGH ════════════════════════════════════════════════════
-   A perfect maze from a SEEDED generator, so every visitor gets the same
-   puzzle and it is always solvable. Walked by the same 6px ink square the
-   publication bullets use. Finding the exit turns the lamp down. */
+   Perfect maze from a SEEDED generator: same puzzle every visitor, always
+   solvable. Token is the publication bullets' 6px ink square. Reaching the
+   exit unlocks the lamp. */
 var LAMP_KEY = 'wf-lamp';
 var lampBtn = document.getElementById('lamplight');
 
-/* THE THEME IS SESSION-ONLY, and the missing localStorage write here is the
-   whole of that decision. The UNLOCK persists — solve the maze once and the
-   button stays — but the lamp itself is always up again on the next visit.
-   The `persist` argument is kept so every call site still reads as an
-   intention, and so restoring the old behaviour is one line. */
+/* THEME IS SESSION-ONLY: the missing localStorage write is deliberate. The
+   unlock persists, the lamp does not. `persist` is kept so restoring
+   persistence is one line. */
 function setTheme(on, persist) {
   if (on) de.setAttribute('data-theme', 'disco'); else de.removeAttribute('data-theme');
   if (lampBtn) lampBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
   if (window.__trailInk) window.__trailInk();
-  /* Raising the lamp takes MUSIC off the page with display:none, which does
-     not silence a player that is already sounding — and once the section is
-     gone there is no control left to silence it with. */
+  /* Hiding MUSIC does not silence a sounding player; see shutDecks. */
   if (!on && shutDecks) shutDecks();
 
-  /* The lamp does not tint the page, it EXCHANGES it, and three pieces of
-     reading state describe the half that just left.
-       · A raised faculty may not exist in the arriving ledger at all —
-         Interfacing has no control under the lamp — leaving every voice
-         greyed with nothing on screen that could lower it again.
-       · CROSS-EXAMINE keeps the label and aria-pressed it earned over the
-         departing objections, so a button reading "Stand down" would arrive
-         above two closed ones and OPEN them on the next press.
-     Both are re-derived here rather than carried across. */
+  /* The lamp EXCHANGES the ledger, so state must be re-derived: a raised
+     faculty may have no control in the arriving half (Interfacing has none
+     under the lamp), and a stale "Stand down" would OPEN closed objections. */
   release();
   syncCross();
 }
@@ -686,8 +623,8 @@ function unlockLamp(persist) {
   if (lampBtn) lampBtn.hidden = false;
   if (persist) { try { localStorage.setItem(LAMP_KEY, '1'); } catch (e) {} }
 }
-/* Both unlock paths — solving and the screen-reader bypass — end here, so the
-   bypass is confirmed out loud instead of repainting the page in silence. */
+/* Both unlock paths end here, so the screen-reader bypass is announced rather
+   than repainting the page in silence. */
 function announceUnlock() {
   var w = document.getElementById('lock-won');
   if (w) w.hidden = false;
@@ -704,7 +641,7 @@ setTheme(de.getAttribute('data-theme') === 'disco', false);
   var status = document.getElementById('lock-status');
   var won = document.getElementById('lock-won');
 
-  /* mulberry32 — a fixed seed means one maze, forever, in every browser. */
+  /* mulberry32; the fixed seed gives the same maze in every browser. */
   var s = 0x9E3779B9 >>> 0;
   function rnd() {
     s = (s + 0x6D2B79F5) >>> 0;
@@ -789,7 +726,7 @@ setTheme(de.getAttribute('data-theme') === 'disco', false);
     step(dir);
   });
 
-  /* Drag to walk — one gesture that works with a mouse and with a thumb. */
+  /* Drag to walk; works with mouse and touch. */
   var dragging = false;
   function cellAt(ev) {
     var r = svg.getBoundingClientRect();
@@ -828,9 +765,8 @@ document.addEventListener('click', function (ev) {
   if (t.closest('#lock-bypass'))         { unlockLamp(true); setTheme(true, true); announceUnlock(); return; }
   if (t.closest('#plainview'))           { toggleVoice(); }
 });
-/* Escape only. The bare `v` shortcut was removed: a single-character key
-   shortcut with no modifier, no remap and no off switch fails WCAG 2.1.4,
-   and PLAIN VIEW already has a permanent button in the masthead. */
+/* Escape only. No bare single-character shortcut: with no modifier, no remap
+   and no off switch it fails WCAG 2.1.4, and PLAIN VIEW has a masthead button. */
 document.addEventListener('keydown', function (ev) {
   if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.altKey) return;
   if (ev.key === 'Escape') release();

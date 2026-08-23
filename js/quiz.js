@@ -1,43 +1,22 @@
 /* WHAT KIND OF PhD ARE YOU — js/quiz.js · ES2020, no dependencies, defer.
-   A twenty-four-outcome examination in the shape of a character sheet,
-   in English, Simplified Chinese and Traditional Chinese.
+   24 outcomes: 6 skills under each of 4 attributes, in en / zh-Hans / zh-Hant.
 
-   The four ATTRIBUTES are borrowed wholesale in structure — Intellect, Psyche,
-   Physique, Motorics — because that four-way split is the joke and the frame.
-   Every one of the twenty-four SKILLS under them is written for this page: they
-   are the parts of a doctorate that actually argue with you at 3 a.m., not the
-   parts of a detective.
+   COPY IS SEPARATED FROM SCORING. Strings live in js/quiz-copy.js per
+   language; the shared tables below (answer -> skill, skill -> attribute) hold
+   no translated text, so translating cannot change a result.
 
-   COPY IS SEPARATED FROM SCORING, and that separation is the point of this
-   file's shape. Everything a reader sees lives in js/quiz-copy.js keyed by
-   language; the two tables below — which skill each answer scores, and which
-   attribute each skill belongs to — live here and are shared by all three.
-   Translating cannot change anybody's result, and a mistranslated answer
-   cannot silently rewire the scoring, because the translations do not contain
-   a single slug.
+   SCORING. Per answer: primary skill +3, secondary +1 in a DIFFERENT
+   attribute, so no one answer carries a column. An attribute is the sum of its
+   own six skills, so the named skill always sits inside the winning attribute.
 
-   SCORING. Each answer names a primary skill (+3) and a secondary (+1); the
-   secondary is deliberately in a different attribute, so no single answer can
-   run away with a column. An attribute's score is the sum of its own six
-   skills, so the headline attribute and the named skill can never disagree —
-   the skill is always inside the attribute that won.
-
-   The table was BALANCED BY MEASUREMENT, not by eye. Enumerating all 4^10 =
-   1,048,576 answer paths, every one of the twenty-four outcomes is reachable
-   and the commonest (Ablation, 9.3%) is nine times the rarest (Poker Face,
-   1.0%). The first draft looked just as reasonable on the page and ran 959:1,
-   which would have meant almost every visitor seeing one of four results.
-
-   TWO RULES HOLD THAT BALANCE, and the audit below enforces both.
-   1. EVERY QUESTION OFFERS EXACTLY ONE ANSWER PER ATTRIBUTE, so each attribute
-      gets exactly ten primaries. The four are not in a fixed order down the
-      list — a quiz whose first option is always Intellect is a quiz you can
-      play without reading.
-   2. SECONDARIES ARE BUDGETED AGAINST PRIMARY COUNT. Ten primaries over six
-      skills means four skills get two and two get one, so the singles are
-      given three secondaries each and the doubles one. Weight lands at
-      3x2+1 = 7 against 3x1+3 = 6 — near enough that a single-primary skill is
-      still a real outcome. */
+   BALANCE IS MEASURED. Over all 4^10 = 1,048,576 paths every outcome is
+   reachable, commonest (Ablation 9.3%) 9x rarest (Poker Face 1.0%); the first
+   draft read fine and ran 959:1. Two rules hold it, both audited below:
+   1. One answer per attribute per question -> ten primaries each. Vary which
+      option is which attribute, or the quiz is playable unread.
+   2. Secondaries budgeted against primary count: ten primaries over six skills
+      leaves four skills at two and two at one, so singles get three
+      secondaries and doubles one — 3x2+1 = 7 vs 3x1+3 = 6. */
 (function () {
 'use strict';
 
@@ -52,9 +31,8 @@ function say(el, text) {
 }
 
 /* ═══ LANGUAGE ════════════════════════════════════════════════════════════
-   Three languages, one scoring table. `html` is written to the lang attribute
-   so the CJK font stack in css/quiz.css can attach to it and so a screen
-   reader switches voice with the page. */
+   `html` sets the document lang attribute: the CJK font stack in css/quiz.css
+   hangs off it, and screen readers follow it. */
 var LANGS = [
   { code: 'en',      label: 'English', html: 'en'      },
   { code: 'zh-Hans', label: '简',      html: 'zh-Hans' },
@@ -66,13 +44,9 @@ var lang = 'en';
 
 function pick(stored) {
   if (stored && COPY[stored]) return stored;
-  /* No stored choice: follow the browser. navigator.languages is ORDERED by
-     preference and must be read that way — searching the whole list for "zh"
-     hands a Chinese page to somebody whose list is en-US, en-CN, zh-Hans-CN,
-     whose actual first choice is English. First entry that maps to something
-     translated wins; anything unmapped is skipped, not treated as a match.
-     zh-TW / zh-HK / zh-MO and zh-Hant-* are traditional; bare zh and zh-CN
-     are simplified. */
+  /* navigator.languages is ORDERED by preference: scanning it for "zh" serves
+     Chinese to en-US, en-CN, zh-Hans-CN. First mapped entry wins.
+     zh-TW/HK/MO and zh-Hant-* traditional, bare zh and zh-CN simplified. */
   var list = navigator.languages || [navigator.language || 'en'];
   for (var i = 0; i < list.length; i++) {
     var tag = String(list[i]).toLowerCase();
@@ -89,10 +63,8 @@ function T() { return COPY[lang] || COPY.en; }
 
 /* ═══ THE TABLES THAT NEVER TRANSLATE ═════════════════════════════════════ */
 var DIM_ORDER = ['intellect', 'psyche', 'physique', 'motorics'];
-/* The four attribute colours are not new. They are the four voices the site
-   already ships under Lamplight, solved against this ground: steel, violet,
-   dried blood, brass — and the portrait sheet runs blue/purple/red/gold in the
-   same order, so the cards and the type agree without one new token. */
+/* Reuses the site's Lamplight voice tokens (steel, violet, dried blood,
+   brass); the portrait sheet runs blue/purple/red/gold in the same order. */
 var DIM_TOKEN = {
   intellect: '--voice-hlf', psyche: '--voice-inl',
   physique:  '--voice-rhe', motorics: '--voice-int'
@@ -119,12 +91,9 @@ var SCORING = [
 ];
 
 /* ═══ SELF-CHECK ══════════════════════════════════════════════════════════
-   Four things are invisible at a glance and fatal: a typo'd slug scores into a
-   bucket nothing reads; a skill that is nobody's primary is an outcome the
-   page can never produce; a question with two answers in one attribute quietly
-   unbalances the whole quiz; and a language missing a key renders `undefined`
-   on the card. All four are checked, not trusted, and reported to the console
-   rather than failing silently. */
+   Warns on four silent failures: unknown slug; a skill that is nobody's
+   primary (unreachable outcome); two answers in one attribute (unbalanced
+   quiz); missing copy key (renders `undefined` on the card). */
 (function audit() {
   var problems = [], primaries = Object.create(null);
   SCORING.forEach(function (q, i) {
@@ -143,8 +112,7 @@ var SCORING = [
   Object.keys(SKILL_DIM).forEach(function (k) {
     if (!primaries[k]) problems.push('unreachable outcome: "' + k + '" is never a primary');
   });
-  /* Completeness, per language. A missing string is not a styling problem, it
-     is the word "undefined" printed on somebody's result. */
+  /* Per language: a missing string prints "undefined" on a result card. */
   Object.keys(COPY).forEach(function (L) {
     var t = COPY[L];
     DIM_ORDER.forEach(function (d) {
@@ -173,9 +141,8 @@ if (!stage) return;
 
 var answers = [];                                   /* answers[i] = option index */
 
-/* Scoring reads SCORING, never the copy. The language on screen cannot reach
-   this function, which is the guarantee that the same ten choices give the
-   same character in all three. */
+/* Reads SCORING, never the copy: same ten choices, same character in all
+   three languages. */
 function score() {
   var skill = Object.create(null), dim = Object.create(null);
   Object.keys(SKILL_DIM).forEach(function (k) { skill[k] = 0; });
@@ -186,16 +153,13 @@ function score() {
     skill[o.p] += 3;
     skill[o.s] += 1;
   });
-  /* An attribute is the sum of its OWN six skills — never a separate tally.
-     Counted this way the winning skill is always inside the winning
-     attribute, so the card can never name a Physique skill under a heading
-     that says Intellect. */
+  /* Attribute = sum of its OWN six skills, never a separate tally; that keeps
+     the winning skill inside the winning attribute. */
   Object.keys(SKILL_DIM).forEach(function (k) { dim[SKILL_DIM[k]] += skill[k]; });
   return { skill: skill, dim: dim };
 }
 
-/* Ties are broken by declaration order, which is fixed — so the same ten
-   answers always produce the same character, on every device, forever. */
+/* Ties break by declaration order, so results are deterministic. */
 function best(obj, keys) {
   var top = keys[0];
   keys.forEach(function (k) { if (obj[k] > obj[top]) top = k; });
@@ -227,10 +191,8 @@ function renderIntro() {
   box.appendChild(make('p', { className: 'quiz__kicker', textContent: t.ui.kicker }));
   box.appendChild(make('p', { className: 'quiz__lede', textContent: t.ui.lede }));
 
-  /* The four axes, named before you start. Not decoration — knowing what is
-     being measured is the difference between a quiz and a horoscope, and it
-     also gives the intro card the same weight as the nine screens after it,
-     so pressing begin does not jolt the page a card-height taller. */
+  /* Pads the intro card to about a question screen's height, so begin does
+     not jolt the page. */
   var grid = make('ul', { className: 'attrs' });
   DIM_ORDER.forEach(function (k) {
     var li = make('li', { className: 'attrs__item' });
@@ -264,13 +226,9 @@ function renderQuestion(i) {
     var b = make('button', { className: 'answer', type: 'button' });
     b.appendChild(make('span', { className: 'answer__key', textContent: String(j + 1) }));
     b.appendChild(make('span', { className: 'answer__text', textContent: opt }));
-    /* detail > 1 is the second press of a double-click, and it must not count.
-       Answering swaps the whole card synchronously, so by the time that press
-       lands there is already a NEW question under the pointer and its button
-       takes the click — one double-click silently answers two questions, the
-       second of which the reader never saw. detail is exact where a timer
-       would be a guess: it is 0 for a keyboard Enter or Space and 0 for a
-       programmatic .click(), so nothing legitimate is blocked. */
+    /* Ignore the second press of a double-click: the card swaps
+       synchronously, so it would land on the next question and answer it too.
+       detail is 0 for keyboard and programmatic clicks, so those still work. */
     b.addEventListener('click', function (ev) {
       if (ev.detail > 1) return;
       choose(i, j);
@@ -287,9 +245,8 @@ function renderQuestion(i) {
   }
 
   stage.appendChild(box);
-  /* Move focus to the question, not to the first answer: landing on an option
-     makes it look chosen, and a screen reader would read one answer instead of
-     the thing being asked. */
+  /* Focus the question, not the first answer: a focused option looks chosen,
+     and a screen reader would read it instead of the question. */
   h.focus({ preventScroll: true });
   say(status, counted(t, i) + '. ' + q.q);
 }
@@ -300,15 +257,12 @@ function choose(i, j) {
   else renderResult();
 }
 
-/* 1–4 pick an answer. No modifier is needed and no single letter is bound, so
-   this adds a shortcut without taking a key away from anybody's screen reader. */
+/* 1–4 pick an answer; no modifier and no letter keys, so no screen-reader
+   shortcut is taken. */
 document.addEventListener('keydown', function (ev) {
   if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.altKey) return;
-  /* Auto-repeat must not answer the questionnaire. Each screen is rendered
-     synchronously, so a held key walks the OS repeat straight through every
-     remaining question — about a second of a stuck key produces a finished
-     result nobody chose, and the result screen has no [ back ] to undo it.
-     ev.repeat is false on the first press and true on every repeat after it. */
+  /* Screens render synchronously, so a held key walks OS auto-repeat through
+     every remaining question and finishes the quiz; results have no [ back ]. */
   if (ev.repeat) return;
   var n = parseInt(ev.key, 10);
   if (!(n >= 1 && n <= 4)) return;
@@ -341,12 +295,8 @@ function renderResult() {
 
   box.appendChild(make('p', { className: 'quiz__kicker', textContent: dm.name + ' · ' + dm.line }));
 
-  /* A div and an h3, not a figure and a figcaption. The skill name IS the
-     result — the one thing the visitor came for — so it has to be a heading
-     somebody can navigate to. As a figcaption it was reachable only by
-     reading the whole card, and the page's heading outline stopped at the
-     title. The portrait is decorative (alt="", the name is right beneath it),
-     which is also why it needs no figure/caption pairing. */
+  /* div + h3, not figure + figcaption: the skill name is the result, so it has
+     to be a navigable heading. Portrait is decorative (alt=""). */
   var card = make('div', { className: 'portraitcard' });
   var img = make('img', {
     className: 'portraitcard__img',
@@ -369,8 +319,7 @@ function renderResult() {
   body.appendChild(dl);
   box.appendChild(body);
 
-  /* The four totals, so the result is auditable rather than oracular: you can
-     see it was close, or that it was not close at all. */
+  /* The four totals, so the result is auditable: close, or not. */
   var bars = make('div', { className: 'dimbars' });
   bars.appendChild(make('p', { className: 'dimbars__label', textContent: t.ui.attrs }));
   var total = 0;
@@ -391,10 +340,8 @@ function renderResult() {
 }
 
 /* ═══ THE SWITCHER ════════════════════════════════════════════════════════
-   Rebuilding the current screen rather than reloading keeps the reader where
-   they are: switch language on question seven and you are still on question
-   seven, with the same seven answers, because `answers` holds indices and
-   indices do not translate. */
+   Rebuilds the current screen instead of reloading; `answers` holds indices,
+   which do not translate, so a mid-quiz switch keeps position and answers. */
 function counted(t, i) {
   return t.ui.count.replace('%n', String(i + 1)).replace('%t', String(SCORING.length));
 }
@@ -414,9 +361,8 @@ function paintStatic() {
 }
 
 function rerender() {
-  /* Whatever is on screen now, put the same thing back in the new language.
-     answers.length is the position: 0 answered = intro, all answered =
-     result, anything between = that question. */
+  /* answers.length is the position: 0 = intro, all = result, between = that
+     question. */
   if (!stage.querySelector('.quiz__card')) return renderIntro();
   if (stage.querySelector('.quiz__card--result')) return renderResult();
   if (stage.querySelector('.quiz__card--intro')) return renderIntro();

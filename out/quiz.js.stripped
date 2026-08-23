@@ -1,0 +1,360 @@
+
+(function () {
+'use strict';
+
+var de = document.documentElement;
+if (de.classList.contains('no-js')) de.classList.replace('no-js', 'js');
+
+function $(s, r) { return (r || document).querySelector(s); }
+function make(tag, props) { return Object.assign(document.createElement(tag), props); }
+function say(el, text) {
+  if (!el) return;
+  el.textContent = text + (el.textContent.slice(-1) === '\u200a' ? '' : '\u200a');
+}
+
+
+var LANGS = [
+  { code: 'en',      label: 'English', html: 'en'      },
+  { code: 'zh-Hans', label: '简',      html: 'zh-Hans' },
+  { code: 'zh-Hant', label: '繁',      html: 'zh-Hant' }
+];
+var LANG_KEY = 'wf-lang';
+var COPY = window.QUIZ_COPY || {};
+var lang = 'en';
+
+function pick(stored) {
+  if (stored && COPY[stored]) return stored;
+  
+  var list = navigator.languages || [navigator.language || 'en'];
+  for (var i = 0; i < list.length; i++) {
+    var tag = String(list[i]).toLowerCase();
+    if (/^zh\b/.test(tag)) {
+      return /hant|\b(tw|hk|mo)\b/.test(tag) ? 'zh-Hant' : 'zh-Hans';
+    }
+    if (/^en\b/.test(tag)) return 'en';
+  }
+  return 'en';
+}
+try { lang = pick(localStorage.getItem(LANG_KEY)); } catch (e) { lang = pick(null); }
+
+function T() { return COPY[lang] || COPY.en; }
+
+
+var DIM_ORDER = ['intellect', 'psyche', 'physique', 'motorics'];
+
+var DIM_TOKEN = {
+  intellect: '--voice-hlf', psyche: '--voice-inl',
+  physique:  '--voice-rhe', motorics: '--voice-int'
+};
+
+var SKILL_DIM = {
+   'ablation':'intellect', 'related-work':'intellect', 'rebuttal':'intellect', 'framing':'intellect', 'hypothesis':'intellect', 'error-analysis':'intellect',
+   'scope-control':'psyche', 'three-am-idea':'psyche', 'co-authorship':'psyche', 'corresponding-author':'psyche', 'lab-morale':'psyche', 'positioning':'psyche',
+   'deadline-stamina':'physique', 'rejection-tolerance':'physique', 'cluster-wrangling':'physique', 'caffeine':'physique', 'field-sense':'physique', 'defense-instinct':'physique',
+   'figure-craft':'motorics', 'log-reading':'motorics', 'hotfix':'motorics', 'conference-charm':'motorics', 'toolchain':'motorics', 'poker-face':'motorics',
+};
+
+var SCORING = [
+   [{p:'log-reading',s:'error-analysis'}, {p:'framing',s:'co-authorship'}, {p:'cluster-wrangling',s:'toolchain'}, {p:'scope-control',s:'deadline-stamina'}],
+   [{p:'rebuttal',s:'corresponding-author'}, {p:'rejection-tolerance',s:'poker-face'}, {p:'hotfix',s:'rebuttal'}, {p:'corresponding-author',s:'rejection-tolerance'}],
+   [{p:'lab-morale',s:'defense-instinct'}, {p:'related-work',s:'lab-morale'}, {p:'field-sense',s:'log-reading'}, {p:'figure-craft',s:'related-work'}],
+   [{p:'toolchain',s:'error-analysis'}, {p:'ablation',s:'three-am-idea'}, {p:'caffeine',s:'log-reading'}, {p:'three-am-idea',s:'field-sense'}],
+   [{p:'hypothesis',s:'positioning'}, {p:'rejection-tolerance',s:'poker-face'}, {p:'positioning',s:'defense-instinct'}, {p:'conference-charm',s:'rebuttal'}],
+   [{p:'figure-craft',s:'framing'}, {p:'framing',s:'co-authorship'}, {p:'co-authorship',s:'field-sense'}, {p:'deadline-stamina',s:'figure-craft'}],
+   [{p:'conference-charm',s:'rebuttal'}, {p:'hypothesis',s:'lab-morale'}, {p:'positioning',s:'defense-instinct'}, {p:'defense-instinct',s:'conference-charm'}],
+   [{p:'three-am-idea',s:'field-sense'}, {p:'caffeine',s:'log-reading'}, {p:'toolchain',s:'error-analysis'}, {p:'error-analysis',s:'co-authorship'}],
+   [{p:'cluster-wrangling',s:'hotfix'}, {p:'hotfix',s:'ablation'}, {p:'corresponding-author',s:'cluster-wrangling'}, {p:'related-work',s:'lab-morale'}],
+   [{p:'scope-control',s:'caffeine'}, {p:'ablation',s:'scope-control'}, {p:'poker-face',s:'hypothesis'}, {p:'deadline-stamina',s:'poker-face'}],
+];
+
+
+(function audit() {
+  var problems = [], primaries = Object.create(null);
+  SCORING.forEach(function (q, i) {
+    var seen = Object.create(null);
+    q.forEach(function (o, j) {
+      var where = 'Q' + (i + 1) + String.fromCharCode(97 + j);
+      if (!SKILL_DIM[o.p]) problems.push(where + ': unknown primary "' + o.p + '"');
+      else { primaries[o.p] = (primaries[o.p] || 0) + 1; seen[SKILL_DIM[o.p]] = (seen[SKILL_DIM[o.p]] || 0) + 1; }
+      if (!SKILL_DIM[o.s]) problems.push(where + ': unknown secondary "' + o.s + '"');
+      else if (SKILL_DIM[o.s] === SKILL_DIM[o.p]) problems.push(where + ': secondary does not cross attributes');
+    });
+    DIM_ORDER.forEach(function (d) {
+      if (seen[d] !== 1) problems.push('Q' + (i + 1) + ': ' + (seen[d] || 0) + ' answers in ' + d + ', expected 1');
+    });
+  });
+  Object.keys(SKILL_DIM).forEach(function (k) {
+    if (!primaries[k]) problems.push('unreachable outcome: "' + k + '" is never a primary');
+  });
+  
+  Object.keys(COPY).forEach(function (L) {
+    var t = COPY[L];
+    DIM_ORDER.forEach(function (d) {
+      if (!t.dims || !t.dims[d] || !t.dims[d].name || !t.dims[d].line) problems.push(L + ': missing dim ' + d);
+    });
+    Object.keys(SKILL_DIM).forEach(function (k) {
+      var s = t.skills && t.skills[k];
+      if (!s) return problems.push(L + ': missing skill ' + k);
+      ['name', 'tag', 'body', 'best', 'worst'].forEach(function (f) {
+        if (!s[f]) problems.push(L + ': ' + k + ' missing ' + f);
+      });
+    });
+    if (!t.questions || t.questions.length !== SCORING.length) problems.push(L + ': expected ' + SCORING.length + ' questions');
+    else t.questions.forEach(function (q, i) {
+      if (!q.q) problems.push(L + ': Q' + (i + 1) + ' has no text');
+      if (!q.a || q.a.length !== 4) problems.push(L + ': Q' + (i + 1) + ' needs 4 answers');
+    });
+  });
+  if (problems.length && window.console) console.warn('[phd quiz]\n' + problems.join('\n'));
+})();
+
+
+var stage  = document.getElementById('stage');
+var status = document.getElementById('quiz-status');
+if (!stage) return;
+
+var answers = [];                                   
+
+
+function score() {
+  var skill = Object.create(null), dim = Object.create(null);
+  Object.keys(SKILL_DIM).forEach(function (k) { skill[k] = 0; });
+  DIM_ORDER.forEach(function (k) { dim[k] = 0; });
+  answers.forEach(function (choice, i) {
+    var o = SCORING[i][choice];
+    if (!o) return;
+    skill[o.p] += 3;
+    skill[o.s] += 1;
+  });
+  
+  Object.keys(SKILL_DIM).forEach(function (k) { dim[SKILL_DIM[k]] += skill[k]; });
+  return { skill: skill, dim: dim };
+}
+
+
+function best(obj, keys) {
+  var top = keys[0];
+  keys.forEach(function (k) { if (obj[k] > obj[top]) top = k; });
+  return top;
+}
+
+function result() {
+  var s = score();
+  var winnerDim = best(s.dim, DIM_ORDER);
+  var inDim = Object.keys(SKILL_DIM).filter(function (k) { return SKILL_DIM[k] === winnerDim; });
+  var winnerSkill = best(s.skill, inDim);
+  return { dim: winnerDim, skill: winnerSkill, scores: s };
+}
+
+function progress(n) {
+  var wrap = make('p', { className: 'quiz__progress' });
+  wrap.setAttribute('aria-hidden', 'true');
+  for (var i = 0; i < SCORING.length; i++) {
+    var pip = make('span', { className: 'pip' + (i < n ? ' is-done' : i === n ? ' is-here' : '') });
+    wrap.appendChild(pip);
+  }
+  return wrap;
+}
+
+function renderIntro() {
+  stage.textContent = '';
+  var box = make('div', { className: 'quiz__card quiz__card--intro' });
+  var t = T();
+  box.appendChild(make('p', { className: 'quiz__kicker', textContent: t.ui.kicker }));
+  box.appendChild(make('p', { className: 'quiz__lede', textContent: t.ui.lede }));
+
+  
+  var grid = make('ul', { className: 'attrs' });
+  DIM_ORDER.forEach(function (k) {
+    var li = make('li', { className: 'attrs__item' });
+    li.style.setProperty('--hue', 'var(' + DIM_TOKEN[k] + ')');
+    li.appendChild(make('b', { className: 'attrs__name', textContent: t.dims[k].name }));
+    li.appendChild(make('span', { className: 'attrs__line', textContent: t.dims[k].line }));
+    grid.appendChild(li);
+  });
+  box.appendChild(grid);
+
+  var go = make('button', { className: 'quiz__go', type: 'button', textContent: t.ui.begin });
+  go.addEventListener('click', function () { answers = []; renderQuestion(0); });
+  box.appendChild(go);
+  stage.appendChild(box);
+}
+
+function renderQuestion(i) {
+  stage.textContent = '';
+  var t = T(), q = t.questions[i];
+  var box = make('div', { className: 'quiz__card' });
+
+  box.appendChild(progress(i));
+  box.appendChild(make('p', { className: 'quiz__count', textContent: counted(t, i) }));
+  var h = make('h2', { className: 'quiz__q', textContent: q.q });
+  h.setAttribute('tabindex', '-1');
+  box.appendChild(h);
+
+  var list = make('ol', { className: 'quiz__answers' });
+  q.a.forEach(function (opt, j) {
+    var li = make('li');
+    var b = make('button', { className: 'answer', type: 'button' });
+    b.appendChild(make('span', { className: 'answer__key', textContent: String(j + 1) }));
+    b.appendChild(make('span', { className: 'answer__text', textContent: opt }));
+    
+    b.addEventListener('click', function (ev) {
+      if (ev.detail > 1) return;
+      choose(i, j);
+    });
+    li.appendChild(b);
+    list.appendChild(li);
+  });
+  box.appendChild(list);
+
+  if (i > 0) {
+    var back = make('button', { className: 'quiz__back', type: 'button', textContent: t.ui.back });
+    back.addEventListener('click', function () { answers.length = i - 1; renderQuestion(i - 1); });
+    box.appendChild(back);
+  }
+
+  stage.appendChild(box);
+  
+  h.focus({ preventScroll: true });
+  say(status, counted(t, i) + '. ' + q.q);
+}
+
+function choose(i, j) {
+  answers[i] = j;
+  if (i + 1 < SCORING.length) renderQuestion(i + 1);
+  else renderResult();
+}
+
+
+document.addEventListener('keydown', function (ev) {
+  if (ev.defaultPrevented || ev.metaKey || ev.ctrlKey || ev.altKey) return;
+  
+  if (ev.repeat) return;
+  var n = parseInt(ev.key, 10);
+  if (!(n >= 1 && n <= 4)) return;
+  var btns = stage.querySelectorAll('.answer');
+  if (!btns.length || n > btns.length) return;
+  ev.preventDefault();
+  btns[n - 1].click();
+});
+
+function bar(label, value, total, tokenVar, isWinner) {
+  var row = make('div', { className: 'dimbar' + (isWinner ? ' is-winner' : '') });
+  row.appendChild(make('span', { className: 'dimbar__name', textContent: label }));
+  var track = make('span', { className: 'dimbar__track' });
+  var fill = make('span', { className: 'dimbar__fill' });
+  fill.style.setProperty('--w', (total ? (value / total * 100) : 0).toFixed(1) + '%');
+  fill.style.setProperty('--hue', 'var(' + tokenVar + ')');
+  track.appendChild(fill);
+  row.appendChild(track);
+  row.appendChild(make('span', { className: 'dimbar__num', textContent: String(value) }));
+  return row;
+}
+
+function renderResult() {
+  var r = result(), t = T();
+  var sk = t.skills[r.skill], dm = t.dims[r.dim];
+  stage.textContent = '';
+
+  var box = make('div', { className: 'quiz__card quiz__card--result' });
+  box.style.setProperty('--hue', 'var(' + DIM_TOKEN[r.dim] + ')');
+
+  box.appendChild(make('p', { className: 'quiz__kicker', textContent: dm.name + ' · ' + dm.line }));
+
+  
+  var card = make('div', { className: 'portraitcard' });
+  var img = make('img', {
+    className: 'portraitcard__img',
+    src: 'assets/img/phd/' + r.skill + '.webp',
+    width: 138, height: 184, alt: '', decoding: 'async'
+  });
+  card.appendChild(img);
+  card.appendChild(make('h3', { className: 'portraitcard__name', textContent: sk.name }));
+  box.appendChild(card);
+
+  var body = make('div', { className: 'result__body' });
+  body.appendChild(make('p', { className: 'result__tag', textContent: sk.tag }));
+  body.appendChild(make('p', { className: 'result__prose', textContent: sk.body }));
+
+  var dl = make('dl', { className: 'result__poles' });
+  dl.appendChild(make('dt', { textContent: t.ui.best }));
+  dl.appendChild(make('dd', { textContent: sk.best }));
+  dl.appendChild(make('dt', { textContent: t.ui.worst }));
+  dl.appendChild(make('dd', { textContent: sk.worst }));
+  body.appendChild(dl);
+  box.appendChild(body);
+
+  
+  var bars = make('div', { className: 'dimbars' });
+  bars.appendChild(make('p', { className: 'dimbars__label', textContent: t.ui.attrs }));
+  var total = 0;
+  DIM_ORDER.forEach(function (k) { total += r.scores.dim[k]; });
+  DIM_ORDER.forEach(function (k) {
+    bars.appendChild(bar(t.dims[k].name, r.scores.dim[k], total, DIM_TOKEN[k], k === r.dim));
+  });
+  box.appendChild(bars);
+
+  var again = make('button', { className: 'quiz__go', type: 'button', textContent: t.ui.again });
+  again.addEventListener('click', renderIntro);
+  box.appendChild(again);
+
+  stage.appendChild(box);
+  box.setAttribute('tabindex', '-1');
+  box.focus({ preventScroll: true });
+  say(status, t.ui.resultWord + '. ' + dm.name + '. ' + sk.name + '. ' + sk.tag + ' ' + sk.body);
+}
+
+
+function counted(t, i) {
+  return t.ui.count.replace('%n', String(i + 1)).replace('%t', String(SCORING.length));
+}
+
+function paintStatic() {
+  var t = T();
+  de.setAttribute('lang', (LANGS.filter(function (l) { return l.code === lang; })[0] || LANGS[0]).html);
+  var m = { 'quiz-h': t.ui.title, 'rail-title': t.ui.rail, 'quiz-note': t.ui.note,
+            'back-link': t.ui.backLink, 'wordmark-gloss': t.ui.gloss };
+  Object.keys(m).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = m[id];
+  });
+  document.title = 'IPPM — ' + t.ui.title;
+  var nav = document.getElementById('langbar');
+  if (nav) nav.setAttribute('aria-label', t.ui.langLabel);
+}
+
+function rerender() {
+  
+  if (!stage.querySelector('.quiz__card')) return renderIntro();
+  if (stage.querySelector('.quiz__card--result')) return renderResult();
+  if (stage.querySelector('.quiz__card--intro')) return renderIntro();
+  renderQuestion(Math.min(answers.length, SCORING.length - 1));
+}
+
+function setLang(code, persist) {
+  if (!COPY[code]) return;
+  lang = code;
+  if (persist) { try { localStorage.setItem(LANG_KEY, code); } catch (e) {} }
+  document.querySelectorAll('[data-lang]').forEach(function (b) {
+    b.setAttribute('aria-pressed', b.getAttribute('data-lang') === code ? 'true' : 'false');
+  });
+  paintStatic();
+  rerender();
+}
+
+(function buildSwitcher() {
+  var host = document.getElementById('langbar');
+  if (!host) return;
+  LANGS.forEach(function (l) {
+    var b = make('button', { className: 'lang', type: 'button', textContent: l.label });
+    b.setAttribute('data-lang', l.code);
+    b.setAttribute('lang', l.html);
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () { setLang(l.code, true); });
+    host.appendChild(b);
+  });
+})();
+
+setLang(lang, false);
+
+})();

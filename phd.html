@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<!-- The lamp is always down in here. This page IS the other room, so it does
-     not read wf-theme and offers no way back to the paper theme — the light
-     scheme has nothing to say about a character sheet. -->
+<!-- Fixed dark. This page ignores wf-theme and offers no way back to the
+     light scheme. -->
 <html lang="en" class="no-js" data-voice="on" data-theme="disco">
 
 <head>
@@ -52,21 +51,18 @@
 
 <header class="masthead">
   <div class="wrap masthead__band">
-    <!-- IPPM, not the name on the CV. This page is its own institution, and
-         the acronym is the four attributes in order. Plain heading rather than
-         a link home: "Back to the record" beside it already says where the way
-         out is, and a masthead reading IPPM that silently navigated to
-         somebody's publication list would be a trapdoor, not a wordmark. -->
-    <!-- The whitespace before the gloss is load-bearing: flex makes the two
-         look like separate lines, but the accessibility tree reads the h1's
-         text, and with no space between them it announced "IPPMIntellect". -->
+    <!-- IPPM = the four attributes in order. Heading, not a link home; the
+         "Back to the record" nav beside it is the way out. -->
+    <!-- Keep the whitespace before the gloss span. Flex renders two lines, but
+         the accessibility tree concatenates the h1 text: without it, screen
+         readers announce "IPPMIntellect". -->
     <h1 class="wordmark">IPPM
       <span class="wordmark__gloss" id="wordmark-gloss">Intellect &middot; Psyche &middot; Physique &middot; Motorics</span></h1>
     <nav class="masthead__nav" aria-label="Sections">
       <a id="back-link" href="index.html">&larr; Back to the record</a>
     </nav>
-    <!-- Built by js/quiz.js so the three buttons cannot exist without the
-         script that makes them do something. -->
+    <!-- Built by js/quiz.js, so the buttons cannot exist without their
+         handlers. -->
     <nav class="langbar" id="langbar" aria-label="Language"></nav>
   </div>
 </header>
@@ -80,8 +76,8 @@
       <div class="record">
         <h2 class="quiz__title" id="quiz-h">What Kind of PhD Are You?</h2>
 
-        <!-- Everything below is built by js/quiz.js. With no JS the section
-             says so rather than presenting a dead page. -->
+        <!-- Built by js/quiz.js; the noscript block stands in when JS is
+             off. -->
         <div id="stage" tabindex="-1">
           <noscript>
             <p class="quiz__lede">This one needs JavaScript — it is a small

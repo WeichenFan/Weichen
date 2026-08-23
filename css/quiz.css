@@ -1,26 +1,19 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    WHAT KIND OF PhD ARE YOU — css/quiz.css
-   Loaded AFTER css/site.css and adds nothing to its token set. The page runs
-   permanently at html[data-theme="disco"], so every colour here resolves
-   through the Lamplight palette that site.css §12 already solved against this
-   ground — including the four attribute hues, which are the four voices:
+   Loads after css/site.css and adds no tokens. Pinned to
+   html[data-theme="disco"], so colours resolve through the Lamplight palette
+   site.css §12 measured on #141B19 — do not add an unmeasured colour.
      Intellect --voice-hlf steel · Psyche --voice-inl violet
      Physique  --voice-rhe blood · Motorics --voice-int brass
-   Nothing in this file introduces a colour that has not already been measured
-   for contrast on #141B19.
-
-   --hue is set per result card from JS and is the ONLY dynamic value; every
-   rule below reads it rather than naming an attribute, so a fifth attribute
-   would need no CSS at all.
+   --hue (set per result card from JS) is the only dynamic value; rules read it
+   instead of naming an attribute, so a fifth attribute needs no CSS.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root{--hue:var(--voice-enc)}
 
 /* ── THE MASTHEAD · a name and its expansion, no controls ───────────────
-   The gloss is set on its own line under the acronym, in the caption register
-   the rest of the site uses for labels. It is not a tooltip: an acronym whose
-   expansion is only available on hover is unreadable on a phone, and these
-   four words are the axes the whole page is scored on. */
+   Gloss on its own line, not a tooltip: hover-only is unreadable on a phone,
+   and these four words are the scoring axes. */
 .wordmark{display:flex;flex-direction:column;gap:2px}
 .wordmark__gloss{
   font:500 var(--t-cap-xs)/var(--lh-cap-xs) var(--mono);
@@ -28,8 +21,7 @@
   color:var(--ink-muted);
 }
 
-/* The rail carries a standing title instead of a speaker, because on this page
-   nothing is speaking — the questions are. Same 176px column, same metric. */
+/* Standing title, not a speaker — same 176px column and metric as the rail. */
 .rail__title{
   font:500 var(--t-cap)/1.5 var(--mono);
   letter-spacing:var(--tr-cap);word-spacing:.08em;text-transform:uppercase;
@@ -50,21 +42,18 @@
 }
 .lang:hover,.lang:focus-visible{color:var(--ink);text-decoration:underline;
   text-decoration-style:dotted;text-underline-offset:4px}
-/* The chosen one is marked by INK plus a solid rule, never by hue — this page
-   spends all four of its colours on the attributes, and a fifth meaning for
-   colour would make the result card's hue ambiguous. */
+/* Selected = ink + solid rule, never hue: the four hues are spent on the
+   attributes, and a fifth meaning would make the result hue ambiguous. */
 .lang[aria-pressed="true"]{
   color:var(--ink);
   text-decoration:underline;text-decoration-style:solid;text-underline-offset:4px;
 }
 
 /* ── CJK ────────────────────────────────────────────────────────────────
-   Newsreader and IBM Plex Mono carry no Han glyphs, so with no stack of its
-   own every Chinese character falls to whatever the browser picks and lands
-   next to Latin text at a different weight and size. The Latin faces stay in
-   FRONT of the CJK ones: mixed strings are the normal case here — "跑
-   baseline", "第 3 题" — and the numerals and English terms should keep the
-   page's own type, with the system CJK face picking up only the Han. */
+   Newsreader and IBM Plex Mono have no Han glyphs; without a stack the browser
+   default lands beside Latin at a different weight and size. Latin stays FIRST
+   so mixed strings ("跑 baseline") keep the page's type and the system face
+   supplies only the Han. */
 html[lang^="zh"]{
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,
          'PingFang SC','PingFang TC','Hiragino Sans GB','Microsoft YaHei',
@@ -73,8 +62,7 @@ html[lang^="zh"]{
           'Songti SC','Songti TC','SimSun','Noto Serif CJK SC',
           'Source Han Serif SC',serif;
 }
-/* Traditional first when the page is in traditional, so 骨/角/戶 and friends
-   take their Taiwan shapes rather than the mainland ones. */
+/* Traditional first under zh-Hant so 骨/角/戶 take Taiwan shapes. */
 html[lang="zh-Hant"]{
   --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,
          'PingFang TC','Heiti TC','Microsoft JhengHei',
@@ -83,20 +71,16 @@ html[lang="zh-Hant"]{
           'Songti TC','PMingLiU','Noto Serif CJK TC',
           'Source Han Serif TC',serif;
 }
-/* Han has no spaces and no descender rhythm to lean on; the Latin leading
-   reads cramped under it. */
+/* Han has no spaces or descender rhythm; the Latin leading reads cramped. */
 html[lang^="zh"] .quiz__lede,
 html[lang^="zh"] .result__prose,
 html[lang^="zh"] .answer{line-height:1.75}
 html[lang^="zh"] .quiz__q{line-height:1.5}
 
-/* NO ITALIC ON HAN. There is no italic Chinese; a browser asked for one
-   shears the glyphs by an angle, which is not a style, it is damage — and it
-   damages only the Han, so a line like "离 camera-ready 还有九十分钟" comes out
-   with the English upright and the Chinese leaning. The tagline still reads
-   as the skill's own voice: it keeps the attribute hue and the serif face,
-   which is the same distinction the rest of the page draws. Emphasis is
-   restored as letterspacing, the way Chinese typography actually marks it. */
+/* NO ITALIC ON HAN: none exists, so the browser shears the glyphs, and only
+   the Han shears — "离 camera-ready 还有九十分钟" ends up English upright, Chinese
+   leaning. Hue and serif still mark the tagline; letterspacing takes over as
+   emphasis. */
 html[lang^="zh"] .result__tag{
   font-style:normal;
   letter-spacing:.04em;
@@ -111,9 +95,8 @@ html[lang^="zh"] .result__tag{
 }
 
 /* ── THE CARD · one at a time, and it never resizes the page ────────────
-   min-height is deliberate. Without it every question of a different length
-   moves the answers up and down under the pointer, and the fifth question in
-   a row lands where the fourth one's third answer just was. */
+   min-height:404px is load-bearing: without it a longer question shifts the
+   answers under the pointer, so the next click hits the wrong one. */
 .quiz__card{
   border:var(--card-border);
   box-shadow:var(--card-shadow);
@@ -134,8 +117,7 @@ html[lang^="zh"] .result__tag{
   font:400 var(--t-body)/var(--lh-body) var(--mono);
   color:var(--ink);max-width:56ch;
 }
-/* The four axes on the intro card. Each carries its own --hue, which is the
-   first place a visitor meets the colour that will come back on their result. */
+/* The four axes, each in its own --hue: first sight of the result colour. */
 .attrs{list-style:none;margin-top:var(--s6);display:grid;gap:var(--s3);
        grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 .attrs__item{border-left:2px solid var(--hue);padding-left:var(--s3)}
@@ -175,7 +157,7 @@ html[lang^="zh"] .result__tag{
 .pip.is-done{background:var(--shadow);box-shadow:none}
 .pip.is-here{background:var(--ink);box-shadow:none}
 
-/* ── THE ANSWERS · four hard cards, reserving their own hover geometry ─── */
+/* ── THE ANSWERS · 2px border + 2px hover offset, so hover never reflows ─ */
 .quiz__answers{list-style:none;display:flex;flex-direction:column;gap:var(--s3);margin-top:auto}
 .answer{
   display:flex;align-items:flex-start;gap:var(--s3);
@@ -195,8 +177,7 @@ html[lang^="zh"] .result__tag{
   transition:transform var(--d-snap) linear,box-shadow var(--d-snap) linear,
              background-color var(--d-snap) linear,border-color var(--d-snap) linear;
 }
-/* The digit is the keyboard shortcut, printed. It is not decoration: 1–4 are
-   bound, and a shortcut nobody can see is a shortcut nobody uses. */
+/* The digit is the keyboard shortcut printed — keys 1–4 are bound in JS. */
 .answer__key{
   flex:none;
   font:500 var(--t-cap)/var(--lh-cap) var(--mono);
@@ -237,16 +218,10 @@ html[lang^="zh"] .result__tag{
   display:block;width:100%;height:auto;
   aspect-ratio:3/4;object-fit:cover;
 }
-/* THE NAME BAND CARRIES ITS OWN GROUND, and that is the whole point of this
-   rule. --mat is the board behind a full-colour raster — site.css §12 solves
-   it for pictures, never for type — and the four attribute hues were measured
-   against the room, the card and the inset, so painting the hue on the mat put
-   the one line every visitor came for at 2.64:1 (Physique) to 3.97:1 (Psyche),
-   all under the 4.5:1 floor, at 11px tracked caps. On --paper-inset, where
-   these hues WERE solved, the same four measure 5.86 / 7.69 / 8.36 / 8.79.
-   Painting the name in --ink would also have cleared it (6.13:1 on the mat)
-   but would have thrown away the one thing the colour is for: on this site
-   hue names the speaker, and here it names the attribute. */
+/* The name band needs its own ground: --mat is solved for rasters, not type.
+   Hue on --mat is 2.64:1 (Physique) to 3.97:1 (Psyche) at 11px tracked caps,
+   under the 4.5:1 floor; on --paper-inset the four are 5.86/7.69/8.36/8.79.
+   --ink clears it too (6.13:1 on the mat) but hue is what names the attribute. */
 .portraitcard__name{
   font:500 var(--t-cap)/var(--lh-cap) var(--mono);
   letter-spacing:var(--tr-cap);word-spacing:.08em;text-transform:uppercase;
@@ -266,9 +241,7 @@ html[lang^="zh"] .result__tag{
   font:400 var(--t-body)/var(--lh-body) var(--mono);
   color:var(--ink);text-wrap:pretty;
 }
-/* Both poles in the SAME weight and the same ink. Setting "at your worst" in a
-   quieter colour would be the page flinching from its own joke — the failure
-   mode is the half worth reading. */
+/* Same weight and ink for both poles — "at your worst" is not set quieter. */
 .result__poles{
   display:grid;grid-template-columns:auto minmax(0,1fr);
   column-gap:var(--s4);row-gap:var(--s2);
@@ -302,8 +275,8 @@ html[lang^="zh"] .result__tag{
 .dimbar__fill{display:block;height:100%;width:var(--w,0%);background:var(--hue);transform-origin:left center}
 .dimbar__num{text-align:right}
 
-/* Bars draw once on reveal. Declared here rather than animated from JS so it
-   costs no listener, and it is skipped entirely under reduced motion. */
+/* Bars draw once on reveal. In CSS, not JS, so it needs no listener; reduced
+   motion skips it. */
 @media (prefers-reduced-motion:no-preference){
   @keyframes bar-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
   .dimbar__fill{animation:bar-draw 520ms var(--ease-out) both}
@@ -324,8 +297,7 @@ html[lang^="zh"] .result__tag{
   .quiz__card{padding:var(--s5) var(--s4);min-height:0}
 }
 @media (max-width:559px){
-  /* The float becomes a stacked block: at 320px a 180px card beside prose
-     leaves a 6-word measure, which is unreadable. */
+  /* Stack instead of float: at 320px a 180px card leaves a 6-word measure. */
   .portraitcard{float:none;width:160px;margin:0 0 var(--s4) 0}
   .result__poles{grid-template-columns:minmax(0,1fr);row-gap:2px}
   .result__poles dd{margin-bottom:var(--s2)}
@@ -333,7 +305,7 @@ html[lang^="zh"] .result__tag{
   .answer{padding:var(--s3)}
 }
 
-/* ── PLAIN VIEW · the game is the voice, so it survives; the ornament goes ─ */
+/* ── PLAIN VIEW · quiz stays, ornament goes ────────────────────────────── */
 html[data-voice="off"] .quiz__note,
 html[data-voice="off"] .rail__title{display:none}
 
@@ -354,7 +326,7 @@ html[data-voice="off"] .rail__title{display:none}
   .portraitcard__name{color:CanvasText;border-top-color:CanvasText}
 }
 
-/* ── PRINT · a result is worth printing; a questionnaire is not ─────────── */
+/* ── PRINT · result only, not the questionnaire ────────────────────────── */
 @media print{
   .quiz__answers,.quiz__progress,.quiz__go,.quiz__back,.quiz__note,
   .masthead__nav,.skip{display:none!important}

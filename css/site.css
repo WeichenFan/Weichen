@@ -1,9 +1,10 @@
 @charset "utf-8";
 /* ═══════════════════════════════════════════════════════════════════════════
    THE TRANSCRIPT — Weichen Fan
-   Upright monospace is the record. Cursive-italic serif is the thought.
-   Colour identifies WHO IS SPEAKING and nothing else.
-   Emphasis is never dimming: a lowered voice loses its COLOUR, never contrast.
+
+   Invariants: upright mono is the record, cursive-italic serif is the thought;
+   colour identifies the speaker and nothing else; de-emphasis removes COLOUR,
+   never contrast.
 
    (1) reset  (2) tokens  (3) base type  (4) layout  (5) components
    (6) texture  (7) @supports  (8) breakpoints  (9) PLAIN VIEW
@@ -52,12 +53,10 @@ details summary::-webkit-details-marker{display:none}
   --voice-vis:#2E5A55;      /*  6.74:1 VISUAL CALCULUS (pixels)       */
   --voice-int:#7A5C18;      /*  5.42:1 INTERFACING (systems, robots)  */
   --voice-rhe:#7A2B25;      /*  8.30:1 RHETORIC    (the objector)     */
-  /* The two LAMPLIGHT-only faculties. They never render in this theme —
-     GAMES and MUSIC are display:none here — but a --speaker resolving to an
-     undefined custom property is an invalid value, so both are carried at
-     full strength rather than left to fall back. Adding them keeps the
-     palette's mutual-dE floor at the shipped 0.0548 exactly: every new pair
-     separates further than the binding enc–vis pair already did. */
+  /* Lamplight-only faculties, defined here because a --speaker resolving to an
+     undefined custom property is an invalid value; GAMES and MUSIC are
+     display:none in this theme. Palette mutual-dE floor stays at 0.0548,
+     still set by the enc–vis pair. */
   --voice-hlf:#264057;      /*  9.35:1 HALF LIGHT    (the shooters)   */
   --voice-inl:#4C2F6B;      /*  9.48:1 INLAND EMPIRE (the dreaming)   */
   --speaker:var(--voice-enc);
@@ -69,7 +68,7 @@ details summary::-webkit-details-marker{display:none}
   --t-cap:11px;    --lh-cap:16px;    --tr-cap:.16em;
   --t-link:12px;   --lh-link:18px;
   --t-meta:13px;   --lh-meta:20px;
-  --t-body:14px;   --lh-body:20px;   /* pi's exact metric, unchanged */
+  --t-body:14px;   --lh-body:20px;   /* fixed — do not retune */
   --t-voice:16px;  --lh-voice:26px;
   --t-org:18px;    --lh-org:26px;
   --t-title:20px;  --lh-title:28px;
@@ -103,17 +102,15 @@ details summary::-webkit-details-marker{display:none}
   --texture:1;
 }
 
-/* ── DERIVED · every one of these resolves back to a token above.
-      They exist so the hairline and the bullets stay on the column
-      boundary automatically when --rail / --gap change at a breakpoint. */
+/* ── DERIVED · all resolve back to a token above, so the hairline and the
+      bullets track the column boundary when --rail / --gap change. */
 :root{
   --wrap-max:1280px;
   --wrap-pad:clamp(20px,5vw,96px);
 
-  /* The band is exactly rail + gap + measure — 176 + 32 + 720 = 928, the
-     verbatim token above. Re-derived so the masthead rule, the section
-     rules and the colophon band stay flush with the grid when --rail and
-     --gap shrink at a breakpoint, instead of overhanging into the void. */
+  /* rail + gap + measure = 176 + 32 + 720 = 928, the literal token above.
+     Re-derived so the masthead rule, the section rules and the colophon band
+     stay flush with the grid when --rail and --gap shrink at a breakpoint. */
   --band:calc(var(--rail) + var(--gap) + var(--measure));
 
   /* .record = 1px border + 31px padding, so 1+31 = the 32px gap and
@@ -127,8 +124,8 @@ details summary::-webkit-details-marker{display:none}
   --bullet:6px;
   --stamp-col:96px;     /* logo column inside a .position row */
 
-  /* Distance from the .record border-box left edge (= the hairline)
-     to the .entry PADDING box left edge — the origin for position:absolute:
+  /* .record border-box left edge (the hairline) to the .entry PADDING box left
+     edge — the origin for position:absolute:
         record-pad + border(1) − bleed + ring   =  31 + 1 − 16 + 2 = 18px  */
   --rail-inset:calc(var(--record-pad) + 1px - var(--entry-bleed) + var(--entry-ring));
   /* Pull the bullet back so its 6px centre sits on the 1px rule's centre. */
@@ -147,20 +144,10 @@ details summary::-webkit-details-marker{display:none}
 [data-speaker="interfacing"]{--speaker:var(--voice-int)}
 [data-speaker="rhetoric"]{--speaker:var(--voice-rhe)}
 
-/* The LAMPLIGHT bench. Encyclopedia and Rhetoric sit on both benches and keep
-   their hue in both; the other four are one-theme faculties.
-
-   ELECTROCHEMISTRY reuses Interfacing's brass and SHIVERS reuses Visual
-   Calculus's verdigris ON PURPOSE, and it does not break "colour identifies
-   the speaker": the two pairs can never appear in the same view. Interfacing
-   and Visual Calculus speak only inside WORK, which is display:none under
-   Lamplight; Electrochemistry and Shivers speak only inside GAMES and MUSIC,
-   which are display:none outside it. Four hues serve six faculties without a
-   single ambiguous line on screen.
-
-   HALF LIGHT and INLAND EMPIRE do get their own, because Rhetoric IS on
-   screen beside them — it objects to two of the games — and a fifth voice in
-   oxblood would have been the one real collision. */
+/* The LAMPLIGHT bench. Encyclopedia and Rhetoric keep their hue in both themes.
+   Electrochemistry reuses Interfacing's brass and Shivers Visual Calculus's
+   verdigris: those pairs can never co-occur (WORK is display:none under
+   Lamplight, GAMES/MUSIC display:none outside it). */
 [data-speaker="half-light"]{--speaker:var(--voice-hlf)}
 [data-speaker="inland-empire"]{--speaker:var(--voice-inl)}
 [data-speaker="electrochemistry"]{--speaker:var(--voice-int)}
@@ -227,8 +214,8 @@ summary:focus-visible,
 
 .wrap{max-width:var(--wrap-max);margin-inline:auto;padding-inline:var(--wrap-pad)}
 
-/* Rail 176 + gap 32 + measure 720 = the 928px band. Everything to the right
-   of it is void, and the void is the design: it is never filled. */
+/* Rail 176 + gap 32 + measure 720 = the 928px band. Everything right of it
+   stays empty by design. */
 .transcript{
   display:grid;
   grid-template-columns:var(--rail) minmax(0,var(--measure));
@@ -249,8 +236,8 @@ summary:focus-visible,
 .section{margin-top:var(--s9);scroll-margin-top:var(--s9)}
 .section--overture{margin-top:var(--s10)}
 
-/* One hairline across the whole band opens each section, and the vertical
-   rule rises to meet it at a T so the two reads as one ruled sheet. */
+/* One hairline across the band opens each section; the vertical rule meets
+   it at a T. */
 .section:not(.section--overture) .transcript{border-top:var(--hair)}
 .section:not(.section--overture) .rail,
 .section:not(.section--overture) .record{padding-top:var(--s3)}
@@ -282,9 +269,8 @@ summary:focus-visible,
 .masthead__nav{display:flex;flex-wrap:wrap;gap:var(--s5)}
 .masthead__nav a{font:400 var(--t-link)/var(--lh-link) var(--mono)}
 
-/* Two masthead controls, opposite directions, one shared register:
-   CROSS-EXAMINE turns the harshest voice up; PLAIN VIEW removes every voice.
-   Only the rightmost one carries the band-edge margin. */
+/* CROSS-EXAMINE raises one voice, PLAIN VIEW removes them all. Only the
+   rightmost control carries the band-edge margin. */
 .crossexam{
   margin-left:auto;
   padding:6px 0;
@@ -334,11 +320,11 @@ html[data-voice="off"] .plainview__box{background:var(--ink)}
   margin-bottom:var(--s3);
 }
 
-/* Fragment aliases for the previous site's #about / #Experience /
-   #publications. Zero-size, out of the a11y tree, but a valid scroll target. */
+/* Fragment aliases for the old #about / #Experience / #publications URLs:
+   zero-size, out of the a11y tree, still a valid scroll target. */
 .anchor-alias{display:block;height:0;scroll-margin-top:96px}
 
-/* ── VOICE LINE · the whole conceit, in six declarations ── */
+/* ── VOICE LINE ───────────────────────────────────────── */
 .voice{
   margin-top:10px;
   color:var(--speaker);           /* the name and the dash, by inheritance */
@@ -350,10 +336,8 @@ html[data-voice="off"] .plainview__box{background:var(--ink)}
   vertical-align:baseline;
 }
 b.voice__who--static{cursor:default}
-/* A dotted rule on hover says "this name is a control" without adding an icon,
-   a tooltip or a legend; it resolves to the solid rule of the pressed state,
-   so the affordance and the state are the same mark at two weights.
-   button: only — RHETORIC's <b> speaker is not a control. */
+/* Dotted on hover, solid when pressed. button: only — RHETORIC's <b> speaker
+   is not a control. */
 button.voice__who:hover,.rail__speaker:hover{
   text-decoration:underline;text-decoration-style:dotted;
   text-decoration-thickness:1px;text-underline-offset:4px;
@@ -368,15 +352,15 @@ button.voice__who[aria-pressed="true"]:hover,
   text-decoration-thickness:1px;text-underline-offset:4px;
 }
 .voice__dash{margin-inline:.42em;user-select:none}
-/* If color-mix is unsupported the declaration drops and the prose simply
-   inherits var(--speaker) from .voice — a graceful, still-correct fallback. */
+/* Without color-mix the declaration drops and the prose inherits
+   var(--speaker) from .voice. */
 .voice__prose{
   font:italic 400 var(--t-voice)/var(--lh-voice) var(--serif);
   color:color-mix(in oklab,var(--speaker) 82%,var(--ink));
 }
 
-/* Section leads are SPLIT: the name stands in the rail, the em-dash and the
-   prose stand in the record. Flex gives the dash a true hanging position. */
+/* Section leads are SPLIT: name in the rail, em-dash and prose in the record.
+   Flex hangs the dash. */
 .voice--lead{
   display:flex;align-items:baseline;gap:.42em;
   margin-top:0;margin-bottom:var(--s5);
@@ -384,15 +368,9 @@ button.voice__who[aria-pressed="true"]:hover,
 .voice--lead .voice__who{flex:none}
 .voice--lead .voice__dash{flex:none;margin-inline:0}
 .voice--lead .voice__prose{flex:1 1 auto;min-width:0}
-/* THE OVERTURE LEAD IS THE THESIS, SET AT DISPLAY SIZE.
-   The design's whole argument is "upright mono is the record, cursive italic
-   is the thought". At 16px against 14px that is a caption, not an opposition.
-   Here the voice meets the wordmark at the same 30px — one roman, one cursive
-   — and the mono bio immediately beneath it reads as the record BENEATH the
-   voice, with no interaction and no motion. It happens exactly once: WORK,
-   RECORD and CONTACT stay at 16/26, so this is an event, not a new tier.
-   The speaker's name stays ON the line it speaks, at every width — the rail
-   here belongs to the portrait. */
+/* The overture lead runs at the wordmark's 30px, not the 16px the other leads
+   use. One-off: WORK, RECORD and CONTACT stay at 16/26. Its speaker name is
+   inline at every width — the rail here belongs to the portrait. */
 .section--overture .voice--lead{
   display:block;margin-bottom:var(--s5);
   text-indent:0;
@@ -406,11 +384,9 @@ button.voice__who[aria-pressed="true"]:hover,
 }
 
 /* WORK / RECORD / CONTACT leads carry BOTH speaker names in the DOM and show
-   exactly one, so there is never a second tab stop and never a bare em dash.
-   The default is "inline name hidden, rail speaks"; the SINGLE max-width:999px
-   block below flips both halves together. One query, so there is no fractional
-   band (999.2px at 125% zoom) where neither matches and the name prints twice.
-   The overture is exempt: its name is always inline — see below. */
+   exactly one — no second tab stop, no bare em dash. ONE max-width:999px
+   block flips both halves; two queries leave a fractional band (999.2px at
+   125% zoom) where neither matches and the name prints twice. */
 .voice--lead>.voice__who{display:none}
 
 .rail__speaker{
@@ -423,24 +399,20 @@ button.voice__who[aria-pressed="true"]:hover,
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;
 }
 
-/* FACULTY FOCUS · one voice louder, the rest to a murmur.
-   De-emphasis removes COLOUR (--ink-muted, 5.82:1) and never contrast. */
+/* FACULTY FOCUS · one voice raised, the rest dimmed. De-emphasis removes
+   COLOUR (--ink-muted, 5.82:1), never contrast. */
 main[data-focus] .voice,
 main[data-focus] .rail__speaker{color:var(--ink-muted);transition:color var(--d-state) var(--ease-out)}
 main[data-focus] .voice .voice__prose{color:var(--ink-muted);transition:color var(--d-state) var(--ease-out)}
 
-/* THE RESTORE LIST · ONE LINE PER FACULTY, and every faculty must appear.
-   CSS cannot say "the speaker that equals [data-focus]" — there is no way to
-   compare two attribute values — so this list has to be written out, and a
-   faculty missing from it is not styled wrong, it is INERT: the dim rule
-   above still greys the whole page while the voice that was raised stays
-   grey with it, and the status region announces a raise that did not happen.
-   Adding a faculty means adding a line to this block, to the .voice__prose
-   block under it, and to the forced-colors copy in §11.
+/* THE RESTORE LIST · one line per faculty; every faculty must appear. CSS
+   cannot compare two attribute values, so a faculty missing here is INERT,
+   not merely unstyled: the dim rule greys the page and the "raised" voice
+   stays grey with it. Adding one means a line here, in .voice__prose below,
+   and in the forced-colors copy in §11.
      encyclopedia · visual-calculus · interfacing · rhetoric   — the CV bench
      half-light · inland-empire · electrochemistry · shivers   — the Lamplight bench
-   :is() collapses the .voice/.rail__speaker pair without changing specificity
-   (both arms are 0,1,0), so each faculty costs one line instead of two. */
+   :is() keeps both arms at 0,1,0, so one line per faculty, not two. */
 main[data-focus="encyclopedia"]    :is(.voice,.rail__speaker)[data-speaker="encyclopedia"],
 main[data-focus="visual-calculus"] :is(.voice,.rail__speaker)[data-speaker="visual-calculus"],
 main[data-focus="interfacing"]     :is(.voice,.rail__speaker)[data-speaker="interfacing"],
@@ -462,9 +434,9 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 }
 
 /* ── ENTRY · the one card on the page ─────────────────── */
-/* Rest state RESERVES the hover geometry: 12/16 padding, an equal and
-   opposite -16 inline margin, and a 2px transparent border. Hover swaps
-   COLOUR and adds transform + shadow. Zero pixels move. */
+/* Rest state RESERVES the hover geometry: 12/16 padding, equal-and-opposite
+   -16 inline margin, 2px transparent border. Hover only swaps colour and adds
+   transform + shadow, so no layout moves. */
 .entry{
   position:relative;
   padding:var(--entry-pad-y) var(--entry-pad-x);
@@ -492,7 +464,7 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
   left:var(--bullet-pull);
   top:calc(var(--entry-pad-y) + 11px);
   width:var(--bullet);height:var(--bullet);
-  background:var(--ink);      /* default is TICKED — a finished ledger */
+  background:var(--ink);      /* default is TICKED; §7 animates it in */
 }
 .position .entry__bullet{top:calc(var(--entry-pad-y) + 9px)}
 
@@ -512,7 +484,7 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 .entry__authors b{font-weight:600;color:var(--ink)}
 .entry__authors--long{overflow-wrap:anywhere}
 
-/* Lowercase is never tracked — this is a sentence, not a label. */
+/* Lowercase is never tracked: a sentence, not a label. */
 .footnote{
   font:400 var(--t-cap)/var(--lh-cap) var(--mono);
   letter-spacing:0;word-spacing:normal;
@@ -523,7 +495,7 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 }
 
 /* ── VENUE STAMP · solid = refereed, dashed = preprint. The words carry it
-      independently of the border, so hue is never the channel. ─────────── */
+      independently of the border; hue is never the channel. ──────────── */
 .stamp-venue{
   flex:none;
   font:500 var(--t-cap)/var(--lh-cap) var(--mono);
@@ -568,24 +540,21 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 .refile label::before{content:"\25AF";margin-right:.5em;letter-spacing:0}
 .refile input:checked+label{color:var(--ink)}
 .refile input:checked+label::before{content:"\25AE"}
-/* Repeat with the alt-text form so the decorative glyph stays OUT of the
-   accessible name. Declared second: engines that do not parse `content/alt`
-   drop this rule and keep the plain glyph above. */
+/* Repeat with the alt-text form to keep the glyph OUT of the accessible name.
+   Declared second so engines without `content/alt` keep the plain glyph. */
 .refile label::before{content:"\25AF" / ""}
 .refile input:checked+label::before{content:"\25AE" / ""}
-/* Radios are hidden by zeroing them IN FLOW, not by .sr-only's absolute
-   positioning: four absolutely-positioned radios all sit at the strip's left
-   edge, so arrow-keying to the last one scrolls the strip to the wrong place. */
-/* 1px, not 0: a zero-sized control is the one hiding technique that sits
-   next to display:none on every AT blacklist. 1px keeps a real layout box,
-   so focus scrolls to the chip the radio actually belongs to. */
+/* Zeroed IN FLOW, not hidden with .sr-only's absolute positioning:
+   absolutely-positioned radios all sit at the strip's left edge, so
+   arrow-keying to the last one scrolls the strip to the wrong place. */
+/* 1px, not 0: AT filters out zero-sized controls much as it does
+   display:none. 1px keeps a layout box, so focus scrolls to the right chip. */
 .refile input[type="radio"]{
   position:static;width:1px;height:1px;padding:0;border:0;
   opacity:0;appearance:none;-webkit-appearance:none;
   clip:auto;clip-path:none;overflow:visible;
-  /* Back in flow it is a flex item, so it would otherwise buy a second
-     column-gap and push [ examine all ] onto a row of its own. Cancel the
-     gap between the radio and the label it belongs to. */
+  /* In flow it is a flex item and buys a second column-gap, pushing
+     [ examine all ] onto a row of its own. Cancel the gap to its label. */
   margin:0 calc(var(--s4) * -1 - 1px) 0 0;
 }
 .refile__all{margin-left:auto;flex:none;white-space:nowrap}
@@ -611,18 +580,15 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 }
 .btn:hover,.btn:focus-visible{text-decoration-thickness:2px}
 
-/* Inline flow, not flex. As flex items the middots were independent boxes and
-   orphaned onto the next line when a row wrapped. In inline flow the markup's
-   own whitespace does the work: there is no space between a link and the
-   middot that follows it (so they cannot be split) and there IS one before the
-   next link (so that is where the line breaks). */
+/* Inline flow, not flex: as flex items the middots are independent boxes and
+   orphan onto the next line when a row wraps. In inline flow the markup's own
+   whitespace controls breaking — no space before a middot, one after it. */
 .linkrow{
   font:400 var(--t-link)/calc(var(--lh-link) + 6px) var(--mono);
   margin-top:var(--s3);
 }
-/* .6em is IBM Plex Mono's advance width — exactly the collapsed word space
-   that follows the middot in the markup, so the separator sits symmetrically
-   without reintroducing a break opportunity on its left. */
+/* .6em is IBM Plex Mono's advance width, matching the collapsed word space
+   after the middot — symmetric without a break opportunity on its left. */
 .linkrow .sep{margin-inline:.6em 0;color:var(--ink-muted)}
 .linkrow--primary{margin-top:var(--s4)}
 
@@ -633,10 +599,9 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
   color:var(--ink-muted);margin-top:var(--s3);
 }
 
-/* THE PORTRAIT · a studio headshot on plain white. multiply dissolves the
-   white ground into the parchment instead of punching a hole in it; the
-   wrapper is isolated AND carries --paper so the blend has the right
-   backdrop and cannot escape to the body. */
+/* THE PORTRAIT · studio headshot on white. multiply dissolves the white ground
+   into the parchment; the wrapper is isolated AND carries --paper so the blend
+   has the right backdrop and cannot escape to the body. */
 .portrait{
   width:168px;height:208px;
   margin:0 0 var(--s3) auto;
@@ -648,10 +613,8 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
   transform:rotate(var(--tilt,-.4deg));   /* JS writes --tilt; static, so
                                              reduced-motion does not apply */
 }
-/* Always full colour — the one photograph of a person on the page is never
-   drained. multiply still dissolves the white studio ground into the
-   parchment; against a ground this light it costs the skin tones almost
-   nothing (mean luminance drops under 6%). */
+/* Always full colour. multiply still dissolves the white studio ground and
+   costs the skin tones under 6% mean luminance on a ground this light. */
 .portrait img{
   width:100%;height:100%;
   object-fit:cover;object-position:50% 30%;
@@ -659,8 +622,8 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 }
 
 /* ── AFFIXED STAMPS · the four logos, in the record column ────────────── */
-/* They are wide lockups on white, not square marks: a 96px column to the
-   left of the organisation name reads as a mark affixed to the sheet. */
+/* Wide lockups on white, not square marks — hence a 96px column to the left
+   of the organisation name. */
 .position{
   display:grid;
   grid-template-columns:var(--stamp-col) minmax(0,1fr);
@@ -704,9 +667,8 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 /* ── PHOTOSTAT STRIP AND EXAMINED PLATE ───────────────── */
 .plate{position:relative;isolation:isolate;margin-top:var(--s3)}
 
-/* OPEN is the default state, so a no-JS reader never loses a figure.
-   CONTAIN on a mat: the real teasers run 1.68:1 to 3.41:1 and cover
-   would slice figure content out of the widest ones. */
+/* OPEN is the default so a no-JS reader never loses a figure. CONTAIN on a
+   mat: the teasers run 1.68:1 to 3.41:1 and cover would slice the widest. */
 .plate__img,
 html.js .plate.is-examined .plate__img{
   width:100%;height:auto;max-height:340px;
@@ -718,8 +680,8 @@ html.js .plate.is-examined .plate__img{
   filter:grayscale(0) saturate(.86) contrast(1.04);
   transition:filter var(--d-plate) var(--ease-out);
 }
-/* CLOSED is a 56px sliver — explicitly a sample, never the information,
-   so cover is correct here. Applied only when JS can reopen it. */
+/* CLOSED is a 56px sliver — a sample, not the information, so cover is right
+   here. Applied only when JS can reopen it. */
 html.js .plate__img{
   height:56px;max-height:none;
   object-fit:cover;
@@ -762,9 +724,9 @@ html.js .plate__img{
 .entry.is-talked-over>.voice .voice__prose{color:var(--ink-muted)}
 
 /* ── THE INK TRAIL ────────────────────────────────────────────────────────
-      A fixed canvas under the grain, so the fibre sits ON the ink exactly as
-      it sits on every other mark. JS creates it; it never exists without a
-      fine pointer, and never under reduced motion. */
+      Fixed canvas under the grain, so the fibre sits on the ink as it does on
+      every other mark. JS creates it: never without a fine pointer, never
+      under reduced motion. */
 .trail{
   position:fixed;inset:0;
   width:100%;height:100%;    /* a <canvas> is REPLACED: without an explicit
@@ -775,8 +737,7 @@ html.js .plate__img{
   contain:layout style paint;   /* deliberately NOT `strict` — no size containment */
 }
 
-/* ── THE WAY THROUGH ──────────────────────────────────────────────────────
-      Same hairline as the transcript rule, same ink square as the bullets. */
+/* ── THE WAY THROUGH · same hairline and ink square as the transcript ──── */
 .lock{display:none}                      /* JS-only: never an empty box */
 html.js .lock{display:block}
 html.no-js .lock,
@@ -817,9 +778,8 @@ html[data-voice="off"] .lock{display:none}
 .lock__won{margin-top:var(--s4)}
 .lock__won[hidden]{display:none}
 
-/* The bypass is a real tab stop, so it must be visible when it is focused —
-   otherwise a keyboard user tabs into nothing. Same reveal-on-focus pattern
-   as the skip link. */
+/* A real tab stop, so it must become visible on focus or keyboard users tab
+   into nothing. Same reveal-on-focus pattern as the skip link. */
 #lock-bypass:focus-visible{
   position:static;width:auto;height:auto;margin:var(--s3) 0 0;
   clip:auto;clip-path:none;overflow:visible;white-space:normal;
@@ -847,10 +807,9 @@ html[data-voice="off"] .lock{display:none}
   background-image:var(--plate-src,none);
   background-repeat:no-repeat;
   /* --img-x/--img-y/--img-w are the DRAWN image rect, measured by JS on enter.
-     A percentage background-size here would resolve against the 148px disc,
-     not the plate — which shrinks the figure instead of magnifying it. The
-     centring constant is 72px, not 74px: the background positioning area is
-     the padding box (148 − 2×2px border). */
+     A percentage background-size would resolve against the 148px disc, not
+     the plate. Centring constant is 72px, not 74px: the background
+     positioning area is the padding box (148 − 2×2px border). */
   background-size:calc(var(--img-w,100px) * 2.2) auto;
   background-position:
     calc(72px - (var(--lx,0px) - var(--img-x,0px)) * 2.2)
@@ -891,7 +850,7 @@ html[data-voice="off"] .lock{display:none}
   column-gap:var(--s6);row-gap:var(--s5);
   padding-block:var(--s5);
 }
-/* The inset band stops at the 928 boundary — the void is never filled. */
+/* The inset band stops at the 928 boundary. */
 .colophon__band::before{
   content:"";position:absolute;top:0;bottom:0;left:var(--wrap-pad);
   width:min(100% - 2 * var(--wrap-pad),var(--band));
@@ -904,24 +863,23 @@ html[data-voice="off"] .lock{display:none}
 .colophon__text p+p{margin-top:var(--s1)}
 .colophon__rights{font:400 var(--t-meta)/var(--lh-meta) var(--mono);color:var(--ink)}
 
-/* The printer's device hangs only when the lamp is down — by day the page is
-   a specification and a painted emblem would be the one ornament on it. */
+/* The printer's device shows only under Lamplight. */
 .seal{display:none}
 html[data-theme="disco"] .seal{
   display:block;width:44px;height:auto;
   margin:0 0 var(--s3);
   opacity:.92;
 }
-/* Ornament, so it goes wherever the conceit goes: PLAIN VIEW strips it, and
-   it never prints. Both need theme specificity to beat the rule above. */
+/* PLAIN VIEW strips it and it never prints. Both need theme specificity to
+   beat the rule above. */
 html[data-theme="disco"][data-voice="off"] .seal,
 html[data-theme="disco"].no-js .seal{display:none}
 @media print{
   html[data-theme="disco"] .seal{display:none!important}
 }
 
-/* The third-party widget is quarantined: fixed box, height reserved so the
-   async script cannot shift a single pixel. */
+/* Quarantined third-party widget: fixed box, height reserved so the async
+   script cannot shift a pixel. */
 .colophon__widget{
   flex:none;max-width:180px;
   margin-right:max(0px,calc(100% - var(--band)));
@@ -941,7 +899,7 @@ html[data-theme="disco"].no-js .seal{display:none}
 
 /* ═══ 6 · TEXTURE ════════════════════════════════════════════════════════ */
 /* Five layers, all pointer-events:none, none repainting on scroll, every
-   opacity scaled by the single --texture dial. No image is downloaded. */
+   opacity scaled by the --texture dial. No image downloaded. */
 
 .grain{
   position:fixed;inset:0;z-index:var(--z-texture);
@@ -963,7 +921,7 @@ html[data-theme="disco"].no-js .seal{display:none}
   mix-blend-mode:multiply;
   opacity:calc(.035 * var(--texture));
 }
-/* Teal-green vignette, not black: oil shadow rather than a photo filter. */
+/* Teal-green vignette, not black. */
 .mottle::after{
   content:"";position:absolute;inset:0;
   background:radial-gradient(120% 92% at 50% 38%,transparent 52%,rgba(56,66,63,.11) 100%);
@@ -971,8 +929,8 @@ html[data-theme="disco"].no-js .seal{display:none}
   opacity:var(--texture);
 }
 
-/* Two creases, scrolling with the sheet. A dark stop immediately followed
-   by a light stop is exactly how a real fold reads. */
+/* Two creases, scrolling with the sheet: a dark stop immediately followed by
+   a light stop. */
 .fold{
   position:absolute;left:0;right:0;height:3px;
   z-index:calc(var(--z-texture) - 2);
@@ -983,8 +941,7 @@ html[data-theme="disco"].no-js .seal{display:none}
 .fold--a{top:34%}
 .fold--b{top:68%}
 
-/* Images sit IN the paper, not on it: the same fibre tile runs across the
-   boundary between page and picture. */
+/* The same fibre tile runs across the page/picture boundary. */
 .plate::after,.portrait::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background-image:var(--fibre);
@@ -1003,9 +960,8 @@ html[data-theme="disco"].no-js .seal{display:none}
   .entry:has(>.objection[open])>.voice .voice__prose{color:var(--ink-muted)}
 }
 
-/* THE RULE INKS IN / THE BULLETS TICK · pure CSS, no listener, no observer.
-   Without animation-timeline the rule is a uniform hairline and every
-   bullet is already solid — the page simply looks finished. */
+/* THE RULE INKS IN / THE BULLETS TICK · scroll timelines, no JS. Without
+   animation-timeline the rule is a uniform hairline and bullets stay solid. */
 @supports (animation-timeline:view()){
   @media (prefers-reduced-motion:no-preference){
     /* Longhands only: the `animation` shorthand would reset duration to 0s
@@ -1032,8 +988,8 @@ html[data-theme="disco"].no-js .seal{display:none}
 @keyframes ink{from{--p:0%}to{--p:100%}}
 @keyframes tick{from{background-color:var(--paper)}to{background-color:var(--ink)}}
 
-/* SCUMBLED CARD EDGE · a border-only ::before, four seeds cycled so no two
-   cards break identically. Text and images are never inside the filter. */
+/* SCUMBLED CARD EDGE · border-only ::before, four seeds cycled. Text and
+   images are never inside the filter. */
 @supports (filter:url(#wobble0)){
   @media (min-width:900px) and (hover:hover){
     .entry::before{
@@ -1050,8 +1006,8 @@ html[data-theme="disco"].no-js .seal{display:none}
   }
 }
 
-/* Five bright rectangles would punch holes in the parchment without
-   multiply. Outline, not border, so the fallback shifts nothing. */
+/* Without multiply, five bright rectangles punch holes in the parchment.
+   Outline, not border, so the fallback shifts nothing. */
 @supports not (mix-blend-mode:multiply){
   .portrait img,.position>.stamp{
     mix-blend-mode:normal;
@@ -1064,17 +1020,16 @@ html[data-theme="disco"].no-js .seal{display:none}
 
 /* ═══ 8 · BREAKPOINTS ════════════════════════════════════════════════════ */
 
-/* 1000–1199px · the void shrinks but survives. The portrait shrinks with the
-   rail: at 168px in a 140px column it overhangs the gutter and its 6px offset
-   shadow lands on the hairline. */
+/* 1000–1199px · the portrait must shrink with the rail: at 168px in a 140px
+   column it overhangs the gutter and its 6px offset shadow lands on the
+   hairline. */
 @media (max-width:1199px){
   :root{--rail:140px;--gap:28px}
   .portrait{width:132px;height:164px}
 }
 
 /* 760–999px · the grid collapses and the speaker name becomes an inline
-   lead-in on the voice line itself — which is the Disco Elysium source
-   format, so the degradation is not a compromise. No DOM is moved. */
+   lead-in on the voice line itself. No DOM is moved. */
 @media (max-width:999px){
   :root{--record-pad:17px}
   .transcript{grid-template-columns:minmax(0,1fr);max-width:var(--measure)}
@@ -1091,11 +1046,11 @@ html[data-theme="disco"].no-js .seal{display:none}
   .position{--stamp-col:80px}
 }
 
-/* ≤759px · one hand, one column. */
+/* ≤759px · one column. */
 @media (max-width:759px){
   :root{--t-voice:15px;--lh-voice:24px;--t-title:18px;--lh-title:26px;--t-word:26px;--lh-word:26px}
-  /* No hamburger: the wordmark takes the first line, then four short words
-     share the second. No `order` anywhere — tab order must equal visual. */
+  /* Wordmark takes the first line, four short words share the second. No
+     `order` anywhere — tab order must equal visual order. */
   .masthead__band{padding-top:var(--s7);column-gap:var(--s5);row-gap:var(--s4)}
   .wordmark{flex:1 1 100%}
   .plainview{padding-left:var(--s5)}
@@ -1128,9 +1083,8 @@ html[data-theme="disco"].no-js .seal{display:none}
     border:var(--card-border);box-shadow:var(--plate-shadow);
     filter:grayscale(0) saturate(.86) contrast(1.04);
   }
-  /* …so the examine controls have nothing left to do. An inert control that
-     still says "[ close ]" is worse than no control: remove them, and remove
-     the middot that would be left hanging in front of each one. */
+  /* The examine controls are now inert, so remove them — and the middot that
+     would be left hanging in front of each one. */
   [data-examine],#examine-all{display:none}
   .linkrow .sep:has(+ [data-examine]){display:none}
 }
@@ -1144,16 +1098,15 @@ html[data-theme="disco"].no-js .seal{display:none}
   .plainview,.crossexam{padding-block:14px}
   .voice__who,.rail__speaker{padding-block:8px}
   /* .linkrow is inline flow, and vertical padding on an INLINE box does not
-     grow the line box — two wrapped rows would overlap by ~18px and steal each
-     other's hits. Leading, not padding, is what separates them here. */
+     grow the line box — two wrapped rows overlap by ~18px and steal each
+     other's hits. Use leading instead. */
   .linkrow{line-height:44px}
 }
 
 
 /* ═══ 9 · PLAIN VIEW ═════════════════════════════════════════════════════ */
-/* One designed state serving three paths: the toggle, the no-JS rendering
-   and (below) print. Not one byte of information disappears — the facts
-   were never inside the voices. */
+/* One state serving three paths: the toggle, the no-JS rendering and print.
+   No information is lost; the facts were never inside the voices. */
 
 html[data-voice="off"] .voice,
 html.no-js .voice,
@@ -1194,10 +1147,9 @@ html.no-js .colophon__widget{margin-right:max(0px,calc(100% - var(--measure)))}
 
 html[data-voice="off"] .stamp-legend{margin-bottom:var(--s5)}
 
-/* The rail is empty in every section but the overture once the speaker names
-   are gone, and an empty 12px block above each section reads as a mis-set
-   row. :has() removes it; the padding reset is the fallback where it is not
-   supported. */
+/* With the speaker names gone the rail is empty outside the overture, leaving
+   an empty 12px block above each section. :has() removes it; the padding reset
+   is the fallback. */
 html[data-voice="off"] .section:not(.section--overture) .rail,
 html.no-js .section:not(.section--overture) .rail{padding-top:0}
 @supports selector(:has(*)){
@@ -1228,7 +1180,7 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
   }
 
   body{background:#fff;color:#000}
-  /* .btn goes too: [ examine ] / [ cite ] / [ copy ] are dead ink on paper. */
+  /* .btn too: [ examine ] / [ cite ] / [ copy ] do nothing on paper. */
   .grain,.mottle,.fold,.skip,.refile,.colophon__widget,.loupe,.trail,.lock,
   .voice,.rail__speaker,.objection,.entry__bullet,.plainview,.crossexam,.lamplight,
   .masthead__nav,.plate::after,.portrait::after,.btn,.cite-out,
@@ -1260,8 +1212,8 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
     box-shadow:none!important;padding:6px!important;background:#fff!important;
   }
 
-  /* The bio and the primary link row carry the advisor and lab URLs, which
-     appear nowhere else on the page — print them too. */
+  /* The bio and primary link row carry the advisor and lab URLs, which appear
+     nowhere else — print them too. */
   .entry a[href^="http"]::after,
   .contact a[href^="http"]::after,
   .bio a[href^="http"]::after,
@@ -1279,9 +1231,8 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
     transition-duration:1ms!important;
     scroll-behavior:auto!important;
   }
-  /* Movement is removed; meaning is not. The card still becomes a card,
-     the objection still opens, the voice still lowers, the plate still
-     examines — only the 2px travel goes. The rule reads as fully inked. */
+  /* Only the 2px travel goes; every state change still happens, and the rule
+     renders fully inked. */
   .entry:hover,.entry:focus-within,.entry:focus-visible{transform:none}
   .record{border-left-color:var(--rule-strong)}
 }
@@ -1304,22 +1255,22 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
     --voice-enc:CanvasText;--voice-vis:CanvasText;
     --voice-int:CanvasText;--voice-rhe:CanvasText;
     --shadow:CanvasText;
-    /* --ink-muted carries author lists, dates and cities — real content, not
-       disabled controls. GrayText is the system's "unavailable" colour and
-       would render the whole record as if it were greyed out. */
+    /* --ink-muted carries author lists, dates and cities — real content.
+       GrayText is the system's "unavailable" colour and would render the
+       whole record as greyed out. */
     --ink:CanvasText;--ink-muted:CanvasText;
     --paper:Canvas;--paper-inset:Canvas;--bone-card:Canvas;
     --rule-hair:CanvasText;--rule-strong:CanvasText;
   }
   .grain,.mottle,.fold,.plate::after,.portrait::after{display:none}
-  /* Colour is gone, so the card is drawn by its border — and the border
-     keeps its reserved 2px width, so hover still shifts zero pixels. */
+  /* No colour, so the card is drawn by its border; the border keeps its
+     reserved 2px width, so hover still shifts zero pixels. */
   .entry:hover,.entry:focus-within,.entry:focus-visible{border-color:CanvasText;box-shadow:none}
   .entry::before{display:none}
   .entry__bullet{background:CanvasText;outline-color:CanvasText}
-  /* FACULTY FOCUS degrades to an underline, since hue no longer exists.
-     All eight faculties, for the reason given at the restore list in §5: a
-     faculty left out here is not merely unstyled, its control does nothing. */
+  /* FACULTY FOCUS degrades to an underline; hue no longer exists. All eight
+     faculties, for the reason given at the restore list in §5 — a faculty
+     left out here is not merely unstyled, its control does nothing. */
   main[data-focus="encyclopedia"]    .voice[data-speaker="encyclopedia"]    .voice__prose,
   main[data-focus="visual-calculus"] .voice[data-speaker="visual-calculus"] .voice__prose,
   main[data-focus="interfacing"]     .voice[data-speaker="interfacing"]     .voice__prose,
@@ -1335,74 +1286,48 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
 
 
 /* ═══ 12 · LAMPLIGHT — html[data-theme="disco"] ══════════════════════════════
-   The same transcript, the same grid, the same 176px rail, photographed some
-   hours later by one bulb. A token override plus the blend repairs the dark
-   ground forces. Five facts drive the whole block.
+   Same transcript and grid on a dark ground. Five findings drive the block.
 
-   (a) THE OFFSET MUST INVERT. On #141B19 even pure black reaches 1.20:1,
-       against the light theme's 9.05:1. There is no room downward, so
-       --shadow becomes a LIT EDGE in tarnished brass: 3.53:1 on the ground,
-       3.58:1 against a plate's own edge. Zero blur, same 5px/6px offsets,
-       same hard rectangle — light spilling past the card instead of shadow
-       falling from it.
+   (a) THE OFFSET INVERTS. On #141B19 pure black reaches only 1.20:1 (light
+       theme 9.05:1), so --shadow becomes a lit brass edge at 3.53:1. Same
+       5px/6px offsets, zero blur.
 
-   (b) OVER-CONTENT DARKENING IS UNAFFORDABLE. On parchment a vignette is
-       nearly free; here it is ruinous, because the WCAG +0.05 flare term
-       dominates once both luminances are near zero. So the mottle, the
-       vignette and the folds move BELOW the content (z-index:-1), where they
-       touch the GROUND and never a glyph.
+   (b) OVER-CONTENT DARKENING IS UNAFFORDABLE — the WCAG +0.05 flare term
+       dominates once both luminances are near zero. Mottle, vignette and
+       folds move below the content (z-index:-1).
 
-   (c) …BUT "BELOW THE CONTENT" IS NOT THE SAME AS "FREE". A layer under the
-       text still repaints the ground, and the ground is half of every ratio.
-       It is free only while it DARKENS. Every below-content layer here is
-       therefore darken-only, with one bounded exception, the fold ridge —
-       see §12.6. Neat symmetry with the light theme: on paper the valley
-       costs and the glint is free; here the glint costs and the valley is
-       free. Same crease, mirrored economics.
+   (c) BELOW-CONTENT IS NOT FREE: it repaints the ground, which is half of
+       every ratio, so it is free only while it DARKENS. All darken-only except
+       the fold ridge, which is bounded instead (§12.6).
 
-   (d) A BLEND MODE ON .mottle's PSEUDO-ELEMENTS HAS NEVER REACHED THE PAGE.
-       .mottle carries contain:strict, and contain:paint forms an isolated
-       group (CSS Compositing 1 §5.2), so a blend on its child resolves
-       against .mottle's own transparent backdrop. The light theme gets away
-       with it because at .035 a warm tan composites much the same either
-       way. At the strength a dark room needs it does not, so both layers are
-       declared mix-blend-mode:normal here and coloured as plain alpha.
+   (d) A BLEND ON .mottle's PSEUDO-ELEMENTS NEVER REACHED THE PAGE. .mottle
+       carries contain:strict, and contain:paint forms an isolated group (CSS
+       Compositing 1 §5.2), so a child's blend resolves against .mottle's own
+       transparent backdrop. Both layers are mix-blend-mode:normal here.
 
-   (e) THE TILE CONSTANTS ARE NOT sRGB BY DEFAULT. SVG filters interpolate in
-       linearRGB, so the shipped 0.42/0.35/0.26 is #ADA08B — a warm tan
-       DARKER than parchment, correctly free. Reusing that idiom naively for
-       a dark room inverts the sign: 0.02/0.055/0.055 resolves to #274242,
-       L 0.0472 against the ground's L 0.0100, and the mottle would LIGHTEN
-       the page by up to 22% of every ratio. Fixed by declaring
-       color-interpolation-filters='sRGB' on the filter, so the numbers in
-       the tile mean what they say. Same turbulence, same seed 19, same
-       1400px cell — the identical physical surface, a colder pigment.
+   (e) TILE CONSTANTS ARE NOT sRGB BY DEFAULT. SVG filters interpolate in
+       linearRGB: 0.02/0.055/0.055 resolves to #274242, L 0.0472 against the
+       ground's L 0.0100 — LIGHTENING the page by up to 22% of every ratio.
+       Fixed with color-interpolation-filters='sRGB'.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 html[data-theme="disco"]{
   color-scheme:dark;        /* scrollbars, form UI, the mobile .refile overflow */
 
   /* ── SURFACES · deep desaturated teal-green ───────────
-     --paper-inset RECESSES here where in the light theme it rose: on a dark
-     ground a well is the only way for a panel to read as inset. --bone-card
-     still LIFTS, 1.077:1 against the light theme's 1.100:1 — in both themes
-     the card is drawn by its 2px border and its offset, not by its fill. */
+     --paper-inset RECESSES here where in the light theme it rose. --bone-card
+     still LIFTS, 1.077:1 vs the light theme's 1.100:1 — in both themes the
+     card is drawn by its 2px border and offset, not its fill. */
   --paper:#141B19;          /* L 0.010028                                   */
   --paper-inset:#0D1413;    /* refile strip, colophon band, maze, cite-out   */
   --bone-card:#1A2220;      /* hard-card fill on hover/focus                 */
 
   /* ── ONE NEW TOKEN ────────────────────────────────────
-     --mat is the board behind every full-colour raster. Two things force it.
-     (1) A white-ground figure meets this room at 17.49:1 — a glare cliff;
-     the mat splits it into room→mat 2.08:1 and mat→figure 6.08:1, so the
-     picture sits IN the sheet instead of being cut out of it. (2) Two of the
-     eleven teasers carry real alpha — sensenova-u1 has fully transparent
-     pixels, lumina-t2x partial ones — and with nothing behind them their ink
-     composites straight onto near-black and disappears. In the light theme
-     --paper-inset did this job as a 1.095:1 step doing no visible work; here
-     the work is real. #514D44 is deliberately the restrained end of the
-     tradeoff: an even split would need L≈0.164, i.e. eleven mid-grey frames
-     in a dim room. */
+     --mat is the board behind every full-colour raster. (1) A white-ground
+     figure meets this room at 17.49:1; the mat splits that into 2.08:1 then
+     6.08:1. (2) Two teasers carry real alpha and would otherwise composite
+     onto near-black and vanish. #514D44 is restrained: an even split would
+     need L≈0.164. */
   --mat:#514D44;
 
   /* ── INK · nicotine-stained bone, not paper-white ───── */
@@ -1413,57 +1338,41 @@ html[data-theme="disco"]{
                                 matching the light theme's own 1.67:1 there  */
   --rule-strong:#4E5A57;    /*  2.44:1 · NON-TEXT · light theme ships 2.21   */
   --shadow:#7C6F4E;         /*  3.53:1 · THE LIT EDGE — finding (a)          */
-  --trail-rgb:242,190,110;  /* lamplit ink — warmer than the type, so the
-                                nib reads as a lit mark, not a scratch     */  /*  the nib's ink. NOT decorative: js/site.js:435
-                                reads this string into a <canvas>, and
-                                setTheme() re-reads it on every toggle. A
-                                canvas cannot see --ink. Left at the light
-                                theme's 18,18,14 the ink trail draws at
-                                exactly 1.00:1 on this ground — invisible.   */
+  --trail-rgb:242,190,110;  /* warmer than the type, so the nib reads as a
+                                lit mark                                   */  /* NOT decorative: js/site.js:435 reads
+                                this string into a <canvas> and setTheme()
+                                re-reads it per toggle. At the light theme's
+                                18,18,14 the trail draws at 1.00:1 here.     */
 
   /* ── VOICES · colour still identifies WHO IS SPEAKING ─
-     Identities held: enc the neutral registrar, vis teal, int brass, rhe
-     oxblood. oklab hues 96.9° / 176.7° / 79.5° / 28.0°; mutual dE floor
-     0.0745 against the shipped light theme's own floor of 0.0548, so these
-     four separate BETTER than the originals do. */
-  --voice-enc:#B5B2A4;      /*  8.22:1 · okC 0.020, near-achromatic. The
-                                registrar separates by LIGHTNESS exactly as
-                                it does in the light theme, never by hue:
-                                pushing it green collides it with Visual
-                                Calculus. Its step over --ink-muted is
-                                1.328×, against the light theme's 1.285× —
-                                which matters, because faculty-focus dims it
-                                to --ink-muted and contrast is then the only
-                                signal a nearly-hueless voice has left.      */
+     enc neutral registrar, vis teal, int brass, rhe oxblood. oklab hues
+     96.9° / 176.7° / 79.5° / 28.0°; mutual dE floor 0.0745 against the light
+     theme's 0.0548. */
+  --voice-enc:#B5B2A4;      /*  8.22:1 · okC 0.020, near-achromatic. Separates
+                                by LIGHTNESS, never hue — pushing it green
+                                collides with Visual Calculus. Step over
+                                --ink-muted 1.328× (light theme 1.285×), and
+                                faculty-focus dims it to --ink-muted, so that
+                                step is the only signal left.                */
   --voice-vis:#78B8A8;      /*  7.68:1 · verdigris                           */
   --voice-int:#C9A05A;      /*  7.21:1 · tarnished brass                     */
-  --voice-rhe:#D97367;      /*  5.50:1 · dried blood. THE BINDING VALUE. True
-                                oxblood #7A2B25 measures 1.83:1 here and is
-                                simply unreachable; okL 0.669 is the floor at
-                                which chroma 0.130 still clears 5:1 on the
-                                card. Rhetoric also sets the two smallest
-                                type on the page — .crossexam and
-                                .objection__toggle, 10px tracked caps — so it
-                                is held at 5.09:1 worst-surface rather than
-                                the 4.83:1 a darker red would allow.         */
+  --voice-rhe:#D97367;      /*  5.50:1 · THE BINDING VALUE. True oxblood
+                                #7A2B25 measures 1.83:1 here; okL 0.669 is the
+                                floor at which chroma 0.130 still clears 5:1 on
+                                the card. Rhetoric sets the page's two smallest
+                                types (10px tracked caps), so it is held at
+                                5.09:1 worst-surface.                        */
 
-  /* The two Lamplight-only faculties, and the only place on the site where
-     they are ever painted. Solved against all three dark surfaces at once
-     (ground #141B19, card #1A2220, inset #0D1413) and against the four voices
-     above: the resulting SIX-way mutual-dE floor is 0.0745 — identical to the
-     four-way floor this theme already shipped, and still the enc–vis pair
-     that set it. Two more voices, no loss of separation. */
+  /* The two Lamplight-only faculties, solved against all three dark surfaces
+     (#141B19 ground, #1A2220 card, #0D1413 inset) and the four voices above;
+     six-way mutual-dE floor 0.0745. */
   --voice-hlf:#8CB2D2;      /*  7.84:1 ground · 7.28:1 card · HALF LIGHT.
-                                Cold steel at okh 244.2°, the one clear gap
-                                left between verdigris and the near-hueless
-                                registrar. It has to be its OWN hue and not a
-                                second red: Half Light is the loudest voice in
-                                GAMES and Rhetoric objects directly under it. */
+                                okh 244.2°, the one gap left between verdigris
+                                and the near-hueless registrar. Must not be a
+                                second red — Rhetoric objects under it.      */
   --voice-inl:#C0A8DF;      /*  8.25:1 ground · 7.66:1 card · INLAND EMPIRE.
-                                Dusty violet, okh 304.5°, furthest of the six
-                                from every other (dE floor 0.0777, against the
-                                palette's own 0.0745). The dreaming voice, and
-                                the only cool-magenta on the page.            */
+                                okh 304.5°, furthest of the six from every
+                                other (dE floor 0.0777).                     */
 }
 
 /* The selection band must read AS a band; --rule-hair would be a 1.76:1
@@ -1473,31 +1382,11 @@ html[data-theme="disco"] ::selection{background:#5C5340;color:var(--ink)}
 
 
 /* ── 12.1 · THE PORTRAIT · full colour, in both themes ───────────────────
-   multiply is fatal here: it would drive the face to black. And there is no
-   way to dissolve a white studio ground into a dark room while keeping the
-   sitter in colour — dissolving needs either multiply (which kills the
-   marks) or invert (a photographic negative). So the portrait stops
-   pretending to be part of the sheet and becomes what it honestly is at
-   night: a framed photograph on board, lit.
-
-   brightness(.86) puts the studio white at 12.63:1 — one notch UNDER --ink
-   at 12.75:1, so nothing in the room out-glares the room's own primary text.
-   saturate(1.08) returns the chroma that dimming costs perceptually (Hunt
-   effect); it is the same 1.08 the light theme already uses on hover. No
-   grayscale, no sepia, no hue rotation: the colour is the sitter's own. (The
-   base rule already ships full colour — nothing to undo there.)
-
-   ONE SITTER, BOTH THEMES. An earlier version hung a painted portrait here
-   instead and swapped the two by CSS. The photograph is the picture now, in
-   both, so there is nothing to swap — and the two rules below are the whole
-   of what the dark room asks of it.
-
-   multiply has to GO, not merely change value: the light theme uses it to
-   dissolve the white studio ground into parchment, and against #141B19 the
-   same blend would drive the face to black. So the white ground stays white
-   and the portrait stops pretending to be part of the sheet — it becomes
-   what it honestly is at night, a photograph mounted on board, lit. --mat is
-   that board, and it is why the frame is not simply a hole cut in the room. */
+   multiply has to GO, not just change value: the light theme uses it to
+   dissolve the white studio ground into parchment, and on #141B19 it drives
+   the face to black. The photo sits on a --mat board instead. brightness(.86)
+   puts studio white at 12.63:1, one notch UNDER --ink at 12.75:1, so it never
+   out-glares body text; saturate(1.08) restores the chroma dimming costs. */
 html[data-theme="disco"] .portrait{background:var(--mat)}
 html[data-theme="disco"] .portrait img{
   mix-blend-mode:normal;
@@ -1509,11 +1398,10 @@ html[data-theme="disco"] .portrait::after{opacity:calc(.05 * var(--texture))}
 
 /* ── 12.2 · THE FOUR LOCKUPS · two different problems ────────────────────
    THREE (NTU, SenseTime ×2) are dark marks on pure white, no alpha. multiply
-   still dissolves the white correctly on a dark ground but annihilates the
-   marks; screen alone is worse, turning the white ground into a white slab.
-   The repair is to negate the raster first — grayscale, then invert, gives
-   light marks on a BLACK ground, and screen maps black onto the backdrop
-   exactly. Measured against the real pixels, at the light theme's own .82:
+   dissolves the white but annihilates the marks; screen alone turns the white
+   ground into a slab. Fix: grayscale then invert gives light marks on BLACK,
+   which screen maps onto the backdrop exactly. grayscale must run BEFORE
+   invert or NTU's red negates to teal. Measured at the light theme's own .82:
 
      source luma  →  light theme (multiply)  →  disco (invert+screen)
         255              1.00:1                     1.00:1   ← exact dissolve
@@ -1524,23 +1412,12 @@ html[data-theme="disco"] .portrait::after{opacity:calc(.05 * var(--texture))}
         168              1.93:1                     2.34:1
         255→hover       16.68:1                    16.01:1
 
-   Every mark reads at least as well as it does in daylight from luma 48 up,
-   and better than daylight through the whole midtone range where NTU's crest
-   lives. grayscale runs BEFORE invert so a colour logo negates to clean
-   monochrome instead of false colour (NTU's red would otherwise go teal) —
-   and so the site's law, colour identifies the speaker and nothing else,
-   survives the theme.
-
-   .position drops its isolated --paper backdrop: screen has to resolve
-   against the real lit ground, or every logo sits on a flat paper patch that
-   ignores the mottle and the lamp falloff. On hover .entry gains a transform,
-   becomes a stacking context, and the blend must re-resolve against the card's
-   own fill — but ONLY BECAUSE THE SECOND RULE BELOW PUTS IT BACK. .entry and
-   .position sit on the same <article>, so this (0,2,1) override out-specifies
-   the base .entry:hover fill at (0,2,0); left alone, a hovered row hands the
-   screen blend a TRANSPARENT backdrop and every lockup renders as a solid
-   black plate. Measured: field (0,0,0) against a (16,23,22) card. Do not
-   delete the hover rule. */
+   .position drops its isolated --paper backdrop so screen resolves against the
+   real lit ground. On hover .entry becomes a stacking context, so the blend
+   needs the card's fill back: .entry and .position share an <article>, and
+   that (0,2,1) override beats the base .entry:hover fill at (0,2,0). Without
+   it a hovered row hands the blend a TRANSPARENT backdrop and every lockup
+   renders as a solid black plate. Do not delete the hover rule. */
 html[data-theme="disco"] .position{background:transparent;isolation:auto}
 html[data-theme="disco"] .position:hover,
 html[data-theme="disco"] .position:focus-within{background:var(--bone-card)}
@@ -1558,22 +1435,13 @@ html[data-theme="disco"] .entry:focus-within .stamp{
   transform:none;
 }
 
-/* THE FOURTH IS THE TRAP. HyperGAI is already a REVERSED lockup — white type
-   on a #1C3298 field (corners sample 28,50,152 and 29,51,153; the field is
-   85.7% of the raster). Negating it yields a bright orange slab. It does not
-   need negating — it needs DEEPENING, because screen maps only true black
-   onto the backdrop, and its field is grey 53, not black. Grayscale puts the
-   field at luma 53 and the type at 255; contrast(1.8) drives 53 to exactly 0
-   and pins 255 at 255. Then the same screen at the same .82 dissolves the
-   field to 1.00:1 — as exactly as the invert dissolves the other three — and
-   floats the wordmark at 12.01:1.
-
-   So all four lockups share one mechanism and one opacity, and differ by a
-   single term: invert for the three printed the normal way round, contrast
-   for the one printed in reverse. Grayscale runs on all four, because a blue
-   mark on this page would be a hue that belongs to no speaker. Measured
-   before the fix, a plain brightness dim left the field at 1.25:1 against
-   the vignetted ground — a flat 96×33px rectangle, plainly visible. */
+/* THE FOURTH IS THE TRAP. HyperGAI is already REVERSED — white type on a
+   #1C3298 field, 85.7% of the raster — so inverting it gives an orange slab.
+   It needs DEEPENING: screen maps only true black, and grayscale leaves this
+   field at luma 53. contrast(1.8) drives 53 to 0 and pins 255, so the same
+   screen at .82 dissolves the field to 1.00:1 and floats the wordmark at
+   12.01:1. A plain brightness dim leaves it at 1.25:1 — a visible 96×33px
+   rectangle. */
 html[data-theme="disco"] .position>.stamp[src*="hypergai"]{
   filter:grayscale(1) contrast(1.8) brightness(.94);
   mix-blend-mode:screen;
@@ -1586,28 +1454,21 @@ html[data-theme="disco"] .entry:focus-within .stamp[src*="hypergai"]{
 
 
 /* ── 12.3 · THE ELEVEN PLATES · legible and TRUE ─────────────────────────
-   No invert (it would flip every colormap — a lie about the data), no
-   grayscale, no hue rotation, no saturate. ONE uniform scalar, so every hue,
-   every colormap and every relative relationship is preserved exactly in
-   ratio: the figure as seen under a lamp, not a figure that has been altered.
+   No invert (it flips every colormap), grayscale, hue rotation or saturate —
+   ONE uniform scalar, so every colormap keeps its ratios. brightness(.86) is
+   the portrait's anchor: white ground 12.63:1, one notch under --ink at
+   12.75:1; in-figure black-on-white 21.00:1 → 15.17:1. The --mat board makes
+   the step room→mat→figure 2.08:1 then 6.08:1 instead of one 17.49:1 cliff.
 
-   brightness(.86) is the same anchor as the portrait — white ground 12.63:1,
-   one notch under --ink at 12.75:1. In-figure black-on-white goes 21.00:1 →
-   15.17:1 and #333-on-white 12.63:1 → 10.09:1 — both far above anything a
-   reader needs. They gain the --mat board and keep the 2px border and the offset, so
-   the step from room to figure becomes 2.08:1 then 6.08:1 rather than one
-   17.49:1 cliff, and the two alpha-carrying teasers finally have a ground.
-
-   The second selector is not decoration: the base examined-plate rule is
-   (0,4,1) and would otherwise beat a plain (0,2,1) theme rule. */
+   Second selector required: the base examined-plate rule is (0,4,1) and would
+   beat a plain (0,2,1) theme rule. */
 html[data-theme="disco"] .plate__img,
 html[data-theme="disco"].js .plate.is-examined .plate__img{
   background:var(--mat);
   filter:brightness(.86);
 }
-/* The closed 56px sliver is explicitly a sample and never the information, so
-   it may be degraded: a dim varnished strip at 6.04:1, well under the open
-   plate and under --ink. */
+/* The closed 56px sliver is a sample, never the information, so it may be
+   degraded: 6.04:1, well under both the open plate and --ink. */
 html[data-theme="disco"].js .plate__img{
   background:none;
   filter:grayscale(1) brightness(.55) sepia(.34) contrast(1.04);
@@ -1624,86 +1485,60 @@ html[data-theme="disco"].js .plate__img{
 
 
 /* ── 12.4 · THE GRAIN · the one layer that stays ABOVE the content ───────
-   It can afford to be: it is high-frequency and tiny, and soft-light on a
-   dark ground reads as light catching varnish rather than as paper tooth.
-   Bounded properly — the tile's alpha caps at 0.55, so at opacity .07 the
-   effective alpha is 0.0385, and even the impossible adversarial case (a
-   glyph pixel taking pure black while the pixel beside it takes pure white)
-   costs the worst text pair 5.09:1 → 4.87:1 and --ink 11.80:1 → 11.40:1. */
+   Bounded: tile alpha caps at 0.55, so at opacity .07 the effective alpha is
+   0.0385. Adversarial case (pure-black glyph pixel beside a pure-white one)
+   costs the worst text pair 5.09:1 → 4.87:1. */
 html[data-theme="disco"] .grain{
   mix-blend-mode:soft-light;
   opacity:calc(.07 * var(--texture));
-  /* Real canvas weave instead of feTurbulence. The file is contrast-clamped
-     to 64–189 around a neutral mean so soft-light stays gentle; measured over
-     the brightest backdrop pixel the pair still gives --ink 10.69:1,
-     --ink-muted 5.19:1, --voice-rhe 4.61:1, --voice-vis 6.44:1.
-     Seam check on the SHIPPED 512px tile: 0.75x vertical, 0.69x horizontal
-     against the interior adjacent-pixel step — the wrap discontinuity is
-     smaller than a typical neighbouring-pixel step, so no join can show. */
+  /* Real canvas weave instead of feTurbulence, contrast-clamped to 64–189.
+     Brightest backdrop pixel: --ink 10.69:1, --voice-rhe 4.61:1. Seam check on
+     the 512px tile: wrap discontinuity is 0.75x/0.69x of the interior
+     adjacent-pixel step, so no join shows. */
   background-image:url("../assets/img/canvas.webp");
   background-size:512px 512px;
 }
 
 
 /* ── 12.5 · MOTTLE, VIGNETTE AND FOLDS GO UNDER THE SHEET ────────────────
-   Findings (b) and (c). Below the content they repaint only the ground, and
-   every one of them is darken-only, so they cost text nothing at any
-   strength. Note this also means they never touch --bone-card,
-   --paper-inset, or the maze: those are opaque backgrounds on in-flow
-   elements and paint above a negative z-index. Each token therefore has ONE
-   worst-case surface rather than a range. */
+   Findings (b) and (c). They never touch --bone-card, --paper-inset or the
+   maze — opaque backgrounds on in-flow elements paint above a negative
+   z-index — so each token has ONE worst-case surface. */
 html[data-theme="disco"] .mottle,
 html[data-theme="disco"] .fold{z-index:-1}
 
-/* Finding (e): a colder pigment, declared in sRGB so the number is the
-   colour. #070E10 at L 0.00397 against the ground's L 0.010028 — pools of
-   shadow in the varnish, fully predictable, and free. Max pooling takes the
-   ground to #0E1515, where --ink rises 12.75→13.46 and Rhetoric 5.50→5.80. */
+/* Finding (e): a colder pigment, declared in sRGB. #070E10 at L 0.00397
+   against the ground's L 0.010028. Max pooling takes the ground to #0E1515,
+   where --ink rises 12.75→13.46 and Rhetoric 5.50→5.80. */
 html[data-theme="disco"]{
   --mottle-tile:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'%3E%3Cfilter id='m' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.009' numOctaves='2' stitchTiles='stitch' seed='19'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.027 0 0 0 0 0.055 0 0 0 0 0.063 0.9 0 0 0 0'/%3E%3C/filter%3E%3Crect width='1400' height='1400' filter='url(%23m)'/%3E%3C/svg%3E");
 }
-/* THE ROOM. The procedural turbulence is replaced by an actual painting of a
-   dim interior — same layer, same job, real paint instead of feTurbulence.
-   It is a BELOW-CONTENT layer (z-index:-1 above), so it repaints the ground
-   that every contrast ratio is measured against, and unlike the mottle it
-   does not only darken: the lamp pool is the one bright thing in the scheme.
-   That is why the shipped file is pre-dimmed (×0.35, γ1.25 — peak
-   rgb(75,68,55) instead of the source's (173,156,123)) and why the opacity
-   here is .35 and not the .5 the flat tile could afford.
-
-   Worst case, measured on the brightest pixel of the pool composited over
+/* THE ROOM. A painting of a dim interior replaces the procedural turbulence.
+   Below-content (z-index:-1), so it repaints the ground every ratio is
+   measured against — and unlike the mottle it does not only darken, hence the
+   pre-dimmed file (constants below). Worst case, brightest pool pixel over
    --paper: --ink 10.72:1 · --ink-muted 5.20:1 · --voice-rhe 4.62:1 ·
-   --voice-vis 6.46:1. Everything clears, and that is the single hottest
-   point — the image mean is rgb(14,14,14), far below it. Raising this
-   opacity spends the scheme's whole floor; do not. */
+   --voice-vis 6.46:1. Do not raise the opacity. */
 html[data-theme="disco"] .mottle::before{
   mix-blend-mode:normal;                 /* finding (d) — it never blended */
   background-image:url("../assets/img/room-backdrop.webp");
   background-size:cover;
   background-position:50% 30%;
-  /* The LAMP POOL sets the ceiling for this whole layer, so the shipped file
-     compresses it (γ1.6 then ×0.30: peak 173 -> 56) instead of dimming the
-     painting uniformly. That buys opacity: .47 here against the .29 a
-     uniform dim could afford, which is ~35% more visible structure at the
-     same floor. Solved for the PAIR — the canvas grain sits on top of this
-     at soft-light and spends part of the budget too.
-     Worst case, brightest pool pixel, grain included:
-     --ink 10.47:1 · --voice-rhe 4.51:1. Do not raise. */
+  /* The LAMP POOL sets this layer's ceiling, so the file compresses it (γ1.6
+     then ×0.30: peak 173 -> 56) rather than dimming uniformly — that buys
+     opacity .47 against .29. Solved for the PAIR with the soft-light grain on
+     top: brightest pool pixel, --ink 10.47:1 · --voice-rhe 4.51:1. */
   opacity:calc(.47 * var(--texture));
 }
-/* No image on a phone: it is 100KB for a texture nobody sees behind a
-   single narrow column, and the grain already carries the surface there. */
+/* No image on a phone: 100KB for a texture behind one narrow column, and the
+   grain already carries the surface. */
 @media (max-width:759px){
   html[data-theme="disco"] .mottle::before{background-image:none}
 }
 
-/* THE BULB. Darkening only: the lit centre is the ABSENCE of falloff rather
-   than an added bloom, which is exactly what keeps --paper a single
-   worst-case surface. The corners go a cold bruised blue-green, so the
-   untouched centre reads warm by contrast — the warmth of the room is
-   relative and costs contrast nothing anywhere. Centred at 30% height: the
-   bulb hangs above the bar. At the far corner the ground reaches #080E0F,
-   where --ink reads 14.17:1 and Rhetoric 6.11:1 — both rise. */
+/* THE BULB. Darkening only — the lit centre is the ABSENCE of falloff, which
+   keeps --paper a single worst-case surface. At the far corner the ground
+   reaches #080E0F, where --ink reads 14.17:1 and Rhetoric 6.11:1. */
 html[data-theme="disco"] .mottle::after{
   background:radial-gradient(118% 88% at 50% 30%,
               transparent 34%,
@@ -1713,13 +1548,10 @@ html[data-theme="disco"] .mottle::after{
   opacity:var(--texture);
 }
 
-/* THE ONE LAYER THAT IS NOT FREE. A crease in varnished board is mostly
-   valley, and the valley darkens — free. The ridge catches the lamp, and a
-   lightened line under the text is the mirror of the light theme's vignette
-   problem. Solved for the bound rather than removed: at alpha .035 the lit
-   ground reaches #1C221E, holding Rhetoric at 5.09:1 and --ink at 11.80:1 —
-   which is where the whole scheme's floor is set. The light theme's own
-   .55 white glint is free for the opposite reason. */
+/* THE ONE LAYER THAT IS NOT FREE. The valley darkens (free); the ridge
+   catches the lamp. Bounded rather than removed: at alpha .035 the lit ground
+   reaches #1C221E, holding Rhetoric at 5.09:1 and --ink at 11.80:1 — the
+   scheme's floor. */
 html[data-theme="disco"] .fold{
   background:linear-gradient(180deg,
               transparent,
@@ -1728,28 +1560,22 @@ html[data-theme="disco"] .fold{
               transparent);
 }
 
-/* The fibre running across the picture boundary: multiply did the work on a
-   light image but does nothing over --mat or a dimmed plate, so the tile
-   would stop dead at the figure's edge. soft-light carries it across figure
-   AND board — one varnished surface, which is the entire point of the layer.
-   These two sit inside isolation:isolate wrappers, so their backdrop is the
-   picture itself and the blend resolves correctly. */
+/* multiply does nothing over --mat or a dimmed plate, so the fibre tile would
+   stop at the figure's edge; soft-light carries it across figure AND board.
+   Both sit inside isolation:isolate wrappers, so the blend resolves against
+   the picture. */
 html[data-theme="disco"] .plate::after,
 html[data-theme="disco"] .portrait::after{
   mix-blend-mode:soft-light;
   opacity:calc(.09 * var(--texture));
 }
 
-/* The quarantined visitor widget draws in white (cl=ffffff), so it already
-   reads on a dark ground; it only needs to stop shouting. */
+/* The visitor widget draws in white (cl=ffffff), so it already reads here. */
 html[data-theme="disco"] .widget{filter:grayscale(1) brightness(.9);opacity:.4}
 
 /* ── 12.5b · THE ORNAMENT ────────────────────────────────────────────────
-   By day the page is a specification and a bare hairline is correct. By
-   lamplight it is an illuminated document, so each section rule gets one
-   brass lozenge at its head — a single 7px square on the diagonal, drawn
-   from the rule itself. One mark, at three places on the page. Any more and
-   it stops being a flourish and starts being wallpaper. */
+   Under the lamp each section rule gets one brass lozenge at its head: a 7px
+   square on the diagonal. Three places on the page; keep it to that. */
 html[data-theme="disco"] .section:not(.section--overture) .transcript{position:relative}
 html[data-theme="disco"] .section:not(.section--overture) .transcript::after{
   content:"";position:absolute;top:-4px;left:0;
@@ -1758,8 +1584,7 @@ html[data-theme="disco"] .section:not(.section--overture) .transcript::after{
   transform:rotate(45deg);
   pointer-events:none;
 }
-/* The masthead and colophon bands get the same head-mark, so the ornament
-   reads as one system rather than three unrelated dots. */
+/* The masthead band gets the same head-mark. */
 html[data-theme="disco"] .masthead__band::before{
   content:"";position:absolute;bottom:-4px;left:var(--wrap-pad);
   width:7px;height:7px;background:var(--shadow);transform:rotate(45deg);
@@ -1773,12 +1598,9 @@ html[data-theme="disco"] .masthead__band::before{
 
 
 /* ── 12.6 · FALLBACK · no mix-blend-mode ─────────────────────────────────
-   The base fallback paints --bone-card behind the images, right in daylight
-   and near-black here. Give them the mat instead, and drop the invert:
-   without screen to map black onto the backdrop an inverted logo is a black
-   slab, so a plain white lockup on a mat is the honest degradation. The
-   mottle and the vignette come back — they no longer blend, so they no
-   longer need blending. */
+   The base fallback paints --bone-card behind the images — near-black here,
+   so use the mat. Drop the invert too: without screen to map black onto the
+   backdrop an inverted logo is a black slab. */
 @supports not (mix-blend-mode:multiply){
   html[data-theme="disco"] .portrait img,
   html[data-theme="disco"] .position>.stamp,
@@ -1793,16 +1615,10 @@ html[data-theme="disco"] .masthead__band::before{
 
 
 /* ── 12.7 · PREFERS-CONTRAST: MORE ───────────────────────────────────────
-   Load-bearing, not politeness. The base sheet's more-contrast block targets
-   :root at (0,1,0) and hardcodes LIGHT values (--ink-muted:#3F3D36 — dark
-   text on a dark ground), while html[data-theme="disco"] is (0,1,1) and wins
-   regardless of source order. It must be answered theme-side.
-
-   Every voice rises to at least 7.06:1 worst-surface and --ink to 14.38:1;
-   the enc-over-muted step widens 1.328× → 1.404× so faculty focus stays
-   readable on the one voice that has no hue to lose; the mutual dE floor
-   holds at 0.0659, still above the light theme's shipped 0.0548. --texture:0
-   removes every layer, so nothing touches the ground at all. */
+   Required: the base more-contrast block targets :root at (0,1,0) and
+   hardcodes LIGHT values (--ink-muted:#3F3D36 on a dark ground), while
+   html[data-theme="disco"] is (0,1,1) and wins regardless of source order.
+   Every voice rises to at least 7.06:1 worst-surface, --ink to 14.38:1. */
 @media (prefers-contrast:more){
   html[data-theme="disco"]{
     --ink:#F6F1E2;          /* 15.49:1 paper · 14.38:1 card */
@@ -1835,12 +1651,9 @@ html[data-theme="disco"] .masthead__band::before{
 
 
 /* ── 12.8 · FORCED-COLORS ────────────────────────────────────────────────
-   MANDATORY, and a real defect if omitted: html[data-theme="disco"] at
-   (0,1,1) out-specifies the base sheet's :root at (0,1,0), so without this
-   the disco hexes WIN inside forced-colors mode and quietly defeat the
-   user's own palette. Repeat the base mapping at theme specificity, undo the
-   negation (negating a raster is meaningless once the system palette is in
-   charge) and stop the ink trail, whose colour is a raw rgb triple no system
+   MANDATORY: html[data-theme="disco"] at (0,1,1) out-specifies the base
+   sheet's :root at (0,1,0), so without this the disco hexes WIN and defeat
+   the user's palette. Also stop the ink trail — a raw rgb triple no system
    keyword can reach. */
 @media (forced-colors:active){
   html[data-theme="disco"]{
@@ -1874,15 +1687,12 @@ html[data-theme="disco"] .masthead__band::before{
 
 
 /* ── 12.9 · PRINT ────────────────────────────────────────────────────────
-   Same specificity defect, same fix. The base print block is :root at
-   (0,1,0); a reader who solved the maze and then hit Cmd-P would otherwise
-   print bone-on-black across every page. Only the tokens disco actually
-   declares need repeating — --texture and --record-pad are not among them,
-   so the base print values still reach them. The eleven plates need no
-   restatement either: the base print rule is already !important. The two
-   image rules DO — .portrait img at (0,1,1) and .position>.stamp at (0,2,1)
-   both lose to their disco counterparts, and leaving mix-blend-mode:screen
-   alive on white paper would print four blank rectangles. */
+   Same specificity defect as §12.8: the base print block is :root at (0,1,0),
+   so printing with the lamp down comes out bone-on-black. Only the tokens
+   disco declares need repeating. The plates are covered by the base rule's
+   !important; the two image rules are not — .portrait img (0,1,1) and
+   .position>.stamp (0,2,1) lose to their disco counterparts, and a live
+   mix-blend-mode:screen prints blank rectangles. */
 @media print{
   html[data-theme="disco"]{
     color-scheme:light;
@@ -1908,16 +1718,11 @@ html[data-theme="disco"] .masthead__band::before{
 
 
 /* ═══ 13 · THE OTHER LEDGER — GAMES AND MUSIC ════════════════════════════
-   Lamplight is not a colour scheme applied to the CV. Turning the lamp down
-   changes WHAT IS ON THE PAGE: WORK and RECORD leave, GAMES and MUSIC
-   arrive, and the masthead renames itself to match. The overture, the
-   contact block, the grid, the rail and every control stay exactly where
-   they were, so it reads as the same sheet photographed later — one person,
-   two ledgers — rather than as a second website.
-
-   The swap is display, not visibility: a hidden section takes its links out
-   of the tab order and out of the accessibility tree with it, so neither
-   ledger is ever a set of invisible tab stops inside the other.            */
+   Lamplight swaps content, not just colour: WORK and RECORD leave, GAMES and
+   MUSIC arrive, the masthead renames itself. The swap must be display, not
+   visibility — display:none takes the hidden section's links out of the tab
+   order and the a11y tree, so neither ledger is invisible tab stops inside
+   the other.                                                               */
 
 #arcade,#rotation,.nav-night{display:none}
 
@@ -1928,13 +1733,13 @@ html[data-theme="disco"] #work,
 html[data-theme="disco"] #record,
 html[data-theme="disco"] .nav-day{display:none}
 
-/* GAMES is then the first section under the overture and must open on the
-   same hairline WORK did. It already does — the rule is written against
-   .section:not(.section--overture) — this only restates the margin so the
-   two ledgers start at an identical height and the swap does not jump. */
+/* GAMES becomes the first section under the overture. The hairline already
+   applies (the rule is written against .section:not(.section--overture));
+   this only restates the margin so the two ledgers start at an identical
+   height and the swap does not jump. */
 html[data-theme="disco"] #arcade{margin-top:var(--s9)}
 
-/* ── THE TALLY · one counted sentence, the section's own header ────────── */
+/* ── THE TALLY · the section's own header ──────────────────────────────── */
 .tally{
   font:500 var(--t-cap)/var(--lh-cap) var(--mono);
   letter-spacing:var(--tr-cap);word-spacing:.08em;text-transform:uppercase;
@@ -1946,24 +1751,13 @@ html[data-theme="disco"] #arcade{margin-top:var(--s9)}
   border-top:var(--hair);
 }
 
-/* ── THE ART · a shelf, not a gallery ────────────────────────────────────
-   Every image here is SELF-HOSTED, converted to WebP and stored beside the
-   paper teasers. Hotlinking Steam's CDN and Spotify's would have been two
-   fewer downloads and eleven third-party requests fired at page load — which
-   is exactly the bargain the deck below refuses to make. Eleven files, 184KB
-   the lot, and the page still calls nobody until somebody presses play.
-
-   Two shapes because the sources have two shapes: Steam's header art is a
-   460x215 banner and a sleeve is square. Both are laid out as an image
-   column beside a data column, so the row reads left-to-right as picture,
-   then figures, then link — and the voice stays full width underneath,
-   because the voice is talking about the whole row and not about the art.
-
-   Every one of them carries alt="". Not an oversight: the game's title is the
-   <h3> immediately above its banner and the album's title is in the .facts
-   line immediately beside its sleeve, so any alt text would be the second
-   reading of a name a screen reader has just spoken. Both shapes are treated
-   the same way for the same reason. */
+/* ── THE ART ─────────────────────────────────────────────────────────────
+   Every image is SELF-HOSTED WebP beside the paper teasers: eleven files,
+   184KB. Hotlinking Steam's and Spotify's CDNs would fire eleven third-party
+   requests at page load; as it is the page calls nobody until play.
+   Two shapes because the sources have two: Steam header art is 460x215, a
+   sleeve is square. Both lay out as image column + data column.
+   alt="" is deliberate — the titles are in the <h3> and .facts line beside. */
 .game__body,.track__body{
   display:flex;align-items:flex-start;
   gap:var(--s4);
@@ -1980,12 +1774,9 @@ html[data-theme="disco"] #arcade{margin-top:var(--s9)}
 .game__art{width:180px}
 .track__art{width:96px}
 
-/* Under the lamp the art is the only saturated thing in the room, and a lit
-   rectangle on near-black is the glare cliff §12 opens with. It gets the
-   same treatment the eleven teasers get: a --mat board to sit on, so the
-   step is room→mat→picture instead of room→picture, plus the brass edge the
-   cards carry. No filter — the pictures stay full colour, as the portrait
-   does; they are seated, not dimmed. */
+/* Under the lamp this art is the only saturated thing in the room — the glare
+   cliff §12 opens with. Same treatment as the eleven teasers: a --mat board so
+   the step is room→mat→picture, plus the brass edge. No filter. */
 html[data-theme="disco"] .game__art,
 html[data-theme="disco"] .track__art{
   border-color:var(--mat);
@@ -1993,8 +1784,7 @@ html[data-theme="disco"] .track__art{
   box-shadow:3px 3px 0 var(--shadow);
 }
 
-/* ── THE FACT LINE · hours, dates, counts. Same register as .entry__authors,
-      which is exactly what it is: the row's metadata, under its title. ─── */
+/* ── THE FACT LINE · row metadata, same register as .entry__authors ────── */
 .facts{
   font:400 var(--t-meta)/var(--lh-meta) var(--mono);
   font-variant-numeric:tabular-nums slashed-zero;
@@ -2004,17 +1794,11 @@ html[data-theme="disco"] .track__art{
 .facts b{font-weight:600;color:var(--ink)}
 
 /* ── THE METERS · DECORATION, and declared so ────────────────────────────
-   aria-hidden in the markup and empty of text. Every quantity they encode
-   is printed as words on the .facts line directly above, so a reader who
-   never sees them loses nothing and a JS failure costs nothing but a bar.
-   Widths arrive as --w from js/site.js, computed from data-hours against
-   the largest data-hours in the list: not one percentage is typed by hand.
-
-   Two tracks, two different questions. The thick one is TIME, and it is
-   scaled to the longest row, so Siege is the ruler and everything else is
-   read against it. The thin one is COMPLETION, scaled to its own total —
-   a different axis, so it gets a different weight and a quieter ink and
-   can never be mistaken for more of the same bar.                         */
+   aria-hidden and empty of text; every quantity is words on the .facts line
+   above, so a JS failure costs nothing but a bar. Widths arrive as --w from
+   js/site.js, computed from data-hours against the largest in the list.
+   Thick track = TIME, scaled to the longest row; thin = COMPLETION, scaled
+   to its own total.                                                        */
 .meter{margin-top:var(--s3);display:flex;flex-direction:column;gap:var(--s1)}
 .meter__track{
   display:block;height:7px;
@@ -2030,17 +1814,15 @@ html[data-theme="disco"] .track__art{
 }
 .meter__fill--got{background:var(--rule-strong)}
 
-/* Under the lamp the hours bar is the one lit thing in the row — the same
-   tarnished brass the offset shadow became, so "light falls here" is one
-   material used twice rather than a new colour. */
+/* Under the lamp the hours bar reuses --shadow's brass, not a new colour. */
 html[data-theme="disco"] .meter__fill{background:var(--shadow)}
 html[data-theme="disco"] .meter__fill--got{background:var(--rule-strong)}
 html[data-theme="disco"] .meter__track{background:var(--paper-inset)}
 
-/* Bars draw themselves as the row arrives, from a scroll timeline — no
-   observer, no rAF, no listener, and it degrades to a drawn bar where the
-   timeline is not supported. scaleX and not width: the box is already
-   --w wide, so this animates on the compositor and never reflows a row. */
+/* Scroll timeline, so no observer, rAF or listener; degrades to an already
+   drawn bar where animation-timeline is unsupported. scaleX and not width:
+   the box is already --w wide, so this runs on the compositor and never
+   reflows a row. */
 @supports (animation-timeline:view()){
   @media (prefers-reduced-motion:no-preference){
     @keyframes meter-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
@@ -2052,10 +1834,8 @@ html[data-theme="disco"] .meter__track{background:var(--paper-inset)}
   }
 }
 
-/* ── THE SEAL · 48 of 48. The only stamp on the site that is an ACHIEVEMENT
-      rather than a classification, so it is the only one drawn twice: a
-      double rule, which no venue stamp uses. The words carry it alone —
-      "All 48" is the whole claim — and the border is confirmation. ─────── */
+/* ── THE SEAL · 48 of 48. The only achievement stamp, so the only one with
+      a double rule; no venue stamp uses one. ──────────────────────────── */
 .stamp-perfect{
   border:1px double var(--ink);
   outline:1px solid var(--ink);outline-offset:2px;
@@ -2065,26 +1845,17 @@ html[data-theme="disco"] .stamp-perfect{
   border-color:var(--shadow);outline-color:var(--shadow);color:var(--voice-int);
 }
 
-/* One row in GAMES is the room the whole page is dressed as, and saying so
-   out loud is better than leaving it as a joke only some visitors get. It
-   carries Inland Empire's violet because that is the voice that speaks for
-   it directly underneath — the stamp and the annotation are the same
-   faculty, which is the rule everywhere else on this page. */
+/* Inland Empire's violet — the voice that speaks directly underneath it, so
+   stamp and annotation share a faculty. */
 .stamp-source{border:1px solid var(--voice-inl);color:var(--voice-inl)}
 
 /* ── THE DECK · built by JS on the click, removed on close ───────────────
-   Nothing here exists until somebody presses play, which is the point: the
-   page issues no third-party request, sets no third-party cookie and tells
-   Spotify nothing about a visitor who only reads. The iframe is 152px —
-   Spotify's compact player — and the panel is sized to it so the row does
-   not jump when it appears. */
+   Nothing exists until somebody presses play: no third-party request, no
+   third-party cookie for a visitor who only reads. */
 .deck{margin-top:var(--s3)}
 .deck[hidden]{display:none}
-/* --ink-muted, NOT --speaker. The caption is the machine reporting on
-   itself, and every voice colour on this page belongs to a faculty: left on
-   the inherited --speaker it resolves to the Encyclopedia grey and reads as
-   the registrar having said it. Muted ink is the register the rest of the
-   row's metadata is already in, which is exactly what this is. */
+/* --ink-muted, NOT --speaker: the inherited --speaker resolves to Encyclopedia
+   grey and would read as the registrar having said it. */
 .deck__head{
   display:flex;align-items:center;gap:var(--s2);
   font:500 var(--t-cap-xs)/var(--lh-cap-xs) var(--mono);
@@ -2092,11 +1863,8 @@ html[data-theme="disco"] .stamp-perfect{
   color:var(--ink-muted);
   margin-bottom:var(--s2);
 }
-/* A lit filament, not a status icon: it says the panel is open, which is the
-   only thing this page can honestly know. Playback happens inside a
-   cross-origin frame and is not observable from here, so nothing on this
-   side is ever allowed to claim it. Struck in --shadow, the same tarnished
-   brass the meters fill with — one lamp, lighting two things. */
+/* Means "the panel is open", not "audio is playing": playback happens in a
+   cross-origin frame and is not observable from here. */
 .deck__lamp{
   flex:none;width:7px;height:7px;
   background:var(--shadow);
@@ -2106,10 +1874,8 @@ html[data-theme="disco"] .stamp-perfect{
   @keyframes filament{50%{opacity:.45}}
   .deck__lamp{animation:filament 2.6s var(--ease-out) infinite}
 }
-/* A video frame now, not the 80px audio strip the Spotify embed wanted.
-   16:9 because anything else letterboxes inside YouTube's own player, and
-   capped at 480 so a music row stays a row — at the full 720 measure it
-   stops being an aside and becomes the centre of the section. */
+/* 16:9 or YouTube's own player letterboxes it. Capped at 480 so a music row
+   stays a row instead of taking the full 720 measure. */
 .deck iframe{
   display:block;width:100%;max-width:480px;
   aspect-ratio:16/9;height:auto;
@@ -2119,8 +1885,7 @@ html[data-theme="disco"] .stamp-perfect{
 }
 html[data-theme="disco"] .deck iframe{box-shadow:var(--card-shadow)}
 
-/* A playing row keeps its card lifted while the deck is open, so the one
-   track that is loaded is obvious without looking for the panel. */
+/* The row whose deck is open keeps its card lifted. */
 .entry.is-playing{
   background:var(--bone-card);
   border-color:var(--ink);
@@ -2129,32 +1894,28 @@ html[data-theme="disco"] .deck iframe{box-shadow:var(--card-shadow)}
 }
 
 /* ── NARROW ──────────────────────────────────────────────────────────────
-   The band collapses to one column below 900px (see §8); the deck and the
-   meters are fluid already, so only the fact line needs help — three facts
-   separated by middots wrap into a hanging mess at 340px. */
+   The band collapses to one column below 900px (see §8). The deck and the
+   meters are already fluid; only the fact line needs help, since three
+   middot-separated facts wrap badly at 340px. */
 @media (max-width:559px){
   .facts .sep{display:none}
   .facts{display:flex;flex-direction:column}
-  /* A 180px banner beside a 150px text column serves neither. The game art
-     is a 2.15:1 landscape, so it stacks and takes the full measure — the
-     one width at which it is actually legible here. */
+  /* A 180px banner beside a 150px text column serves neither, and the game
+     art is 2.15:1 landscape, so stack it at the full measure. */
   .game__body{display:block}
   .game__art{width:100%;margin-bottom:var(--s3)}
-  /* A sleeve is square and survives being small, so the track keeps its
-     side-by-side reading at a size that leaves the album title room. */
+  /* A square sleeve survives being small, so the track stays side-by-side. */
   .track__art{width:72px}
 }
 
-/* ── PLAIN VIEW · the facts were never inside the voices here either ───── */
+/* ── PLAIN VIEW · the quantities live on .facts, not in the meters ─────── */
 html[data-voice="off"] .deck__head,
 html.no-js .deck__head,
 html[data-voice="off"] .meter,
 html.no-js .meter{display:none}
 
-/* ── PRINT · neither ledger prints its meters, and the lamp never prints
-      at all: GAMES and MUSIC are already display:none in the light theme,
-      and print forces the light tokens. This covers printing WHILE the
-      lamp is down, which otherwise puts a dead player on the page. ────── */
+/* ── PRINT · covers printing WHILE the lamp is down, which otherwise puts a
+      dead player on the page. Neither ledger prints its meters. ───────── */
 @media print{
   #arcade,#rotation,.nav-night,.meter,.deck{display:none!important}
   html[data-theme="disco"] #work,
@@ -2176,14 +1937,9 @@ html.no-js .meter{display:none}
 
 
 /* ═══ 14 · THE DOORWAY ═══════════════════════════════════════════════════
-   The one link on the CV that does not go to a paper, an address or an
-   institution. It leads to phd.html, which is a game, and it has to read as
-   an aside rather than as a fourth credential — so it sits on its own line
-   below the link row, in the utility-control register (bracketed, monospace)
-   rather than the link register.
-
-   The brackets are literal characters, exactly as they are on [ examine ] and
-   [ cite ]: on this site a bracket means "this does something". */
+   Links to phd.html, a game. On its own line below the link row in the
+   utility-control register (bracketed monospace) so it reads as an aside.
+   Brackets are literal characters, as on [ examine ] and [ cite ]. */
 .doorway{
   margin-top:var(--s5);
   display:flex;flex-wrap:wrap;align-items:baseline;
@@ -2207,13 +1963,12 @@ html.no-js .meter{display:none}
   color:var(--ink-muted);
 }
 
-/* Under the lamp it is no longer an aside — the room it opens onto is this
-   room. The violet is Inland Empire's, the same voice that speaks for
-   Disco Elysium in the games ledger, so the two references agree. */
+/* Inland Empire's violet under the lamp — the voice that speaks for Disco
+   Elysium in the games ledger. */
 html[data-theme="disco"] .doorway__link{color:var(--voice-inl)}
 html[data-theme="disco"] .doorway__brackets{color:var(--shadow)}
 
 @media (max-width:559px){ .doorway{flex-direction:column} }
 
-/* It is a game and a link to one; on paper it is a dead URL. */
+/* A dead URL on paper. */
 @media print{ .doorway{display:none!important} }

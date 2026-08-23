@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-voice="on">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weichen Fan</title>
+<meta name="description" content="Weichen Fan — PhD student at MMLab@NTU, Nanyang Technological University. Video generation, diffusion models, robotics.">
+<meta name="author" content="Weichen Fan">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#F2EFE6">
+
+<link rel="canonical" href="https://weichenfan.github.io/Weichen/">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Weichen Fan">
+<meta property="og:description" content="PhD student at MMLab@NTU. Video generation, diffusion models, robotics.">
+<meta property="og:url" content="https://weichenfan.github.io/Weichen/">
+<meta property="og:image" content="https://weichenfan.github.io/Weichen/assets/img/portrait.webp">
+<meta name="twitter:card" content="summary">
+
+
+<script>
+(function(){
+  var d = document.documentElement;
+  d.className = d.className.replace('no-js','js');
+  try {
+    if (localStorage.getItem('wf-voice') === 'off') d.setAttribute('data-voice','off');
+    if (localStorage.getItem('wf-lamp')  === '1')    d.setAttribute('data-lamp','1');
+    localStorage.removeItem('wf-theme');
+  } catch(e){}
+})();
+</script>
+
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fonts/IBM-Plex-Mono--F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fonts/Newsreader-cY9CfjOCX1hbuyalUrK439vCjohCBJWxZA.woff2">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="css/site.css">
+<link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+
+<body>
+
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="wobble0"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble1"><feTurbulence type="fractalNoise" baseFrequency="0.024" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble2"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="23" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="wobble3"><feTurbulence type="fractalNoise" baseFrequency="0.026" numOctaves="2" seed="41" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.7" xChannelSelector="R" yChannelSelector="G"/></filter>
+</svg>
+
+<a class="skip" href="#overture">Skip to content</a>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="mottle" aria-hidden="true"></div>
+<div class="fold fold--a" aria-hidden="true"></div>
+<div class="fold fold--b" aria-hidden="true"></div>
+
+<header class="masthead">
+  <div class="wrap masthead__band">
+    <h1 class="wordmark">Weichen Fan</h1>
+    
+    <nav class="masthead__nav" aria-label="Sections">
+      <a class="nav-day" href="#work">Work</a>
+      <a class="nav-day" href="#record">Record</a>
+      <a class="nav-night" href="#arcade">Games</a>
+      <a class="nav-night" href="#rotation">Music</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="crossexam" id="crossexam" type="button" aria-pressed="false">Cross-examine</button>
+    
+    <button class="lamplight" id="lamplight" type="button" aria-pressed="false" hidden>Lamplight</button>
+    <button class="plainview" id="plainview" type="button" aria-pressed="false">
+      <span class="plainview__box" aria-hidden="true"></span>Plain view
+    </button>
+    <p class="sr-only" role="status" id="crossexam-status"></p>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+
+
+
+<span class="anchor-alias" id="about" aria-hidden="true"></span>
+<section class="section section--overture" id="overture" tabindex="-1" aria-labelledby="overture-h">
+  <h2 class="sr-only" id="overture-h">About</h2>
+  <div class="transcript">
+    <div class="rail">
+      
+      <figure class="portrait">
+        <img src="assets/img/portrait.webp" width="1000" height="1250"
+             alt="Weichen Fan" fetchpriority="high" decoding="async">
+      </figure>
+    </div>
+
+    <div class="record">
+      <p class="bio">I am a Second-year PhD student at <a href="https://www.mmlab-ntu.com/">MMLab@NTU</a>, Nanyang Technological University, under the supervision of Prof. <a href="https://liuziwei7.github.io/">Ziwei Liu</a>. I earned my Bachelor&rsquo;s degree from the University of Electronic Science and Technology of China (UESTC) and my Master&rsquo;s degree from the National University of Singapore (NUS). My research centers on video generation, diffusion models, and robotics.</p>
+
+      <p class="edu">Bachelor&rsquo;s &mdash; UESTC<span class="sep" aria-hidden="true">·</span>Master&rsquo;s &mdash; NUS<span class="sep" aria-hidden="true">·</span>PhD &mdash; NTU (in progress)</p>
+
+      <p class="linkrow linkrow--primary">
+        <a href="#contact">weichen002 [at] e.ntu.edu.sg</a><span class="sep" aria-hidden="true">·</span>
+        <a href="https://github.com/WeichenFan" rel="me noopener">GitHub</a><span class="sep" aria-hidden="true">·</span>
+        <a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&amp;hl" rel="me noopener">Google Scholar</a>
+      </p>
+
+      
+      <p class="doorway">
+        <a class="doorway__link" href="phd.html">
+          <span class="doorway__brackets" aria-hidden="true">[</span>What Kind of PhD Are You?<span class="doorway__brackets" aria-hidden="true">]</span>
+        </a>
+        <span class="doorway__aside">Ten questions. Four attributes. Twenty-four answers.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<span class="anchor-alias" id="publications" aria-hidden="true"></span>
+<section class="section" id="work" aria-labelledby="work-h">
+  <div class="transcript">
+    <div class="rail">
+      <button class="rail__speaker" type="button" data-faculty="visual-calculus" data-speaker="visual-calculus" aria-pressed="false">Visual Calculus</button>
+    </div>
+    <div class="record">
+      <h2 class="section__label" id="work-h">Work</h2>
+
+      <p class="voice voice--lead" data-speaker="visual-calculus">
+        <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Ordered newest first. Every title below resolves to a source.</i>
+      </p>
+
+      <fieldset class="refile" id="refile">
+        <legend class="sr-only">Order publications</legend>
+        <span class="refile__label">Order</span>
+        <input class="sr-only" type="radio" id="o-chron" name="order" value="chron" checked><label for="o-chron">Chronological</label>
+        <input class="sr-only" type="radio" id="o-area" name="order" value="area"><label for="o-area">By area</label>
+        <input class="sr-only" type="radio" id="o-venue" name="order" value="venue"><label for="o-venue">By venue</label>
+        <input class="sr-only" type="radio" id="o-first" name="order" value="first"><label for="o-first">First author</label>
+        <button class="btn refile__all" type="button" id="examine-all" aria-pressed="false">[ examine all ]</button>
+      </fieldset>
+      <p class="stamp-legend">
+        <span class="stamp-venue stamp-venue--refereed">Refereed</span> peer-reviewed venue
+        <span class="sep" aria-hidden="true">·</span>
+        <span class="stamp-venue stamp-venue--preprint">Dashed</span> preprint or technical report
+      </p>
+      <p class="sr-only" role="status" id="refile-status"></p>
+
+      <ol class="entries" id="entries">
+
+        <li><article class="entry" id="ex-11"
+          data-year="2026" data-area="diffusion-guidance" data-venue-class="preprint" data-authorship="first" data-rank="11"
+          data-btype="article" data-bkey="fan2026spectral"
+          data-btitle="Show the Signal, Hide the Noise: Spectral Forcing for Pixel-Space Diffusion"
+          data-bauthors="Weichen Fan and Haiwen Diao and Penghao Wu and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2606.15236"
+          data-burl="https://arxiv.org/pdf/2606.15236">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Show the Signal, Hide the Noise: Spectral Forcing for Pixel-Space Diffusion</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2026</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan</b>, Haiwen Diao, Penghao Wu, Ziwei Liu</p>
+          <figure class="plate" id="plate-11">
+            <img class="plate__img" src="assets/img/spectral-forcing.webp" width="1548" height="632" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Spectral Forcing.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2606.15236" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/Spectral_Forcing" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-11">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Pixel space, with nowhere for the noise to hide.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-10"
+          data-year="2026" data-area="multimodal-unified" data-venue-class="report" data-authorship="contributor" data-rank="10"
+          data-btype="article" data-bkey="fan2026sensenova"
+          data-btitle="SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture"
+          data-bauthors="Weichen Fan and {SenseNova Team}"
+          data-bvenue="arXiv preprint arXiv:2605.12500" data-bnote="Weichen Fan: core contributor."
+          data-burl="https://arxiv.org/pdf/2605.12500">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture</h3>
+            <span class="stamp-venue stamp-venue--preprint">Tech report 2026</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan (Core Contributor)</b>, SenseNova Team</p>
+          <figure class="plate" id="plate-10">
+            <img class="plate__img" src="assets/img/sensenova-u1.webp" width="1600" height="722" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for SenseNova-U1.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2605.12500" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/OpenSenseNova/SenseNova-U1" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-10">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Understanding and generation under one architecture, which is the hard version.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Technical report. Core contributor credit, not first author.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-09"
+          data-year="2026" data-area="multimodal-unified" data-venue-class="refereed" data-authorship="first" data-rank="9"
+          data-btype="inproceedings" data-bkey="fan2026prism"
+          data-btitle="The Prism Hypothesis: Harmonizing Semantic and Pixel Representations via Unified Autoencoding"
+          data-bauthors="Weichen Fan and Haiwen Diao and Quan Wang and Dahua Lin and Ziwei Liu"
+          data-bvenue="European Conference on Computer Vision (ECCV)"
+          data-burl="https://arxiv.org/abs/2512.19693">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">The Prism Hypothesis: Harmonizing Semantic and Pixel Representations via Unified Autoencoding</h3>
+            <span class="stamp-venue stamp-venue--refereed">ECCV 2026</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan</b>, Haiwen Diao, Quan Wang, Dahua Lin, Ziwei Liu</p>
+          <figure class="plate" id="plate-09">
+            <img class="plate__img" src="assets/img/prism-uae.webp" width="1600" height="469" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for The Prism Hypothesis.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/abs/2512.19693" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/UAE" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-09">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Semantics and pixels held in one autoencoder, stated as a hypothesis rather than a trick.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-08"
+          data-year="2025" data-area="diffusion-guidance" data-venue-class="preprint" data-authorship="first" data-rank="8"
+          data-btype="article" data-bkey="fan2025cfgzero"
+          data-btitle="CFG-Zero*: Classifier-Free Guidance with Zero Prediction"
+          data-bauthors="Weichen Fan and Amber Yijia Zheng and Raymond A. Yeh and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2503.18886"
+          data-burl="https://arxiv.org/pdf/2503.18886">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">CFG-Zero*: Classifier-Free Guidance with Zero Prediction</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2025</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan</b>, Amber Yijia Zheng, Raymond A. Yeh, Ziwei Liu</p>
+          <figure class="plate" id="plate-08">
+            <img class="plate__img" src="assets/img/cfg-zero.webp" width="1362" height="548" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for CFG-Zero*.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://weichenfan.github.io/webpage-cfg-zero-star/" rel="noopener">Project Page</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://arxiv.org/pdf/2503.18886" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/CFG-Zero-star" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-08">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Guidance reconsidered at the zeroth step. The asterisk is load-bearing.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-07"
+          data-year="2025" data-area="video-generation" data-venue-class="preprint" data-authorship="co-first" data-rank="7"
+          data-btype="article" data-bkey="fan2025vchitect"
+          data-btitle="Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models"
+          data-bauthors="Weichen Fan and Chenyang Si and Junhao Song and Zhenyu Yang and Yinan He and Long Zhuo and Ziqi Huang and Ziyue Dong and Jingwen He and Dongwei Pan and Yi Wang and Yuming Jiang and Yaohui Wang and Peng Gao and Xinyuan Chen and Hengjie Li and Dahua Lin and Yu Qiao and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2501.08453"
+          data-burl="https://arxiv.org/abs/2501.08453">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Vchitect-2.0: Parallel Transformer for Scaling Up Video Diffusion Models</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2025</span>
+          </div>
+          <p class="entry__authors entry__authors--long"><b>Weichen Fan*</b>, Chenyang Si*, Junhao Song, Zhenyu Yang, Yinan He, Long Zhuo, Ziqi Huang, Ziyue Dong, Jingwen He, Dongwei Pan, Yi Wang, Yuming Jiang, Yaohui Wang, Peng Gao, Xinyuan Chen, Hengjie Li, Dahua Lin, Yu Qiao, Ziwei Liu</p>
+          <figure class="plate" id="plate-07">
+            <img class="plate__img" src="assets/img/vchitect2.webp" width="1348" height="672" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Vchitect-2.0.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://vchitect.intern-ai.org.cn/" rel="noopener">Project Page</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://arxiv.org/abs/2501.08453" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://huggingface.co/datasets/Vchitect/Vchitect_T2V_DataVerse" rel="noopener">Dataset</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/Vchitect/Vchitect-2.0" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-07">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">A parallel transformer, scaled up, and the dataset shipped with it.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Preprint. Nineteen authors; co-first among them.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-06"
+          data-year="2025" data-area="video-generation" data-venue-class="preprint" data-authorship="co-first" data-rank="6"
+          data-btype="article" data-bkey="si2025repvideo"
+          data-btitle="RepVideo: Rethinking Cross-Layer Representation for Video Generation"
+          data-bauthors="Chenyang Si and Weichen Fan and Zhengyao Lv and Ziqi Huang and Yu Qiao and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2501.08994"
+          data-burl="https://arxiv.org/pdf/2501.08994">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">RepVideo: Rethinking Cross-Layer Representation for Video Generation</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2025</span>
+          </div>
+          <p class="entry__authors">Chenyang Si*, <b>Weichen Fan*</b>, Zhengyao Lv, Ziqi Huang, Yu Qiao, and Ziwei Liu</p>
+          <figure class="plate" id="plate-06">
+            <img class="plate__img" src="assets/img/repvideo.webp" width="1348" height="552" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for RepVideo.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://vchitect.github.io/RepVid-Webpage/" rel="noopener">Project Page</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://arxiv.org/pdf/2501.08994" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/Vchitect/RepVideo" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-06">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">What happens between the layers turned out to be the thing worth rethinking.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-05"
+          data-year="2024" data-area="video-generation" data-venue-class="report" data-authorship="contributor" data-rank="5"
+          data-btype="article" data-bkey="lumina2024t2x"
+          data-btitle="Lumina-t2x: Transforming text into any modality, resolution, and duration via flow-based large diffusion transformers"
+          data-bauthors="Weichen Fan and {Sphinx Team}"
+          data-bvenue="arXiv preprint arXiv:2405.05945" data-bnote="Weichen Fan (Chen Lin): contributor."
+          data-burl="https://arxiv.org/pdf/2405.05945">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Lumina-t2x: Transforming text into any modality, resolution, and duration via flow-based large diffusion transformers</h3>
+            <span class="stamp-venue stamp-venue--preprint">Tech report 2024</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan(Chen Lin) (Contributor)</b>, Sphinx Team</p>
+          <figure class="plate" id="plate-05">
+            <img class="plate__img" src="assets/img/lumina-t2x.webp" width="1600" height="952" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Lumina-T2X.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2405.05945" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/alpha-vllm/lumina-t2x" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-05">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Any modality, any resolution, any duration — an ambitious sentence to defend.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Technical report, not peer reviewed. Contributor credit.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-04"
+          data-year="2024" data-area="multimodal-unified" data-venue-class="refereed" data-authorship="co-first" data-rank="4"
+          data-btype="inproceedings" data-bkey="tai2024linkcontext"
+          data-btitle="Link-Context Learning For Multimodal LLMs"
+          data-bauthors="Yan Tai and Weichen Fan and Zhao Zhang and Ziwei Liu"
+          data-bvenue="IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)"
+          data-burl="https://openaccess.thecvf.com/content/CVPR2024/papers/Tai_Link-Context_Learning_for_Multimodal_LLMs_CVPR_2024_paper.pdf">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Link-Context Learning For Multimodal LLMs</h3>
+            <span class="stamp-venue stamp-venue--refereed">CVPR 2024</span>
+          </div>
+          <p class="entry__authors">Yan Tai*, <b>Weichen Fan*</b>, Zhao Zhang, Ziwei Liu</p>
+          <figure class="plate" id="plate-04">
+            <img class="plate__img" src="assets/img/link-context.webp" width="1324" height="744" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Link-Context Learning.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Tai_Link-Context_Learning_for_Multimodal_LLMs_CVPR_2024_paper.pdf" rel="noopener">Paper Link</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/isekai-portal/Link-Context-Learning" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-04">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">The model is given the link between examples, not only the examples.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-03"
+          data-year="2023" data-area="multimodal-unified" data-venue-class="report" data-authorship="contributor" data-rank="3"
+          data-btype="article" data-bkey="sphinx2023"
+          data-btitle="Sphinx: The joint mixing of weights, tasks, and visual embeddings for multi-modal large language models"
+          data-bauthors="Weichen Fan and {Sphinx Team}"
+          data-bvenue="arXiv preprint arXiv:2311.07575" data-bnote="Weichen Fan (Chen Lin): contributor."
+          data-burl="https://arxiv.org/pdf/2311.07575">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Sphinx: The joint mixing of weights, tasks, and visual embeddings for multi-modal large language models</h3>
+            <span class="stamp-venue stamp-venue--preprint">Tech report 2023</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan(Chen Lin) (Contributor)</b>, Sphinx Team</p>
+          <figure class="plate" id="plate-03">
+            <img class="plate__img" src="assets/img/sphinx.webp" width="1435" height="830" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Sphinx.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2311.07575" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/Alpha-VLLM/LLaMA2-Accessory/tree/main" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-03">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Weights, tasks and visual embeddings, mixed jointly rather than stacked.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Technical report, not peer reviewed. Contributor credit.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry" id="ex-02"
+          data-year="2022" data-area="diffusion-guidance" data-venue-class="preprint" data-authorship="co-first" data-rank="2"
+          data-btype="article" data-bkey="fan2022hierarchyflow"
+          data-btitle="Hierarchy Flow For High-Fidelity Image-to-Image Translation"
+          data-bauthors="Weichen Fan and Jinghuan Chen and Ziwei Liu"
+          data-bvenue="arXiv preprint arXiv:2308.06909"
+          data-burl="https://arxiv.org/pdf/2308.06909">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Hierarchy Flow For High-Fidelity Image-to-Image Translation</h3>
+            <span class="stamp-venue stamp-venue--preprint">arXiv 2022</span>
+          </div>
+          <p class="entry__authors"><b>Weichen Fan*</b>, Jinghuan Chen*, Ziwei Liu</p>
+          <figure class="plate" id="plate-02">
+            <img class="plate__img" src="assets/img/hierarchy-flow.webp" width="1360" height="808" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for Hierarchy Flow.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://arxiv.org/pdf/2308.06909" rel="noopener">arXiv</a><span class="sep" aria-hidden="true">·</span>
+            <a href="https://github.com/WeichenFan/HierarchyFlow" rel="noopener">Code</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-02">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="visual-calculus">
+            <button class="voice__who" type="button" data-faculty="visual-calculus" aria-pressed="false">Visual Calculus</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Translation that keeps its fidelity by keeping its hierarchy.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry" id="ex-01"
+          data-year="2022" data-area="robotics-control" data-venue-class="refereed" data-authorship="co-first" data-rank="1"
+          data-btype="article" data-bkey="gao2022savanet"
+          data-btitle="SAVAnet: Surgical Action-Driven Visual Attention Network for Autonomous Endoscope Control"
+          data-bauthors="Huxin Gao and Weichen Fan and Liang Qiu and Xiaoxiao Yang and Zhen Li and Xiuli Zuo and Yanqing Li and Max Q.-H. Meng and Hongliang Ren"
+          data-bvenue="IEEE Transactions on Automation Science and Engineering"
+          data-burl="https://ieeexplore.ieee.org/abstract/document/9895213">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">SAVAnet: Surgical Action-Driven Visual Attention Network for Autonomous Endoscope Control</h3>
+            <span class="stamp-venue stamp-venue--refereed">IEEE T-ASE 2022</span>
+          </div>
+          <p class="entry__authors">Huxin Gao* <b>Weichen Fan*</b>, Liang Qiu, Xiaoxiao Yang, Zhen Li, Xiuli Zuo, Yanqing Li, Max Q.-H. Meng, Hongliang Ren</p>
+          <figure class="plate" id="plate-01">
+            <img class="plate__img" src="assets/img/savanet.webp" width="1540" height="638" loading="lazy" decoding="async" alt="">
+            <figcaption class="sr-only">Teaser figure for SAVAnet.</figcaption>
+          </figure>
+          <p class="linkrow">
+            <a href="https://ieeexplore.ieee.org/abstract/document/9895213" rel="noopener">Paper Link</a><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-examine aria-expanded="false" aria-controls="plate-01">[ examine ]</button><span class="sep" aria-hidden="true">·</span>
+            <button class="btn" type="button" data-cite>[ cite ]</button>
+          </p>
+          <p class="voice" data-speaker="interfacing">
+            <button class="voice__who" type="button" data-faculty="interfacing" aria-pressed="false">Interfacing</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">An endoscope that looks where the surgery is going. The robotics start here.</i>
+          </p>
+        </article></li>
+
+      </ol>
+
+      <p class="footnote">* denotes equal contribution.</p>
+    </div>
+  </div>
+</section>
+
+
+<span class="anchor-alias" id="Experience" aria-hidden="true"></span>
+<section class="section" id="record" aria-labelledby="record-h">
+  <div class="transcript">
+    <div class="rail"></div>
+    <div class="record">
+      <h2 class="section__label" id="record-h">Record</h2>
+
+      <ol class="positions">
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-ntu.webp" width="374" height="160" loading="lazy" decoding="async" alt="Nanyang Technological University">
+          <div class="entry__head">
+            <h3 class="position__org">Nanyang Technological University</h3>
+            <span class="position__dates">May 2024 — Nov 2024</span>
+          </div>
+          <p class="position__role">Research Manager</p>
+          <p class="position__place">Singapore</p>
+        </article></li>
+
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-hypergai.webp" width="334" height="116" loading="lazy" decoding="async" alt="HyperGAI">
+          <div class="entry__head">
+            <h3 class="position__org">HyperGAI</h3>
+            <span class="position__dates">Oct 2023 — May 2024</span>
+          </div>
+          <p class="position__role">Research Scientist</p>
+          <p class="position__place">Singapore</p>
+        </article></li>
+
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-sensetime.webp" width="374" height="160" loading="lazy" decoding="async" alt="SenseTime">
+          <div class="entry__head">
+            <h3 class="position__org">SenseTime</h3>
+            <span class="position__dates">Jun 2022 — Oct 2023</span>
+          </div>
+          <p class="position__role">Computer Vision Researcher</p>
+          <p class="position__place">ShangHai</p>
+        </article></li>
+
+        <li><article class="entry position">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <img class="stamp" src="assets/img/logo-sensetime.webp" width="374" height="160" loading="lazy" decoding="async" alt="SenseTime">
+          <div class="entry__head">
+            <h3 class="position__org">SenseTime</h3>
+            <span class="position__dates">May 2021 — Jun 2022</span>
+          </div>
+          <p class="position__role">Research Intern</p>
+          <p class="position__place">Singapore</p>
+        </article></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="arcade" aria-labelledby="arcade-h">
+  <div class="transcript">
+    <div class="rail">
+      <button class="rail__speaker" type="button" data-faculty="electrochemistry" data-speaker="electrochemistry" aria-pressed="false">Electrochemistry</button>
+    </div>
+    <div class="record">
+      <h2 class="section__label" id="arcade-h">Games</h2>
+
+      <p class="voice voice--lead" data-speaker="electrochemistry">
+        <button class="voice__who" type="button" data-faculty="electrochemistry" aria-pressed="false">Electrochemistry</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">The other ledger. It is longer than the first one and it was more fun to write.</i>
+      </p>
+
+      
+      <p class="tally" id="arcade-tally">3,288.1 hours across 8 titles. 343 of 917 achievements, counted across 7 of the 8.</p>
+
+      <ol class="entries entries--games" id="games">
+
+        <li><article class="entry game" data-hours="1558.4" data-got="48" data-of="48" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Tom Clancy&rsquo;s Rainbow Six Siege</h3>
+            <span class="stamp-venue stamp-perfect">All 48</span>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-rainbow-six-siege.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>1,558.4 hours</b><span class="sep" aria-hidden="true">·</span><span>48 of 48 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/359550/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="half-light">
+            <button class="voice__who" type="button" data-faculty="half-light" aria-pressed="false">Half Light</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Fifteen hundred hours of listening for a footstep through a ceiling. You do not hear the room any more. You hear what is about to come through it.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Sixty-five days. Not of playing across the years — sixty-five entire days, end to end, in one room.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry game" data-hours="489.5" data-got="76" data-of="175" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Age of Empires IV: Anniversary Edition</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-age-of-empires-iv.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>489.5 hours</b><span class="sep" aria-hidden="true">·</span><span>76 of 175 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/1466860/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="encyclopedia">
+            <button class="voice__who" type="button" data-faculty="encyclopedia" aria-pressed="false">Encyclopedia</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Dark, Feudal, Castle, Imperial. Four ages and a thousand years, compressed into something you can lose an evening to, and you keep going back to lose another one.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="437.5" data-got="130" data-of="303" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Dead by Daylight</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-dead-by-daylight.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>437.5 hours</b><span class="sep" aria-hidden="true">·</span><span>130 of 303 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/381210/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Something is walking toward you and the sound is getting louder. You have heard it four hundred hours&rsquo; worth of times. It still works.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="274" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Disco Elysium: The Final Cut</h3>
+            <span class="stamp-venue stamp-source">The source</span>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-disco-elysium.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              
+              <p class="facts"><b>274.0 hours</b></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/632470/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Two hundred and seventy-four hours in a city you could not fix, losing an argument to yourself in twenty-four voices. You are reading one of them now. This entire room is borrowed from that game, and you knew that before you got here.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="250.4" data-got="37" data-of="99" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Total War: THREE KINGDOMS</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-total-war-three-kingdoms.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>250.4 hours</b><span class="sep" aria-hidden="true">·</span><span>37 of 99 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/779340/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="encyclopedia">
+            <button class="voice__who" type="button" data-faculty="encyclopedia" aria-pressed="false">Encyclopedia</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">You knew how this one ended before you installed it. Everyone does. Two hundred and fifty hours spent checking whether it would end differently for you.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="103.4" data-got="8" data-of="50" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Mount &amp; Blade II: Bannerlord</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-mount-and-blade-ii.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>103.4 hours</b><span class="sep" aria-hidden="true">·</span><span>8 of 50 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/261550/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="half-light">
+            <button class="voice__who" type="button" data-faculty="half-light" aria-pressed="false">Half Light</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Eight achievements out of fifty. You were not collecting anything. You were on a horse, going somewhere, and you did not stop to be measured.</i>
+          </p>
+          <details class="objection">
+            <summary class="objection__toggle">Rhetoric objects</summary>
+            <div class="objection__wrap"><div>
+              <p class="voice" data-speaker="rhetoric">
+                <b class="voice__who voice__who--static">Rhetoric</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">You did not finish going somewhere. You stopped, and then a PhD happened to you.</i>
+              </p>
+            </div></div>
+          </details>
+        </article></li>
+
+        <li><article class="entry game" data-hours="91" data-got="29" data-of="54" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Baldur&rsquo;s Gate 3</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-baldurs-gate-3.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>91.0 hours</b><span class="sep" aria-hidden="true">·</span><span>29 of 54 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/1086940/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Ninety-one hours, and better than half the achievements. Not a fast reader. A thorough one — you stopped and talked to everybody.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry game" data-hours="83.9" data-got="15" data-of="188" data-venue-class="log">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Crusader Kings III</h3>
+          </div>
+          <div class="game__body">
+            <img class="game__art" src="assets/img/art-crusader-kings-iii.webp" width="360" height="168"
+                 loading="lazy" decoding="async" alt="">
+            <div class="game__data">
+              <p class="facts"><b>83.9 hours</b><span class="sep" aria-hidden="true">·</span><span>15 of 188 achievements</span></p>
+              <div class="meter" aria-hidden="true">
+                <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
+              <span class="meter__track meter__track--thin"><span class="meter__fill meter__fill--got"></span></span>
+              </div>
+              <p class="linkrow"><a href="https://store.steampowered.com/app/1158310/" rel="noopener">Steam</a></p>
+            </div>
+          </div>
+          <p class="voice" data-speaker="encyclopedia">
+            <button class="voice__who" type="button" data-faculty="encyclopedia" aria-pressed="false">Encyclopedia</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Fifteen of a hundred and eighty-eight. This game keeps score of things nobody sets out to do. The dynasty was the point; the ledger was never going to be filled.</i>
+          </p>
+        </article></li>
+
+      </ol>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="rotation" aria-labelledby="rotation-h">
+  <div class="transcript">
+    <div class="rail">
+      <button class="rail__speaker" type="button" data-faculty="shivers" data-speaker="shivers" aria-pressed="false">Shivers</button>
+    </div>
+    <div class="record">
+      <h2 class="section__label" id="rotation-h">Music</h2>
+
+      <p class="voice voice--lead" data-speaker="shivers">
+        <button class="voice__who" type="button" data-faculty="shivers" aria-pressed="false">Shivers</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Three records. They will play right here, and they do not load until you ask them to.</i>
+      </p>
+
+      <ol class="entries entries--tracks" id="tracks">
+
+        <li><article class="entry track">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Pure</h3>
+            <span class="stamp-venue stamp-venue--preprint">1990</span>
+          </div>
+          <div class="track__body">
+            <img class="track__art" src="assets/img/art-pure.webp" width="240" height="240"
+                 loading="lazy" decoding="async" alt="">
+            <div class="track__data">
+              <p class="facts"><b>The Lightning Seeds</b><span class="sep" aria-hidden="true">·</span><span>Cloudcuckooland</span></p>
+              <p class="linkrow">
+                <button class="btn" type="button" data-play aria-expanded="false" aria-controls="deck-pure"
+                        data-embed="https://www.youtube-nocookie.com/embed/lbqMD7YrGGQ?autoplay=1&amp;rel=0"
+                        data-track="Pure, by The Lightning Seeds">[ play ]</button><span class="sep" aria-hidden="true">·</span>
+                <a href="https://open.spotify.com/track/0a82sKc2ZEDcvvl8aekakp" rel="noopener">Open in Spotify</a>
+              </p>
+            </div>
+          </div>
+          <div class="deck" id="deck-pure" hidden></div>
+          <p class="voice" data-speaker="electrochemistry">
+            <button class="voice__who" type="button" data-faculty="electrochemistry" aria-pressed="false">Electrochemistry</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Nineteen ninety, and it still sounds like the first warm afternoon of a year. Nothing in it is trying to hurt you. Do you know how rare that is.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry track">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">Nightingale</h3>
+            <span class="stamp-venue stamp-venue--preprint">1997</span>
+          </div>
+          <div class="track__body">
+            <img class="track__art" src="assets/img/art-nightingale.webp" width="240" height="240"
+                 loading="lazy" decoding="async" alt="">
+            <div class="track__data">
+              <p class="facts"><b>Yanni</b><span class="sep" aria-hidden="true">·</span><span>Tribute</span></p>
+              <p class="linkrow">
+                <button class="btn" type="button" data-play aria-expanded="false" aria-controls="deck-nightingale"
+                        data-embed="https://www.youtube-nocookie.com/embed/4tfoMFzc4us?autoplay=1&amp;rel=0"
+                        data-track="Nightingale, by Yanni">[ play ]</button><span class="sep" aria-hidden="true">·</span>
+                <a href="https://open.spotify.com/track/4PQDu176RmCXkQaxmHOpeb" rel="noopener">Open in Spotify</a>
+              </p>
+            </div>
+          </div>
+          <div class="deck" id="deck-nightingale" hidden></div>
+          <p class="voice" data-speaker="inland-empire">
+            <button class="voice__who" type="button" data-faculty="inland-empire" aria-pressed="false">Inland Empire</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Not one word in the whole of it, and it still gets the entire story out. Somewhere in there an instrument is pretending to be a bird, and you are letting it.</i>
+          </p>
+        </article></li>
+
+        <li><article class="entry track">
+          <span class="entry__bullet" aria-hidden="true"></span>
+          <div class="entry__head">
+            <h3 class="entry__title">About You</h3>
+            <span class="stamp-venue stamp-venue--preprint">2022</span>
+          </div>
+          <div class="track__body">
+            <img class="track__art" src="assets/img/art-about-you.webp" width="240" height="240"
+                 loading="lazy" decoding="async" alt="">
+            <div class="track__data">
+              <p class="facts"><b>The 1975</b><span class="sep" aria-hidden="true">·</span><span>Being Funny In A Foreign Language</span></p>
+              <p class="linkrow">
+                <button class="btn" type="button" data-play aria-expanded="false" aria-controls="deck-about-you"
+                        data-embed="https://www.youtube-nocookie.com/embed/tGv7CUutzqU?autoplay=1&amp;rel=0"
+                        data-track="About You, by The 1975">[ play ]</button><span class="sep" aria-hidden="true">·</span>
+                <a href="https://open.spotify.com/track/1fDFHXcykq4iw8Gg7s5hG9" rel="noopener">Open in Spotify</a>
+              </p>
+            </div>
+          </div>
+          <div class="deck" id="deck-about-you" hidden></div>
+          <p class="voice" data-speaker="shivers">
+            <button class="voice__who" type="button" data-faculty="shivers" aria-pressed="false">Shivers</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">It wants to be enormous and it is not embarrassed about wanting that. The temperature in the room drops a degree. Play it loud or do not play it.</i>
+          </p>
+        </article></li>
+
+      </ol>
+      <p class="sr-only" role="status" id="deck-status"></p>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="contact" aria-labelledby="contact-h">
+  <div class="transcript">
+    <div class="rail"></div>
+    <div class="record">
+      <h2 class="section__label" id="contact-h">Contact</h2>
+
+      <dl class="contact">
+        <dt>Email</dt>
+        <dd><a id="email-link" href="#contact" data-user="weichen002" data-host="e.ntu.edu.sg">weichen002 [at] e.ntu.edu.sg</a>
+          <button class="btn" type="button" id="copy-email">[ copy ]</button></dd>
+
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/WeichenFan" rel="me noopener">github.com/WeichenFan</a></dd>
+
+        <dt>Scholar</dt>
+        <dd><a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&amp;hl" rel="me noopener">Google Scholar</a></dd>
+      </dl>
+      <p class="sr-only" role="status" id="copy-status"></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="colophon">
+  <div class="wrap colophon__band">
+    <div class="colophon__text">
+      
+      <img class="seal" src="assets/img/seal.webp" width="220" height="220"
+           alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <p class="colophon__rights">&copy; Weichen Fan</p>
+    </div>
+    <div class="colophon__widget">
+      <span class="colophon__plate">Visitors</span>
+      
+      <div class="widget" aria-hidden="true" inert>
+        <script type="text/javascript" id="mapmyvisitors" defer src="//mapmyvisitors.com/map.js?d=RrNt3DhksT-UGr3LcQpblowVrFoxwPoyCcCxzemBhYc&amp;cl=ffffff&amp;w=a"></script>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<section class="lock" id="lock" aria-labelledby="lock-h">
+  <div class="wrap lock__band">
+    <h2 class="lock__label" id="lock-h">There is a way through</h2>
+    <div class="maze" id="maze" tabindex="0" role="group"
+         aria-labelledby="lock-h" aria-describedby="lock-help"></div>
+    <p class="lock__help" id="lock-help">Arrow keys, or drag.</p>
+    <button class="sr-only" type="button" id="lock-bypass">Skip the maze and turn the lamp down</button>
+    <p class="voice lock__won" id="lock-won" data-speaker="encyclopedia" hidden>
+      <b class="voice__who voice__who--static">Encyclopedia</b><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">Solved. Lamplight is in the masthead from now on.</i>
+    </p>
+    <p class="sr-only" role="status" id="lock-status"></p>
+  </div>
+</section>
+
+<script src="js/site.js" defer></script>
+</body>
+</html>

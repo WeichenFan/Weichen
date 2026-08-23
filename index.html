@@ -19,12 +19,8 @@
 <meta name="twitter:card" content="summary">
 
 <!-- Restore PLAIN VIEW before first paint so the voice layer never flashes.
-     THE THEME IS DELIBERATELY NOT RESTORED. Every visit opens on the paper —
-     Lamplight is somewhere you go, not somewhere you are left. What DOES
-     persist is wf-lamp, the fact that the way through was found: solve the
-     maze once and the button stays in the masthead for good. Old visitors may
-     still carry a wf-theme key from when it was remembered; it is cleared
-     here so it cannot sit in storage meaning nothing. -->
+     The theme is deliberately NOT restored; wf-lamp is, so a solved maze
+     keeps the button in the masthead. wf-theme is a dead key, cleared. -->
 <script>
 (function(){
   var d = document.documentElement;
@@ -67,11 +63,9 @@
 <header class="masthead">
   <div class="wrap masthead__band">
     <h1 class="wordmark">Weichen Fan</h1>
-    <!-- Two navigations, one bar. Lamplight is not a colour scheme applied to
-         the CV — it is a different ledger, so the sections it names are
-         different too. Classes sit on the anchors themselves rather than on a
-         wrapper: as flex items they keep the 24px gap, and the hidden pair
-         leaves the accessibility tree with its section. -->
+    <!-- Two navs in one bar, day vs Lamplight sections. Classes go on the
+         anchors, not a wrapper: they stay flex items with the 24px gap, and
+         the hidden pair leaves the a11y tree with its section. -->
     <nav class="masthead__nav" aria-label="Sections">
       <a class="nav-day" href="#work">Work</a>
       <a class="nav-day" href="#record">Record</a>
@@ -80,7 +74,7 @@
       <a href="#contact">Contact</a>
     </nav>
     <button class="crossexam" id="crossexam" type="button" aria-pressed="false">Cross-examine</button>
-    <!-- Revealed only once the way through has been found. -->
+    <!-- Unhidden by JS once the maze is solved. -->
     <button class="lamplight" id="lamplight" type="button" aria-pressed="false" hidden>Lamplight</button>
     <button class="plainview" id="plainview" type="button" aria-pressed="false">
       <span class="plainview__box" aria-hidden="true"></span>Plain view
@@ -92,19 +86,16 @@
 <main class="wrap" id="main">
 
 <!-- ══ OVERTURE ══════════════════════════════════════════════════════════ -->
-<!-- The previous version of this site published #about, #Experience and
-     #publications. Keep them resolving so old inbound links still land. -->
+<!-- Old inbound links used #about, #Experience and #publications; these
+     aliases keep them resolving. -->
 <span class="anchor-alias" id="about" aria-hidden="true"></span>
 <section class="section section--overture" id="overture" tabindex="-1" aria-labelledby="overture-h">
   <h2 class="sr-only" id="overture-h">About</h2>
   <div class="transcript">
     <div class="rail">
-      <!-- One sitter, both themes. A painted version used to hang here under
-           Lamplight and was swapped in by CSS; it is gone from the markup
-           rather than merely hidden, because an <img> that never displays is
-           still 243KB fetched on every load. The file is still in the repo at
-           assets/img/portrait-disco.webp if it is ever wanted back — restoring
-           it means this element and the swap in css/site.css §12.1. -->
+      <!-- The painted Lamplight portrait is out of the markup, not hidden —
+           a never-displayed <img> still costs 243KB. To restore:
+           assets/img/portrait-disco.webp + css/site.css §12.1. -->
       <figure class="portrait">
         <img src="assets/img/portrait.webp" width="1000" height="1250"
              alt="Weichen Fan" fetchpriority="high" decoding="async">
@@ -122,11 +113,8 @@
         <a href="https://scholar.google.com/citations?user=ORlELG8AAAAJ&amp;hl" rel="me noopener">Google Scholar</a>
       </p>
 
-      <!-- A door, not a link row. It sits under the three professional
-           addresses and is deliberately in a different register from them:
-           the brackets are the same literal characters the [ examine ] and
-           [ cite ] controls use, so it reads as something you DO rather than
-           somewhere you are sent. -->
+      <!-- Brackets match the [ examine ] / [ cite ] buttons: reads as a
+           control, not a link. -->
       <p class="doorway">
         <a class="doorway__link" href="phd.html">
           <span class="doorway__brackets" aria-hidden="true">[</span>What Kind of PhD Are You?<span class="doorway__brackets" aria-hidden="true">]</span>
@@ -577,18 +565,15 @@
 </section>
 
 <!-- ══ GAMES ════════════════════════════════════════════════════════════
-     LAMPLIGHT ONLY. Hidden in the day theme, and it replaces WORK and RECORD
-     rather than joining them — see css/site.css §13.
+     LAMPLIGHT ONLY. Replaces WORK and RECORD rather than joining them — see
+     css/site.css §13.
 
-     Figures are transcribed from the Steam library, sorted by playtime as
-     Steam sorts it. Steam prints no year on a date inside the current year,
-     so the five bare dates there are 2026; the two it printed with a year
-     keep it. Nothing here is estimated.
+     Steam figures in Steam's playtime order; nothing estimated. Steam omits
+     the year within the current year, so bare dates are 2026.
 
-     The two meters under each row are DECORATION — aria-hidden, drawn by JS
-     from data-hours / data-got / data-of. Every number they encode is also
-     printed as text on the line above, so the row is complete without them
-     and no width in this file is ever typed by hand. -->
+     Meters are decoration: aria-hidden, widths set by JS from data-hours /
+     data-got / data-of, never by hand. Every number also appears as text
+     above, so the row survives a JS failure. -->
 <section class="section" id="arcade" aria-labelledby="arcade-h">
   <div class="transcript">
     <div class="rail">
@@ -601,8 +586,8 @@
         <button class="voice__who" type="button" data-faculty="electrochemistry" aria-pressed="false">Electrochemistry</button><span class="voice__dash" aria-hidden="true">—</span><i class="voice__prose">The other ledger. It is longer than the first one and it was more fun to write.</i>
       </p>
 
-      <!-- Both numbers are recounted from the DOM at load and overwritten in
-           place; they are printed here so the line survives a JS failure. -->
+      <!-- Recounted from the DOM at load and overwritten in place; printed
+           here so the line survives a JS failure. -->
       <p class="tally" id="arcade-tally">3,288.1 hours across 8 titles. 343 of 917 achievements, counted across 7 of the 8.</p>
 
       <ol class="entries entries--games" id="games">
@@ -692,9 +677,8 @@
             <img class="game__art" src="assets/img/art-disco-elysium.webp" width="360" height="168"
                  loading="lazy" decoding="async" alt="">
             <div class="game__data">
-              <!-- Hours only. Steam reports 45 achievements for this title, so
-                   "not tracked" would have been false; the count simply is not
-                   to hand. An absent clause claims nothing either way. -->
+              <!-- Hours only. Steam reports 45 achievements here, so "not
+                   tracked" would be false; the count isn't to hand. -->
               <p class="facts"><b>274.0 hours</b></p>
               <div class="meter" aria-hidden="true">
                 <span class="meter__track"><span class="meter__fill meter__fill--hours"></span></span>
@@ -809,17 +793,13 @@
 </section>
 
 <!-- ══ MUSIC ════════════════════════════════════════════════════════════
-     LAMPLIGHT ONLY, like GAMES above.
+     LAMPLIGHT ONLY, like GAMES.
 
-     Each row plays where it sits. The player is NOT in the markup: the
-     button carries the embed URL and JS builds the iframe on the click, so
-     the page makes no third-party request until somebody asks it to, and a
-     visitor who never presses play is never sent to Spotify at all.
-
-     Closing REMOVES the iframe rather than hiding it — a hidden iframe keeps
-     playing — which is also why only one deck can be open at a time. Every
-     track ID below was resolved against Spotify's own oEmbed and embed
-     payload and checked for artist, not taken from a search result. -->
+     No iframe in the markup: the button carries the embed URL and JS builds
+     the player on click — no third-party request until play is pressed.
+     Closing REMOVES the iframe, since a hidden iframe keeps playing; hence
+     one deck at a time. Track IDs verified against Spotify's oEmbed/embed
+     payload, artist included. -->
 <section class="section" id="rotation" aria-labelledby="rotation-h">
   <div class="transcript">
     <div class="rail">
@@ -943,18 +923,16 @@
 <footer class="colophon">
   <div class="wrap colophon__band">
     <div class="colophon__text">
-      <!-- A printer's device at the foot of the page. Decorative and
-           lamplight-only, so it is aria-hidden and carries no alt text. -->
+      <!-- Decorative, lamplight-only. -->
       <img class="seal" src="assets/img/seal.webp" width="220" height="220"
            alt="" aria-hidden="true" loading="lazy" decoding="async">
       <p class="colophon__rights">&copy; Weichen Fan</p>
     </div>
     <div class="colophon__widget">
       <span class="colophon__plate">Visitors</span>
-      <!-- inert, not just aria-hidden: the script injects a focusable <a> whose
-           focus ring would be clipped by the 112px box, so keyboard users would
-           hit an invisible, unannounced tab stop. defer is safe here — map.js
-           finds itself by #mapmyvisitors and never calls document.write. -->
+      <!-- inert, not just aria-hidden: the injected <a> is focusable and the
+           112px box clips its focus ring — an invisible tab stop. defer is
+           safe; map.js finds itself by #mapmyvisitors, no document.write. -->
       <div class="widget" aria-hidden="true" inert>
         <script type="text/javascript" id="mapmyvisitors" defer src="//mapmyvisitors.com/map.js?d=RrNt3DhksT-UGr3LcQpblowVrFoxwPoyCcCxzemBhYc&amp;cl=ffffff&amp;w=a"></script>
       </div>
@@ -963,11 +941,9 @@
 </footer>
 
 <!-- ══ THE WAY THROUGH ═══════════════════════════════════════════════════
-     A small maze, drawn in the same hairline as the transcript rule and
-     walked by the same ink square as the publication bullets. Finding the
-     exit turns the lamp down. Decorative and entirely optional: the
-     section is only shown when JS runs, and a screen-reader bypass sits
-     inside it so the alternate scheme is never gated behind a picture. -->
+     Solving the maze reveals the Lamplight button. JS-only, so the sr-only
+     bypass inside keeps the alternate scheme from being gated behind a
+     picture. -->
 <section class="lock" id="lock" aria-labelledby="lock-h">
   <div class="wrap lock__band">
     <h2 class="lock__label" id="lock-h">There is a way through</h2>
