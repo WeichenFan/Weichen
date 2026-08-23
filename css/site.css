@@ -667,8 +667,11 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
 /* ── PHOTOSTAT STRIP AND EXAMINED PLATE ───────────────── */
 .plate{position:relative;isolation:isolate;margin-top:var(--s3)}
 
-/* OPEN is the default so a no-JS reader never loses a figure. CONTAIN on a
-   mat: the teasers run 1.68:1 to 3.41:1 and cover would slice the widest. */
+/* OPEN is the default everywhere: no-JS readers keep the figure, and every
+   plate ships with .is-examined in the markup so the full set is visible on
+   arrival. Setting that in HTML rather than from JS avoids a flash of closed
+   slivers before the deferred script runs. CONTAIN on a mat: the teasers run
+   1.68:1 to 3.41:1 and cover would slice the widest. */
 .plate__img,
 html.js .plate.is-examined .plate__img{
   width:100%;height:auto;max-height:340px;
@@ -681,7 +684,8 @@ html.js .plate.is-examined .plate__img{
   transition:filter var(--d-plate) var(--ease-out);
 }
 /* CLOSED is a 56px sliver — a sample, not the information, so cover is right
-   here. Applied only when JS can reopen it. */
+   here. Applied only when JS can reopen it, and now only after a reader
+   closes one: plates start with .is-examined. */
 html.js .plate__img{
   height:56px;max-height:none;
   object-fit:cover;
