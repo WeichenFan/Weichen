@@ -1,8 +1,8 @@
 /* THE TRANSCRIPT — Weichen Fan · js/site.js · ES2020, no dependencies, defer.
-   boot · plainView · refile · facultyFocus · plates · loupe · clipboard.
+   boot · plainView · refile · facultyFocus · plates · clipboard.
    Every printed count is read off the DOM at print time, never hardcoded.
-   Whole-page listener budget: one click, one keydown, one change, two pointer
-   listeners per plate, one rAF loop (the loupe). No scroll/timer/observer. */
+   Whole-page listener budget: one click, one keydown, one change, and the
+   trail's pointermove. No per-plate listeners, no scroll/timer/observer. */
 (function () {
 'use strict';
 
@@ -286,83 +286,6 @@ function coarseSync() {                               /* agree with the CSS at f
 }
 coarseSync();
 onMedia(coarse, coarseSync);
-
-/* ═══ LOUPE ══════════════════════════════════════════════════════════════ */
-(function loupe() {
-  var fine = window.matchMedia('(hover:hover) and (pointer:fine)');
-  var figs = $$('.plate');
-  if (!fine.matches || calm.matches || !figs.length) return;   /* read at init: no listener is attached */
-  var el = make('div', { className: 'loupe' });
-  el.setAttribute('aria-hidden', 'true');
-  var R = 74, host = null, frame = 0, tx = 0, ty = 0, cx = 0, cy = 0;
-
-  /* background-size percentages resolve against the disc, not the plate, so the
-     drawn image rect is measured here and passed to CSS. object-fit:contain
-     letterboxes inside the content box: border, padding and bars come off
-     first. Safe to cache per enter — the plate cannot resize mid-hover. */
-  function geometry(fig, img) {
-    var fr = fig.getBoundingClientRect(), ir = img.getBoundingClientRect();
-    var cs = window.getComputedStyle(img);
-    function n(p) { return parseFloat(cs.getPropertyValue(p)) || 0; }
-    var insetL = n('border-left-width') + n('padding-left');
-    var insetT = n('border-top-width') + n('padding-top');
-    var cw = ir.width  - insetL - n('border-right-width')  - n('padding-right');
-    var ch = ir.height - insetT - n('border-bottom-width') - n('padding-bottom');
-    var nw = img.naturalWidth || cw, nh = img.naturalHeight || ch;
-    var s  = Math.min(cw / nw, ch / nh);
-    if (!isFinite(s) || s <= 0) s = 1;
-    var dw = nw * s, dh = nh * s;
-    var st = el.style;
-    st.setProperty('--img-x', ((ir.left - fr.left) + insetL + (cw - dw) / 2).toFixed(1) + 'px');
-    st.setProperty('--img-y', ((ir.top  - fr.top)  + insetT + (ch - dh) / 2).toFixed(1) + 'px');
-    st.setProperty('--img-w', dw.toFixed(1) + 'px');
-  }
-
-  function write() {
-    var s = el.style;
-    s.setProperty('--lx', cx.toFixed(1) + 'px'); s.setProperty('--tx', (cx - R).toFixed(1) + 'px');
-    s.setProperty('--ly', cy.toFixed(1) + 'px'); s.setProperty('--ty', (cy - R).toFixed(1) + 'px');
-  }
-  function step() {                                   /* the only rAF loop on the page */
-    frame = 0;
-    cx += (tx - cx) * 0.28;
-    cy += (ty - cy) * 0.28;
-    write();
-    if (Math.abs(tx - cx) > 0.2 || Math.abs(ty - cy) > 0.2) frame = requestAnimationFrame(step);
-  }
-  function detach() {
-    if (frame) { cancelAnimationFrame(frame); frame = 0; }
-    if (!host) return;
-    host.removeEventListener('pointermove', track);
-    if (el.parentNode) el.parentNode.removeChild(el);
-    host = null;
-  }
-  function track(ev) {
-    if (!host || !host.classList.contains('is-examined')) { detach(); return; }
-    var r = host.getBoundingClientRect();
-    tx = ev.clientX - r.left;
-    ty = ev.clientY - r.top;
-    if (!frame) frame = requestAnimationFrame(step);
-  }
-  figs.forEach(function (fig) {
-    fig.addEventListener('pointerenter', function (ev) {
-      var img = $('.plate__img', fig);
-      if (!img || !fig.classList.contains('is-examined')) return;
-      detach();
-      host = fig;
-      el.style.setProperty('--plate-src', 'url("' + (img.currentSrc || img.src) + '")');  /* cache hit */
-      geometry(fig, img);
-      var r = fig.getBoundingClientRect();
-      cx = tx = ev.clientX - r.left;
-      cy = ty = ev.clientY - r.top;
-      write();
-      fig.appendChild(el);
-      fig.addEventListener('pointermove', track);
-    });
-    fig.addEventListener('pointerleave', detach);
-  });
-  onMedia(calm, function () { if (calm.matches) detach(); });
-})();
 
 /* ═══ CLIPBOARD ══════════════════════════════════════════════════════════ */
 var copyStatus = document.getElementById('copy-status');

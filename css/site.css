@@ -96,7 +96,7 @@ details summary::-webkit-details-marker{display:none}
   --d-flip:320ms;  /* refile FLIP                          */
 
   /* ── DEPTH · four values, nothing else ───────────────── */
-  --z-content:0; --z-loupe:5; --z-texture:9990; --z-skip:9999;
+  --z-content:0; --z-texture:9990; --z-skip:9999;
 
   /* ── TEXTURE MASTER DIAL ─────────────────────────────── */
   --texture:1;
@@ -799,28 +799,6 @@ html[data-voice="off"] .lock{display:none}
   .maze .token{transition:none}
 }
 
-/* ── LOUPE · JS appends one reused disc to the examined plate.
-      Contract: --tx/--ty are plate-relative coordinates of the disc's
-      top-left corner; --lx/--ly are the pointer offset inside the plate. */
-.loupe{
-  position:absolute;top:0;left:0;
-  width:148px;height:148px;border-radius:50%;
-  border:var(--card-border);
-  box-shadow:4px 4px 0 var(--shadow);
-  pointer-events:none;z-index:var(--z-loupe);
-  background-image:var(--plate-src,none);
-  background-repeat:no-repeat;
-  /* --img-x/--img-y/--img-w are the DRAWN image rect, measured by JS on enter.
-     A percentage background-size would resolve against the 148px disc, not
-     the plate. Centring constant is 72px, not 74px: the background
-     positioning area is the padding box (148 − 2×2px border). */
-  background-size:calc(var(--img-w,100px) * 2.2) auto;
-  background-position:
-    calc(72px - (var(--lx,0px) - var(--img-x,0px)) * 2.2)
-    calc(72px - (var(--ly,0px) - var(--img-y,0px)) * 2.2);
-  transform:translate3d(var(--tx,0px),var(--ty,0px),0);
-}
-
 /* Clipboard-blocked fallback: the citation, on the page, selectable. */
 .cite-out{
   font:400 var(--t-meta)/var(--lh-meta) var(--mono);
@@ -1185,7 +1163,7 @@ html.no-js .linkrow .sep:has(+ .btn){display:none}
 
   body{background:#fff;color:#000}
   /* .btn too: [ examine ] / [ cite ] / [ copy ] do nothing on paper. */
-  .grain,.mottle,.fold,.skip,.refile,.colophon__widget,.loupe,.trail,.lock,
+  .grain,.mottle,.fold,.skip,.refile,.colophon__widget,.trail,.lock,
   .voice,.rail__speaker,.objection,.entry__bullet,.plainview,.crossexam,.lamplight,
   .masthead__nav,.plate::after,.portrait::after,.btn,.cite-out,
   .record::before,.entry::before{display:none!important}
