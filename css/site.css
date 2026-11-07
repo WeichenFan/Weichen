@@ -671,7 +671,7 @@ main[data-focus="shivers"]         .voice[data-speaker="shivers"]         .voice
    plate ships with .is-examined in the markup so the full set is visible on
    arrival. Setting that in HTML rather than from JS avoids a flash of closed
    slivers before the deferred script runs. CONTAIN on a mat: the teasers run
-   1.68:1 to 3.41:1 and cover would slice the widest. */
+   1.68:1 to 5.02:1 and cover would slice the widest. */
 .plate__img,
 html.js .plate.is-examined .plate__img{
   width:100%;height:auto;max-height:340px;
@@ -683,6 +683,22 @@ html.js .plate.is-examined .plate__img{
   filter:grayscale(0) saturate(.86) contrast(1.04);
   transition:filter var(--d-plate) var(--ease-out);
 }
+/* A <video> can carry .plate__img too (the NEO-VLA demo). Replaced elements
+   differ in two ways that matter: a video has no intrinsic size before
+   metadata loads, and preload="none" means it never loads any, so width/height
+   attributes + aspect-ratio are what reserve the box. It also needs its
+   controls, so the closed sliver would trap them — videos stay open. */
+.plate__img{display:block}
+video.plate__img{aspect-ratio:16/9;background:var(--paper-inset)}
+html.js video.plate__img{
+  height:auto;max-height:340px;
+  object-fit:contain;
+  padding:10px;background:var(--paper-inset);
+  border:var(--card-border);
+  box-shadow:var(--plate-shadow);
+  filter:none;
+}
+
 /* CLOSED is a 56px sliver — a sample, not the information, so cover is right
    here. Applied only when JS can reopen it, and now only after a reader
    closes one: plates start with .is-examined. */
